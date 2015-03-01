@@ -4,12 +4,14 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>Hello World | Rocky&#39;s Blog</title>
+    <title>eclipse启动tomcat出现内存溢出错误 java.lang.OutOfMemoryError PermGen space | Rocky&#39;s Blog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
     
     <meta name="author" content="Rocky">
     
-    <meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in ">
+    <meta name="description" content="当我们的web项目较大时，部署到tomcat中会出现java.lang.OutOfMemoryError：PermGen space错误
+解决方案：步骤一：进入eclipse界面中的servers选项卡，右击 工程配置的tomcat项，单击“Open”.(如图)：
+步骤二：单击“Open launc">
     
     
     
@@ -67,15 +69,15 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2015/02/27/hello-world/" title="Hello World" itemprop="url">Hello World</a>
+      <a href="/2014/06/09/(140609)eclipse启动tomcat出现内存溢出/" title="eclipse启动tomcat出现内存溢出错误 java.lang.OutOfMemoryError PermGen space" itemprop="url">eclipse启动tomcat出现内存溢出错误 java.lang.OutOfMemoryError PermGen space</a>
   </h1>
   <p class="article-author">By
     
       <a href="jrockyhome.com" title="Rocky">Rocky</a>
     </p>
   <p class="article-time">
-    <time datetime="2015-02-27T11:32:25.000Z" itemprop="datePublished">2015-02-27</time>
-    Updated:<time datetime="2015-03-01T02:01:49.000Z" itemprop="dateModified">2015-03-01</time>
+    <time datetime="2014-06-09T13:45:16.000Z" itemprop="datePublished">2014-06-09</time>
+    Updated:<time datetime="2015-03-01T14:50:48.000Z" itemprop="dateModified">2015-03-01</time>
     
   </p>
 </header>
@@ -84,37 +86,33 @@
 		
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">Contents</strong>
-		<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Quick_Start"><span class="toc-number">1.</span> <span class="toc-text">Quick Start</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Create_a_new_post"><span class="toc-number">1.1.</span> <span class="toc-text">Create a new post</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Run_server"><span class="toc-number">1.2.</span> <span class="toc-text">Run server</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Generate_static_files"><span class="toc-number">1.3.</span> <span class="toc-text">Generate static files</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Deploy_to_remote_sites"><span class="toc-number">1.4.</span> <span class="toc-text">Deploy to remote sites</span></a></li></ol></li></ol>
+		
 		</div>
 		
-		<p>Welcome to <a href="http://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="http://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="http://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">trobuleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick_Start">Quick Start</h2>
-<h3 id="Create_a_new_post">Create a new post</h3>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Post"</span></div></pre></td></tr></table></figure>
-
-<p>More info: <a href="http://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run_server">Run server</h3>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure>
-
-<p>More info: <a href="http://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate_static_files">Generate static files</h3>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo generate</div></pre></td></tr></table></figure>
-
-<p>More info: <a href="http://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy_to_remote_sites">Deploy to remote sites</h3>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo deploy</div></pre></td></tr></table></figure>
-
-<p>More info: <a href="http://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
+		<p>当我们的web项目较大时，部署到tomcat中会出现java.lang.OutOfMemoryError：PermGen space错误<br><img src="http://img.blog.csdn.net/20141010170940046?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvTGlrZWFib3lfZmlyZQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="image"></p>
+<p>解决方案：<br><strong>步骤一：</strong><br>进入eclipse界面中的servers选项卡，右击 工程配置的tomcat项，单击“Open”.(如图)：<br><img src="http://img.blog.csdn.net/20141010171711546?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvTGlrZWFib3lfZmlyZQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="image"></p>
+<p><strong>步骤二：</strong><br>单击“Open launch configuration”<br><img src="http://img.blog.csdn.net/20141010172201977?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvTGlrZWFib3lfZmlyZQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="image"></p>
+<p><strong>步骤三：</strong><br>在弹出的窗口界面中，VM arguments 框中的结尾加入：<br>-Xms212m -Xmx804m -XX:PermSize=250M -XX:MaxPermSize=356m<br>点击“Apply”.启动后错误解决。<br><img src="http://img.blog.csdn.net/20141010172336606?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvTGlrZWFib3lfZmlyZQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="image"></p>
   
 	</div>
 		<footer class="article-footer clearfix">
 
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/debug/">debug</a>
+  </div>
+
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/debug/">debug</a>
+</div>
 
 
 
 <div class="article-share" id="share">
 
-  <div data-url="jrockyhome.com/2015/02/27/hello-world/" data-title="Hello World | Rocky&#39;s Blog" data-tsina="null" class="share clearfix">
+  <div data-url="jrockyhome.com/2014/06/09/(140609)eclipse启动tomcat出现内存溢出/" data-title="eclipse启动tomcat出现内存溢出错误 java.lang.OutOfMemoryError PermGen space | Rocky&#39;s Blog" data-tsina="null" class="share clearfix">
   </div>
 
 </div>
@@ -123,11 +121,19 @@
 	
 <nav class="article-nav clearfix">
  
+ <div class="prev" >
+ <a href="/2014/12/22/(141222)推荐一个在线反编译的website/" title="推荐一个在线反编译的website">
+  <strong>PREVIOUS:</strong><br/>
+  <span>
+  推荐一个在线反编译的website</span>
+</a>
+</div>
+
 
 <div class="next">
-<a href="/2014/04/28/(140428)基于OSGi的Virgo环境搭建一-环境篇/"  title="基于OSGi的Virgo环境搭建一-环境篇">
+<a href="/2014/05/05/(140505)持续集成之路三一Activiti工作流引擎Demo/"  title="持续集成之路三一Activiti工作流引擎Demo">
  <strong>NEXT:</strong><br/> 
- <span>基于OSGi的Virgo环境搭建一-环境篇
+ <span>持续集成之路三一Activiti工作流引擎Demo
 </span>
 </a>
 </div>
@@ -144,7 +150,7 @@
 
   <div id="toc" class="toc-aside">
   <strong class="toc-title">Contents</strong>
-  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Quick_Start"><span class="toc-number">1.</span> <span class="toc-text">Quick Start</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Create_a_new_post"><span class="toc-number">1.1.</span> <span class="toc-text">Create a new post</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Run_server"><span class="toc-number">1.2.</span> <span class="toc-text">Run server</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Generate_static_files"><span class="toc-number">1.3.</span> <span class="toc-text">Generate static files</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Deploy_to_remote_sites"><span class="toc-number">1.4.</span> <span class="toc-text">Deploy to remote sites</span></a></li></ol></li></ol>
+  
   </div>
 
 <div id="asidepart">
@@ -156,7 +162,17 @@
 	<p class="asidetitle">Categories</p>
 		<ul>
 		
+			<li><a href="/categories/OSGi/" title="OSGi">OSGi<sup>2</sup></a></li>
+		
+			<li><a href="/categories/RCP/" title="RCP">RCP<sup>1</sup></a></li>
+		
 			<li><a href="/categories/blog/" title="blog">blog<sup>3</sup></a></li>
+		
+			<li><a href="/categories/debug/" title="debug">debug<sup>2</sup></a></li>
+		
+			<li><a href="/categories/maven/" title="maven">maven<sup>2</sup></a></li>
+		
+			<li><a href="/categories/工作流引擎activity/" title="工作流引擎activity">工作流引擎activity<sup>1</sup></a></li>
 		
 		</ul>
 </div>
@@ -167,11 +183,23 @@
 	<p class="asidetitle">Tags</p>
 		<ul class="clearfix">
 		
-			<li><a href="/tags/OSGi/" title="OSGi">OSGi<sup>1</sup></a></li>
+			<li><a href="/tags/Eclipse插件开发/" title="Eclipse插件开发">Eclipse插件开发<sup>1</sup></a></li>
 		
-			<li><a href="/tags/Virgo/" title="Virgo">Virgo<sup>1</sup></a></li>
+			<li><a href="/tags/OSGi/" title="OSGi">OSGi<sup>2</sup></a></li>
+		
+			<li><a href="/tags/RCP/" title="RCP">RCP<sup>1</sup></a></li>
+		
+			<li><a href="/tags/Virgo/" title="Virgo">Virgo<sup>2</sup></a></li>
+		
+			<li><a href="/tags/debug/" title="debug">debug<sup>2</sup></a></li>
+		
+			<li><a href="/tags/info/" title="info">info<sup>1</sup></a></li>
+		
+			<li><a href="/tags/maven/" title="maven">maven<sup>2</sup></a></li>
 		
 			<li><a href="/tags/博客，文章/" title="博客，文章">博客，文章<sup>2</sup></a></li>
+		
+			<li><a href="/tags/工作流引擎activity/" title="工作流引擎activity">工作流引擎activity<sup>1</sup></a></li>
 		
 		</ul>
 </div>

@@ -9,8 +9,8 @@
     
     <meta name="author" content="Rocky">
     
-    <meta name="description" content="1.背景
-最近要将web项目模块化以支持热插拔、动态扩展等功能，因此我们开始研究如何将OSGi引入web项目。关于OSGi，大家可以参考OSGi研究与总结。现在主流的j2EE框架都离不开Spring，因此，将OSGi与Spring进行无缝整合就成为了引入OSGi的关键。值得庆幸的是，Spring早在">
+    <meta name="description" content="背景
+最近要将web项目模块化以支持热插拔、动态扩展等功能，因此我们开始研究如何将OSGi引入web项目。关于OSGi，大家可以参考OSGi研究与总结。现在主流的j2EE框架都离不开Spring，因此，将OSGi与Spring进行无缝整合就成为了引入OSGi的关键。值得庆幸的是，Spring早在08">
     
     
     
@@ -76,7 +76,7 @@
     </p>
   <p class="article-time">
     <time datetime="2014-04-28T09:12:32.000Z" itemprop="datePublished">2014-04-28</time>
-    Updated:<time datetime="2015-03-01T05:53:54.000Z" itemprop="dateModified">2015-03-01</time>
+    Updated:<time datetime="2015-03-01T11:26:44.000Z" itemprop="dateModified">2015-03-01</time>
     
   </p>
 </header>
@@ -85,26 +85,26 @@
 		
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">Contents</strong>
-		<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-背景"><span class="toc-number">1.</span> <span class="toc-text">1.背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-预备知识"><span class="toc-number">2.</span> <span class="toc-text">2.预备知识</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-环境搭建"><span class="toc-number">3.</span> <span class="toc-text">3.环境搭建</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1步骤一："><span class="toc-number">3.1.</span> <span class="toc-text">3.1步骤一：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2步骤二："><span class="toc-number">3.2.</span> <span class="toc-text">3.2步骤二：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3步骤三："><span class="toc-number">3.3.</span> <span class="toc-text">3.3步骤三：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-4步骤四："><span class="toc-number">3.4.</span> <span class="toc-text">3.4步骤四：</span></a></li></ol></li></ol>
+		<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#背景"><span class="toc-number">1.</span> <span class="toc-text">背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#预备知识"><span class="toc-number">2.</span> <span class="toc-text">预备知识</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#环境搭建"><span class="toc-number">3.</span> <span class="toc-text">环境搭建</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#步骤一："><span class="toc-number">3.1.</span> <span class="toc-text">步骤一：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#步骤二："><span class="toc-number">3.2.</span> <span class="toc-text">步骤二：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#步骤三："><span class="toc-number">3.3.</span> <span class="toc-text">步骤三：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#步骤四："><span class="toc-number">3.4.</span> <span class="toc-text">步骤四：</span></a></li></ol></li></ol>
 		</div>
 		
-		<h2 id="1-背景">1.背景</h2>
+		<h2 id="背景">背景</h2>
 <p>最近要将web项目模块化以支持热插拔、动态扩展等功能，因此我们开始研究如何将OSGi引入web项目。关于OSGi，大家可以参考OSGi研究与总结。<br>现在主流的j2EE框架都离不开Spring，因此，将OSGi与Spring进行无缝整合就成为了引入OSGi的关键。值得庆幸的是，Spring早在08年就已对OSGi进行大力支持，并开发了子项目SpringDM与OSGi进行完美融合。但是，自从3.2版本之后，为了Gradle，Spring摒弃OSGi（关于为什么摒弃OSGi，大家可以参考<a href="http://www.infoq.com/news/2012/10/spring-osgi-gradle" target="_blank" rel="external">http://www.infoq.com/news/2012/10/spring-osgi-gradle</a>），关于OSGi在J2EE中的应用，大家也有些争论，可谓是仁者见仁智者见智，说到底，还是对OSGi研究的不够深入，导致OSGi在项目中发挥不出关键作用以致成为累赘。<br>总之，没尝试过OSGi的人是没有发言权的，基于这样的背景，下面我们就来构建Spring Tools Suite（STS）+ Virgo 的开发环境，为我们接下来深入研究OSGi在Web项目中的应用打下坚实基础。</p>
-<h2 id="2-预备知识">2.预备知识</h2>
+<h2 id="预备知识">预备知识</h2>
 <p>在开始之前，先简单介绍一下涉及到的名词概念，了解OSGi以及Virgo的同学可以直接无视。<br><strong>什么是OSGi？</strong></p>
-<p>简单的说，它是一套规范及标准，支持java语言模块化的系统。我们常用的Eclipse就是基于OSGi标准开发的。详情介绍<a href="http://developer.51cto.com/art/200909/152190.htm。" target="_blank" rel="external">http://developer.51cto.com/art/200909/152190.htm。</a><br><strong>什么是STS？</strong></p>
+<p>简单的说，它是一套规范及标准，支持java语言模块化的系统。我们常用的Eclipse就是基于OSGi标准开发的。详情介绍<a href="http://developer.51cto.com/art/200909/152190.htm" target="_blank" rel="external">http://developer.51cto.com/art/200909/152190.htm</a><br><strong>什么是STS？</strong></p>
 <p>基于Eclipse的一套IDE开发工具，简单说，就是Eclipse + STS插件。<br><strong>什么是Virgo Tomcat Server？</strong></p>
-<p>就是将Tomcat进行包装，集成了OSGi环境的Server。详细介绍 <a href="http://www.ha97.com/5152.html。" target="_blank" rel="external">http://www.ha97.com/5152.html。</a><br><strong>什么是Maven？</strong></p>
+<p>就是将Tomcat进行包装，集成了OSGi环境的Server。详细介绍 <a href="http://www.ha97.com/5152.html" target="_blank" rel="external">http://www.ha97.com/5152.html</a><br><strong>什么是Maven？</strong></p>
 <p>这个就不多说了，google一下就清楚了。</p>
-<h2 id="3-环境搭建">3.环境搭建</h2>
+<h2 id="环境搭建">环境搭建</h2>
 <p>好，我们正式开始搭建过程。</p>
-<h3 id="3-1步骤一：">3.1步骤一：</h3>
-<p>下载STS开发环境，地址<a href="http://spring.io/tools/sts/all，只能下载最新版本，分为绿色解压版及安装版，下载解压版即可。当然，如果你也可以下载Spring" target="_blank" rel="external">http://spring.io/tools/sts/all，只能下载最新版本，分为绿色解压版及安装版，下载解压版即可。当然，如果你也可以下载Spring</a> Tool Suite的插件直接安装到你的Eclipse环境中，该插件大概有130M左右。</p>
+<h3 id="步骤一：">步骤一：</h3>
+<p>下载STS开发环境，地址<a href="http://spring.io/tools/sts/all" target="_blank" rel="external">http://spring.io/tools/sts/all</a>，只能下载最新版本，分为绿色解压版及安装版，下载解压版即可。当然，如果你也可以下载Spring Tool Suite的插件直接安装到你的Eclipse环境中，该插件大概有130M左右。</p>
 <p><img src="http://img.blog.csdn.net/20140517152802750?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvTGlrZWFib3lfZmlyZQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="image"></p>
-<h3 id="3-2步骤二：">3.2步骤二：</h3>
-<p>下载Virgo Server，地址<a href="http://www.eclipse.org/virgo/download/，我们采用的是基于tomcat的。" target="_blank" rel="external">http://www.eclipse.org/virgo/download/，我们采用的是基于tomcat的。</a></p>
+<h3 id="步骤二：">步骤二：</h3>
+<p>下载Virgo Server，地址<a href="http://www.eclipse.org/virgo/download/" target="_blank" rel="external">http://www.eclipse.org/virgo/download/</a>，我们采用的是基于tomcat的。</p>
 <p><img src="http://img.blog.csdn.net/20140517153256656?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvTGlrZWFib3lfZmlyZQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="image"></p>
-<h3 id="3-3步骤三：">3.3步骤三：</h3>
+<h3 id="步骤三：">步骤三：</h3>
 <p>配置Virgo Server。<br>我们需要将下载的Virgo Server集成到STS环境中，首先，在STS IDE中安装virgo tools插件，通过Help-&gt;Install New Software，弹出如下界面。</p>
 <p><img src="http://img.blog.csdn.net/20140517153646750?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvTGlrZWFib3lfZmlyZQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="image"></p>
 <p>点击Add，输入<br>name:virgo<br>location:<a href="http://download.eclipse.org/virgo/milestone/tooling" target="_blank" rel="external">http://download.eclipse.org/virgo/milestone/tooling</a></p>
@@ -119,8 +119,8 @@
 <p><img src="http://img.blog.csdn.net/20140517155034093?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvTGlrZWFib3lfZmlyZQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="image"></p>
 <p>完成后，在Server视图中可以看到我们创建的VirgoServer，下面的VmwarevFabric tc Server是这个版本的STS环境自带的，不用管。</p>
 <p><img src="http://img.blog.csdn.net/20140517155211156?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvTGlrZWFib3lfZmlyZQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="image"></p>
-<h3 id="3-4步骤四：">3.4步骤四：</h3>
-<p>配置Maven。（如果不清楚Maven是什么的同学可以去Google一下，此处是Maven下载的地址<a href="http://maven.apache.org/download.cgi）" target="_blank" rel="external">http://maven.apache.org/download.cgi）</a><br>重启之后选择windows-&gt;preferences-&gt;Maven对maven进行配置。<br>建议不要使用Embedded内嵌的Maven，《Maven实战》上说不太稳定，详见《Maven实战》第47页2.7.3。</p>
+<h3 id="步骤四：">步骤四：</h3>
+<p>配置Maven。（如果不清楚Maven是什么的同学可以去Google一下，此处是Maven下载的地址<a href="http://maven.apache.org/download.cgi" target="_blank" rel="external">http://maven.apache.org/download.cgi</a>）<br>重启之后选择windows-&gt;preferences-&gt;Maven对maven进行配置。<br>建议不要使用Embedded内嵌的Maven，《Maven实战》上说不太稳定，详见《Maven实战》第47页2.7.3。</p>
 <p><img src="http://img.blog.csdn.net/20140517154304546?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvTGlrZWFib3lfZmlyZQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="image"></p>
 <p>最后，让我们测试一下搭建的环境，在STS中启动Virgo Server。</p>
 <p><img src="http://img.blog.csdn.net/20140517155619984?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvTGlrZWFib3lfZmlyZQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="image"></p>
@@ -141,7 +141,7 @@
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="/categories/blog/">blog</a>
+  <a class="article-category-link" href="/categories/OSGi/">OSGi</a>
 </div>
 
 
@@ -158,18 +158,18 @@
 <nav class="article-nav clearfix">
  
  <div class="prev" >
- <a href="/2015/02/27/hello-world/" title="Hello World">
+ <a href="/2014/04/29/(140429)基于OSGi的Virgo环境搭建二-集成Snaps/" title="基于OSGi的Virgo环境搭建二-集成Snaps">
   <strong>PREVIOUS:</strong><br/>
   <span>
-  Hello World</span>
+  基于OSGi的Virgo环境搭建二-集成Snaps</span>
 </a>
 </div>
 
 
 <div class="next">
-<a href="/2013/08/01/(130801)pacman字体修改/"  title="pacman字体颜色修改">
+<a href="/2013/09/01/(130901)RCP开发之绑定Action快捷键/"  title="RCP开发之绑定Action快捷键">
  <strong>NEXT:</strong><br/> 
- <span>pacman字体颜色修改
+ <span>RCP开发之绑定Action快捷键
 </span>
 </a>
 </div>
@@ -186,7 +186,7 @@
 
   <div id="toc" class="toc-aside">
   <strong class="toc-title">Contents</strong>
-  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-背景"><span class="toc-number">1.</span> <span class="toc-text">1.背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-预备知识"><span class="toc-number">2.</span> <span class="toc-text">2.预备知识</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-环境搭建"><span class="toc-number">3.</span> <span class="toc-text">3.环境搭建</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1步骤一："><span class="toc-number">3.1.</span> <span class="toc-text">3.1步骤一：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2步骤二："><span class="toc-number">3.2.</span> <span class="toc-text">3.2步骤二：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3步骤三："><span class="toc-number">3.3.</span> <span class="toc-text">3.3步骤三：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-4步骤四："><span class="toc-number">3.4.</span> <span class="toc-text">3.4步骤四：</span></a></li></ol></li></ol>
+  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#背景"><span class="toc-number">1.</span> <span class="toc-text">背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#预备知识"><span class="toc-number">2.</span> <span class="toc-text">预备知识</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#环境搭建"><span class="toc-number">3.</span> <span class="toc-text">环境搭建</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#步骤一："><span class="toc-number">3.1.</span> <span class="toc-text">步骤一：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#步骤二："><span class="toc-number">3.2.</span> <span class="toc-text">步骤二：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#步骤三："><span class="toc-number">3.3.</span> <span class="toc-text">步骤三：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#步骤四："><span class="toc-number">3.4.</span> <span class="toc-text">步骤四：</span></a></li></ol></li></ol>
   </div>
 
 <div id="asidepart">
@@ -198,7 +198,17 @@
 	<p class="asidetitle">Categories</p>
 		<ul>
 		
+			<li><a href="/categories/OSGi/" title="OSGi">OSGi<sup>2</sup></a></li>
+		
+			<li><a href="/categories/RCP/" title="RCP">RCP<sup>1</sup></a></li>
+		
 			<li><a href="/categories/blog/" title="blog">blog<sup>3</sup></a></li>
+		
+			<li><a href="/categories/debug/" title="debug">debug<sup>2</sup></a></li>
+		
+			<li><a href="/categories/maven/" title="maven">maven<sup>2</sup></a></li>
+		
+			<li><a href="/categories/工作流引擎activity/" title="工作流引擎activity">工作流引擎activity<sup>1</sup></a></li>
 		
 		</ul>
 </div>
@@ -209,11 +219,23 @@
 	<p class="asidetitle">Tags</p>
 		<ul class="clearfix">
 		
-			<li><a href="/tags/OSGi/" title="OSGi">OSGi<sup>1</sup></a></li>
+			<li><a href="/tags/Eclipse插件开发/" title="Eclipse插件开发">Eclipse插件开发<sup>1</sup></a></li>
 		
-			<li><a href="/tags/Virgo/" title="Virgo">Virgo<sup>1</sup></a></li>
+			<li><a href="/tags/OSGi/" title="OSGi">OSGi<sup>2</sup></a></li>
+		
+			<li><a href="/tags/RCP/" title="RCP">RCP<sup>1</sup></a></li>
+		
+			<li><a href="/tags/Virgo/" title="Virgo">Virgo<sup>2</sup></a></li>
+		
+			<li><a href="/tags/debug/" title="debug">debug<sup>2</sup></a></li>
+		
+			<li><a href="/tags/info/" title="info">info<sup>1</sup></a></li>
+		
+			<li><a href="/tags/maven/" title="maven">maven<sup>2</sup></a></li>
 		
 			<li><a href="/tags/博客，文章/" title="博客，文章">博客，文章<sup>2</sup></a></li>
+		
+			<li><a href="/tags/工作流引擎activity/" title="工作流引擎activity">工作流引擎activity<sup>1</sup></a></li>
 		
 		</ul>
 </div>
