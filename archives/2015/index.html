@@ -3,12 +3,12 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Rocky&#39;s Blog</title>
+  <title>Archives: 2015 | Rocky&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Rocky's Blog">
-<meta property="og:url" content="jrockyhome.com/">
+<meta property="og:url" content="jrockyhome.com/archives/2015/">
 <meta property="og:site_name" content="Rocky's Blog">
 <meta property="og:description">
 <meta name="twitter:card" content="summary">
@@ -114,139 +114,6 @@
       <a data-url="jrockyhome.com/2015/02/27/hello-world/" data-id="hv2c3luta7egatgb" class="article-share-link">Share</a>
       
       
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-markdown用法总结" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2013/02/27/markdown用法总结/" class="article-date">
-  <time datetime="2013-02-27T14:20:32.000Z" itemprop="datePublished">2013 02 27</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/blog/">blog</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2013/02/27/markdown用法总结/">Markdown用法总结</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><a href="http://wowubuntu.com/markdown/#p" target="_blank" rel="external">Markdown中文文档</a></p>
-<h2 id="基本">基本</h2>
-<h3 id="换行">换行</h3>
-<p>单个回车<br>视为空格。</p>
-<p>连续回车</p>
-<p>才能分段。</p>
-<p>行尾加两个空格，这里-&gt;<br>即可段内换行。</p>
-<h2 id="标题">标题</h2>
-<p>这是最为常用的格式，在平时常用的的文本编辑器中大多是这样实现的：输入文本、选中文本、设置标题格式。</p>
-<p>而在 Markdown 中，你只需要在文本前面加上 # 即可，同理、你还可以增加二级标题、三级标题、四级标题、五级标题和六级标题，总共六级，只需要增加  # 即可，标题字号相应降低。例如：</p>
-<p># 一级标题<br>## 二级标题<br>### 三级标题<br>#### 四级标题<br>##### 五级标题<br>###### 六级标题</p>
-
-<p>注：# 和「一级标题」之间建议保留一个字符的空格，这是最标准的 Markdown 写法。</p>
-<h2 id="列表">列表</h2>
-<p>列表格式也很常用，在 Markdown 中，你只需要在文字前面加上 - 就可以了，例如：</p>
-<p>- 文本1<br>- 文本2<br>- 文本3</p>
-
-<p>如果你希望有序列表，也可以在文字前面加上 1. 2. 3. 就可以了，例如：</p>
-<p>1. 文本1<br>2. 文本2<br>3. 文本3</p>
-
-<p>注：-、1.和文本之间要保留一个字符的空格。</p>
-<h2 id="链接和图片">链接和图片</h2>
-<p><a href="http://jrockyhome.com" target="_blank" rel="external">我的博客</a></p>
-<p><img src="http://ww4.sinaimg.cn/bmiddle/aa397b7fjw1dzplsgpdw5j.jpg" alt=""></p>
-<h2 id="引用">引用</h2>
-<blockquote>
-<p>表示引用文字内容。</p>
-</blockquote>
-<h2 id="字体">字体</h2>
-<p><em>这是粗体</em><br><strong>这是粗体</strong></p>
-<h2 id="表格">表格</h2>
-<table>
-<thead>
-<tr>
-<th>Tables</th>
-<th style="text-align:center">Are</th>
-<th style="text-align:right">Cool</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>col 3 is</td>
-<td style="text-align:center">right-aligned</td>
-<td style="text-align:right">$1600</td>
-</tr>
-<tr>
-<td>col 2 is</td>
-<td style="text-align:center">centered</td>
-<td style="text-align:right">$12</td>
-</tr>
-<tr>
-<td>zebra stripes</td>
-<td style="text-align:center">are neat</td>
-<td style="text-align:right">$1</td>
-</tr>
-</tbody>
-</table>
-<h2 id="代码">代码</h2>
-<p>行的开头空4个空格，表示程序代码，例如：</p>
-<p>C#:</p>
-<pre><code><span class="comment">//这里显示一些代码，在正文显示中会自动识别语言，进行代码染色，这是一段C#代码</span>
-<span class="keyword">public</span> <span class="keyword">class</span> Blog
-{
-     <span class="keyword">public</span> <span class="keyword">int</span> Id { <span class="keyword">get</span>; <span class="keyword">set</span>; }
-     <span class="keyword">public</span> <span class="keyword">string</span> Subject { <span class="keyword">get</span>; <span class="keyword">set</span>; }
-}
-</code></pre><p>Python:</p>
-<pre><code>keywords = [<span class="string">"dsaa"</span>,<span class="string">"Asd"</span>,<span class="string">"sadc"</span>,<span class="string">"Gdfd"</span>,<span class="string">"gdfdd"</span>,<span class="string">"gaf"</span>,<span class="string">"gabdddddd"</span>,<span class="string">"eg"</span>]
-<span class="keyword">print</span> dict([(i[<span class="number">0</span>],list(i[<span class="number">1</span>])) <span class="keyword">for</span> i <span class="keyword">in</span> groupby(sorted(keywords),<span class="keyword">lambda</span>    x:x[<span class="number">0</span>].lower())])
-</code></pre><p>Javascript:</p>
-<pre><code><span class="javadoc">/**
- * nth element in the fibonacci series.
- * <span class="javadoctag">@param</span> n &gt;= 0
- * <span class="javadoctag">@return</span> the nth element, &gt;= 0.
- */</span>
-function fib(n) {
-    <span class="keyword">var</span> a = <span class="number">1</span>, b = <span class="number">1</span>;
-    <span class="keyword">var</span> tmp;
-    <span class="keyword">while</span> (--n &gt;= <span class="number">0</span>) {
-        tmp = a;
-        a += b;
-       b = tmp;
-    }
-    <span class="keyword">return</span> a;
-}
-
-document.write(fib(<span class="number">10</span>));
-</code></pre><p>Bash:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo generate</div></pre></td></tr></table></figure>
-
-<p>More info: <a href="http://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="jrockyhome.com/2013/02/27/markdown用法总结/" data-id="s7u5f58lyiwulozf" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/博客，文章/">博客，文章</a></li></ul>
-
     </footer>
   </div>
   
