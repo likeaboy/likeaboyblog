@@ -4,12 +4,12 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>Hello World | Rocky&#39;s Blog</title>
+    <title>pacman字体颜色修改 | Rocky&#39;s Blog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
     
     <meta name="author" content="Rocky">
     
-    <meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in ">
+    <meta name="description" content="找到 hexo\themes\pacman\source\css_base\下面的variable.styl文件，修改里面的color-font的值，默认是灰色（#817c7c），不够清爽，改为黑色（000000）&amp;lt;/pre&amp;gt;&amp;lt;pre name=&amp;quot;code&amp;quot; c">
     
     
     
@@ -67,15 +67,15 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2015/02/27/hello-world/" title="Hello World" itemprop="url">Hello World</a>
+      <a href="/2013/08/01/(130801)pacman字体修改/" title="pacman字体颜色修改" itemprop="url">pacman字体颜色修改</a>
   </h1>
   <p class="article-author">By
     
       <a href="jrockyhome.com" title="Rocky">Rocky</a>
     </p>
   <p class="article-time">
-    <time datetime="2015-02-27T11:32:25.000Z" itemprop="datePublished">2015-02-27</time>
-    Updated:<time datetime="2015-03-01T02:01:49.000Z" itemprop="dateModified">2015-03-01</time>
+    <time datetime="2013-08-01T04:20:32.000Z" itemprop="datePublished">2013-08-01</time>
+    Updated:<time datetime="2015-03-01T06:14:42.000Z" itemprop="dateModified">2015-03-01</time>
     
   </p>
 </header>
@@ -84,37 +84,29 @@
 		
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">Contents</strong>
-		<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Quick_Start"><span class="toc-number">1.</span> <span class="toc-text">Quick Start</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Create_a_new_post"><span class="toc-number">1.1.</span> <span class="toc-text">Create a new post</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Run_server"><span class="toc-number">1.2.</span> <span class="toc-text">Run server</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Generate_static_files"><span class="toc-number">1.3.</span> <span class="toc-text">Generate static files</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Deploy_to_remote_sites"><span class="toc-number">1.4.</span> <span class="toc-text">Deploy to remote sites</span></a></li></ol></li></ol>
+		
 		</div>
 		
-		<p>Welcome to <a href="http://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="http://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="http://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">trobuleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick_Start">Quick Start</h2>
-<h3 id="Create_a_new_post">Create a new post</h3>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Post"</span></div></pre></td></tr></table></figure>
-
-<p>More info: <a href="http://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run_server">Run server</h3>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure>
-
-<p>More info: <a href="http://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate_static_files">Generate static files</h3>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo generate</div></pre></td></tr></table></figure>
-
-<p>More info: <a href="http://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy_to_remote_sites">Deploy to remote sites</h3>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo deploy</div></pre></td></tr></table></figure>
-
-<p>More info: <a href="http://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
-  
+		<p><br>    找到 hexo\themes\pacman\source\css_base\下面的variable.styl文件，修改里面的color-font的值，默认是灰色（#817c7c），不够清爽，改为黑色（000000）<br></p><br><p><br></p><br><pre name="code" class="html">&lt;/pre&gt;&lt;pre name=&quot;code&quot; class=&quot;html&quot;&gt;//Color<br>//color-font = #817c7c<br>color-background = #dddddd<br>color-font = #000000<br>color-white = #ffffff<br>color-blue = #2ca6cb<br>color-theme = #ea6753<br>color-font-nav =#E9CD4C<br>color-section = #fafafa<br>color-footer = #1f1f1f<br>color-gray = #CCC<br>color-heading = #333333<br>color-code = #eee<br>color-twitter = #00aced<br>color-facebook = #3b5998<br>color-weibo = #eb182c<br>color-google = #dd4b39<br>color-qrcode= #49ae0f<br>color-top = #762c54<br><br>//Media<br>width-phone = 568px<br>width-mini = 768px<br>width-tablet = 1024px<br>width-desktop = 1560px<br>phone = &quot;only screen and (min-width: &quot; + width-phone + &quot;)&quot;<br>mini= &quot;only screen and (min-width: &quot; + width-mini + &quot;)&quot;<br>tablet = &quot;only screen and (min-width: &quot; + width-tablet + &quot;)&quot;<br>desktop = &quot;only screen and (min-width: &quot; + width-desktop + &quot;)&quot;<br><br>//Font<br>font-default = &quot;Helvetica Neue&quot;, &quot;Helvetica&quot;,&quot;Microsoft YaHei&quot;, &quot;WenQuanYi Micro Hei&quot;,Arial, sans-serif<br>font-serif = &quot;Georgia&quot;, serif<br>font-mono = Monaco, Menlo, Consolas, Courier New, monospace<br>font-custom-family = &quot;covered_by_your_graceregular&quot;<br>font-custom-filename = coveredbyyourgrace-webfont<br>font-icon-family = &quot;FontAwesome&quot;<br>font-icon-filename = fontawesome-webfont<br>font-icon-version = &quot;4.0.3&quot;<br>ShowCustomFont = hexo-config(&quot;ShowCustomFont&quot;)<br>font-size = 100%<br>line-height = 1.5<br><br>//image<br>dataURI = hexo-config(&quot;dataURI&quot;)<br>author-img-data = unquote(hexo-config(&quot;author_img_data&quot;))<br>author-img = hexo-config(&quot;author_img&quot;)<br>ShowGallery = hexo-config(&quot;ShowGallery&quot;)<br>root = hexo-config(&quot;root&quot;)<br><br>//comment<br>duoshuo = hexo-config(&quot;duoshuo.enable&quot;)<br><br>//highlight<br>highlight = hexo-config(&quot;highlight.enable&quot;)<br></pre><br><br><br><br><br><br><p><br></p>  
 	</div>
 		<footer class="article-footer clearfix">
 
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/博客，文章/">博客，文章</a>
+  </div>
+
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/blog/">blog</a>
+</div>
 
 
 
 <div class="article-share" id="share">
 
-  <div data-url="jrockyhome.com/2015/02/27/hello-world/" data-title="Hello World | Rocky&#39;s Blog" data-tsina="null" class="share clearfix">
+  <div data-url="jrockyhome.com/2013/08/01/(130801)pacman字体修改/" data-title="pacman字体颜色修改 | Rocky&#39;s Blog" data-tsina="null" class="share clearfix">
   </div>
 
 </div>
@@ -123,11 +115,19 @@
 	
 <nav class="article-nav clearfix">
  
+ <div class="prev" >
+ <a href="/2014/04/28/(140428)基于OSGi的Virgo环境搭建一-环境篇/" title="基于OSGi的Virgo环境搭建一-环境篇">
+  <strong>PREVIOUS:</strong><br/>
+  <span>
+  基于OSGi的Virgo环境搭建一-环境篇</span>
+</a>
+</div>
+
 
 <div class="next">
-<a href="/2014/04/28/(140428)基于OSGi的Virgo环境搭建一-环境篇/"  title="基于OSGi的Virgo环境搭建一-环境篇">
+<a href="/2013/07/31/(130731)Markdown用法总结/"  title="Markdown用法总结">
  <strong>NEXT:</strong><br/> 
- <span>基于OSGi的Virgo环境搭建一-环境篇
+ <span>Markdown用法总结
 </span>
 </a>
 </div>
@@ -144,7 +144,7 @@
 
   <div id="toc" class="toc-aside">
   <strong class="toc-title">Contents</strong>
-  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Quick_Start"><span class="toc-number">1.</span> <span class="toc-text">Quick Start</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Create_a_new_post"><span class="toc-number">1.1.</span> <span class="toc-text">Create a new post</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Run_server"><span class="toc-number">1.2.</span> <span class="toc-text">Run server</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Generate_static_files"><span class="toc-number">1.3.</span> <span class="toc-text">Generate static files</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Deploy_to_remote_sites"><span class="toc-number">1.4.</span> <span class="toc-text">Deploy to remote sites</span></a></li></ol></li></ol>
+  
   </div>
 
 <div id="asidepart">

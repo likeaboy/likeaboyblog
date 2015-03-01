@@ -1,0 +1,385 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>基于OSGi的Virgo环境搭建一-环境篇 | Rocky&#39;s Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
+    
+    <meta name="author" content="Rocky">
+    
+    <meta name="description" content="1.背景
+最近要将web项目模块化以支持热插拔、动态扩展等功能，因此我们开始研究如何将OSGi引入web项目。关于OSGi，大家可以参考OSGi研究与总结。现在主流的j2EE框架都离不开Spring，因此，将OSGi与Spring进行无缝整合就成为了引入OSGi的关键。值得庆幸的是，Spring早在">
+    
+    
+    
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/pacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/pacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+
+</head>
+
+  <body>
+    <header>
+      <div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.svg" alt="Rocky&#39;s Blog" title="Rocky&#39;s Blog"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="Rocky&#39;s Blog">Rocky&#39;s Blog</a></h1>
+				<h2 class="blog-motto">积沙成塔</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+					
+					<form class="search" action="/search/index.html" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="text" id="search" autocomplete="off" name="q" maxlength="20" placeholder="Search" />
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2014/04/28/(140428)基于OSGi的Virgo环境搭建一-环境篇/" title="基于OSGi的Virgo环境搭建一-环境篇" itemprop="url">基于OSGi的Virgo环境搭建一-环境篇</a>
+  </h1>
+  <p class="article-author">By
+    
+      <a href="jrockyhome.com" title="Rocky">Rocky</a>
+    </p>
+  <p class="article-time">
+    <time datetime="2014-04-28T09:12:32.000Z" itemprop="datePublished">2014-04-28</time>
+    Updated:<time datetime="2015-03-01T05:53:54.000Z" itemprop="dateModified">2015-03-01</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-背景"><span class="toc-number">1.</span> <span class="toc-text">1.背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-预备知识"><span class="toc-number">2.</span> <span class="toc-text">2.预备知识</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-环境搭建"><span class="toc-number">3.</span> <span class="toc-text">3.环境搭建</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1步骤一："><span class="toc-number">3.1.</span> <span class="toc-text">3.1步骤一：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2步骤二："><span class="toc-number">3.2.</span> <span class="toc-text">3.2步骤二：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3步骤三："><span class="toc-number">3.3.</span> <span class="toc-text">3.3步骤三：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-4步骤四："><span class="toc-number">3.4.</span> <span class="toc-text">3.4步骤四：</span></a></li></ol></li></ol>
+		</div>
+		
+		<h2 id="1-背景">1.背景</h2>
+<p>最近要将web项目模块化以支持热插拔、动态扩展等功能，因此我们开始研究如何将OSGi引入web项目。关于OSGi，大家可以参考OSGi研究与总结。<br>现在主流的j2EE框架都离不开Spring，因此，将OSGi与Spring进行无缝整合就成为了引入OSGi的关键。值得庆幸的是，Spring早在08年就已对OSGi进行大力支持，并开发了子项目SpringDM与OSGi进行完美融合。但是，自从3.2版本之后，为了Gradle，Spring摒弃OSGi（关于为什么摒弃OSGi，大家可以参考<a href="http://www.infoq.com/news/2012/10/spring-osgi-gradle" target="_blank" rel="external">http://www.infoq.com/news/2012/10/spring-osgi-gradle</a>），关于OSGi在J2EE中的应用，大家也有些争论，可谓是仁者见仁智者见智，说到底，还是对OSGi研究的不够深入，导致OSGi在项目中发挥不出关键作用以致成为累赘。<br>总之，没尝试过OSGi的人是没有发言权的，基于这样的背景，下面我们就来构建Spring Tools Suite（STS）+ Virgo 的开发环境，为我们接下来深入研究OSGi在Web项目中的应用打下坚实基础。</p>
+<h2 id="2-预备知识">2.预备知识</h2>
+<p>在开始之前，先简单介绍一下涉及到的名词概念，了解OSGi以及Virgo的同学可以直接无视。<br><strong>什么是OSGi？</strong></p>
+<p>简单的说，它是一套规范及标准，支持java语言模块化的系统。我们常用的Eclipse就是基于OSGi标准开发的。详情介绍<a href="http://developer.51cto.com/art/200909/152190.htm。" target="_blank" rel="external">http://developer.51cto.com/art/200909/152190.htm。</a><br><strong>什么是STS？</strong></p>
+<p>基于Eclipse的一套IDE开发工具，简单说，就是Eclipse + STS插件。<br><strong>什么是Virgo Tomcat Server？</strong></p>
+<p>就是将Tomcat进行包装，集成了OSGi环境的Server。详细介绍 <a href="http://www.ha97.com/5152.html。" target="_blank" rel="external">http://www.ha97.com/5152.html。</a><br><strong>什么是Maven？</strong></p>
+<p>这个就不多说了，google一下就清楚了。</p>
+<h2 id="3-环境搭建">3.环境搭建</h2>
+<p>好，我们正式开始搭建过程。</p>
+<h3 id="3-1步骤一：">3.1步骤一：</h3>
+<p>下载STS开发环境，地址<a href="http://spring.io/tools/sts/all，只能下载最新版本，分为绿色解压版及安装版，下载解压版即可。当然，如果你也可以下载Spring" target="_blank" rel="external">http://spring.io/tools/sts/all，只能下载最新版本，分为绿色解压版及安装版，下载解压版即可。当然，如果你也可以下载Spring</a> Tool Suite的插件直接安装到你的Eclipse环境中，该插件大概有130M左右。</p>
+<p><img src="http://img.blog.csdn.net/20140517152802750?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvTGlrZWFib3lfZmlyZQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="image"></p>
+<h3 id="3-2步骤二：">3.2步骤二：</h3>
+<p>下载Virgo Server，地址<a href="http://www.eclipse.org/virgo/download/，我们采用的是基于tomcat的。" target="_blank" rel="external">http://www.eclipse.org/virgo/download/，我们采用的是基于tomcat的。</a></p>
+<p><img src="http://img.blog.csdn.net/20140517153256656?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvTGlrZWFib3lfZmlyZQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="image"></p>
+<h3 id="3-3步骤三：">3.3步骤三：</h3>
+<p>配置Virgo Server。<br>我们需要将下载的Virgo Server集成到STS环境中，首先，在STS IDE中安装virgo tools插件，通过Help-&gt;Install New Software，弹出如下界面。</p>
+<p><img src="http://img.blog.csdn.net/20140517153646750?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvTGlrZWFib3lfZmlyZQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="image"></p>
+<p>点击Add，输入<br>name:virgo<br>location:<a href="http://download.eclipse.org/virgo/milestone/tooling" target="_blank" rel="external">http://download.eclipse.org/virgo/milestone/tooling</a></p>
+<p><img src="http://img.blog.csdn.net/20140517153714781?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvTGlrZWFib3lfZmlyZQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="image"></p>
+<p>勾选Eclipse Virgo Tools插件，然后Next进行下载及安装。</p>
+<p><img src="http://img.blog.csdn.net/20140517153753812?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvTGlrZWFib3lfZmlyZQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="image"></p>
+<p>安装完成后重启STS。<br>然后，配置Server，也就是我们使用的virgo应用服务器。<br>点击Add，在弹出的配置界面中选择EclipseRT下面的Virgo Runtime。</p>
+<p><img src="http://img.blog.csdn.net/20140517154905828?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvTGlrZWFib3lfZmlyZQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="image"></p>
+<p>选择EclipseRT下面的Virgo Runtime并勾选create a new local server。<br>注意：EclipseRT选项只有在virgo tools插件安装成功之后才会有。</p>
+<p><img src="http://img.blog.csdn.net/20140517174637718?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvTGlrZWFib3lfZmlyZQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="image"></p>
+<p>填写Virgo Server的Name，点击Browser选择下载的Virgo Server的路径。</p>
+<p><img src="http://img.blog.csdn.net/20140517155034093?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvTGlrZWFib3lfZmlyZQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="image"></p>
+<p>完成后，在Server视图中可以看到我们创建的VirgoServer，下面的VmwarevFabric tc Server是这个版本的STS环境自带的，不用管。</p>
+<p><img src="http://img.blog.csdn.net/20140517155211156?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvTGlrZWFib3lfZmlyZQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="image"></p>
+<h3 id="3-4步骤四：">3.4步骤四：</h3>
+<p>配置Maven。（如果不清楚Maven是什么的同学可以去Google一下，此处是Maven下载的地址<a href="http://maven.apache.org/download.cgi）" target="_blank" rel="external">http://maven.apache.org/download.cgi）</a><br>重启之后选择windows-&gt;preferences-&gt;Maven对maven进行配置。<br>建议不要使用Embedded内嵌的Maven，《Maven实战》上说不太稳定，详见《Maven实战》第47页2.7.3。</p>
+<p><img src="http://img.blog.csdn.net/20140517154304546?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvTGlrZWFib3lfZmlyZQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="image"></p>
+<p>最后，让我们测试一下搭建的环境，在STS中启动Virgo Server。</p>
+<p><img src="http://img.blog.csdn.net/20140517155619984?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvTGlrZWFib3lfZmlyZQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="image"></p>
+<p>可以看到virgo<br>启动后就是加载各个osgi的插件<br>打开浏览器，输入<a href="http://localhost:8080/" target="_blank" rel="external">http://localhost:8080/</a><br>得到默认的启动页面如下</p>
+<p><img src="http://img.blog.csdn.net/20140517155743718?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvTGlrZWFib3lfZmlyZQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="image"></p>
+<p>点击右上角的Admin Console<br>输入用户名和密码：分别是admin、springsource<br>进行管理页面</p>
+<p><img src="http://img.blog.csdn.net/20140517155934187?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvTGlrZWFib3lfZmlyZQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="image"></p>
+<p>好啦，大功告成，我们的STS+Virgo初步的环境就搭建好了，下一节我们将介绍如何将Snaps集成到Virgo Server上，并演示几个官方的小demo。</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/OSGi/">OSGi</a><a href="/tags/Virgo/">Virgo</a>
+  </div>
+
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/blog/">blog</a>
+</div>
+
+
+
+<div class="article-share" id="share">
+
+  <div data-url="jrockyhome.com/2014/04/28/(140428)基于OSGi的Virgo环境搭建一-环境篇/" data-title="基于OSGi的Virgo环境搭建一-环境篇 | Rocky&#39;s Blog" data-tsina="null" class="share clearfix">
+  </div>
+
+</div>
+</footer>   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2015/02/27/hello-world/" title="Hello World">
+  <strong>PREVIOUS:</strong><br/>
+  <span>
+  Hello World</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2013/08/01/(130801)pacman字体修改/"  title="pacman字体颜色修改">
+ <strong>NEXT:</strong><br/> 
+ <span>pacman字体颜色修改
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section class="comment">
+	<div class="ds-thread"></div>
+</section>
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-背景"><span class="toc-number">1.</span> <span class="toc-text">1.背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-预备知识"><span class="toc-number">2.</span> <span class="toc-text">2.预备知识</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-环境搭建"><span class="toc-number">3.</span> <span class="toc-text">3.环境搭建</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1步骤一："><span class="toc-number">3.1.</span> <span class="toc-text">3.1步骤一：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2步骤二："><span class="toc-number">3.2.</span> <span class="toc-text">3.2步骤二：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3步骤三："><span class="toc-number">3.3.</span> <span class="toc-text">3.3步骤三：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-4步骤四："><span class="toc-number">3.4.</span> <span class="toc-text">3.4步骤四：</span></a></li></ol></li></ol>
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+			<li><a href="/categories/blog/" title="blog">blog<sup>3</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			<li><a href="/tags/OSGi/" title="OSGi">OSGi<sup>1</sup></a></li>
+		
+			<li><a href="/tags/Virgo/" title="Virgo">Virgo<sup>1</sup></a></li>
+		
+			<li><a href="/tags/博客，文章/" title="博客，文章">博客，文章<sup>2</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  <div class="rsspart">
+	<a href="null" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hi,I&#39;m Rocky! <br/>
+			享受编程带来的乐趣，并将这份快乐分享给来到这里的每一个人</p>
+	</section>
+	 
+	<div class="social-font clearfix">
+		
+		
+		
+		<a href="https://github.com/https://github.com/likeaboy" target="_blank" title="github"></a>
+		
+		
+		
+	</div>
+		<p class="copyright">Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/A-limon/pacman" target="_blank" title="Pacman">Pacman</a> © 2015 
+		
+		<a href="jrockyhome.com" target="_blank" title="Rocky">Rocky</a>
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.1.0.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else
+    {
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      h  = $('article h2')
+      ah = $('article h2'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  if(ah.length==0){
+    t.css('display','none');
+  }else{
+    c.click(function(){
+      ta.css('display', 'block').addClass('fadeIn');
+    });
+    o.click(function(){
+      ta.css('display', 'none');
+    });
+    $(window).scroll(function(){
+      ta.css("top",Math.max(140,320-$(this).scrollTop()));
+    });
+  };
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina');
+  var html = [
+  '<a href="#" class="overlay" id="qrcode"></a>',
+  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#share"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
+  '<a href="#textlogo" class="article-back-to-top" title="Top"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="QRcode"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="Weibo"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+  $('.article-share-qrcode').click(function(){
+    var imgSrc = $('#qrcode-pic').attr('data-src');
+    $('#qrcode-pic').attr('src', imgSrc);
+    $('#qrcode-pic').load(function(){
+        $('.qrcode strong').text(' ');
+    });
+  });
+});     
+</script>
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"null"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+  </body>
+</html>
