@@ -4,12 +4,15 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>推荐一个在线反编译的website | Rocky&#39;s Blog</title>
+    <title>Java代码生成利器之rapid-generate应用一 | Rocky&#39;s Blog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
     
     <meta name="author" content="Rocky">
     
-    <meta name="description" content="最近在研究代码生成器，目前有几个生成java web 代码的generater，但都没有源码，用jd工具反编译，有些类会有error tag，在网上查了一下，说是jd反编译不了，于是找到了这个在线反编译java字节码的网站，使用很简单，上传class文件即可，反编译完成之后还提供下载功能，甚是强大。">
+    <meta name="description" content="告别无止境的增删改查—Java代码生成器
+　　有感于马上要做个比较大的业务系统，想到那无止境的增删改查、粘贴复制，顿时脑后升起一阵凉风。于是想到个找或者写一个Java代码的生成器，这样在正常开发进度下，也能余下更多的时间去做些别的事情。
+　　闲话少说，首先总结下需求：
+　　我需要的这个工具能够读取数">
     
     
     
@@ -67,15 +70,15 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2014/12/22/(141222)推荐一个在线反编译的website/" title="推荐一个在线反编译的website" itemprop="url">推荐一个在线反编译的website</a>
+      <a href="/2015/02/15/(150215)Java代码生成利器之rapid-generate应用一/" title="Java代码生成利器之rapid-generate应用一" itemprop="url">Java代码生成利器之rapid-generate应用一</a>
   </h1>
   <p class="article-author">By
     
       <a href="jrockyhome.com" title="Rocky">Rocky</a>
     </p>
   <p class="article-time">
-    <time datetime="2014-12-22T12:41:55.000Z" itemprop="datePublished">2014-12-22</time>
-    Updated:<time datetime="2015-03-01T14:47:52.000Z" itemprop="dateModified">2015-03-01</time>
+    <time datetime="2015-02-15T11:25:32.000Z" itemprop="datePublished">2015-02-15</time>
+    Updated:<time datetime="2015-03-02T15:18:10.000Z" itemprop="dateModified">2015-03-02</time>
     
   </p>
 </header>
@@ -84,30 +87,46 @@
 		
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">Contents</strong>
-		
+		<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#使用rapid-generate生成器"><span class="toc-number">1.</span> <span class="toc-text">使用rapid-generate生成器</span></a></li></ol>
 		</div>
 		
-		<p>最近在研究代码生成器，目前有几个生成java web 代码的generater，但都没有源码，用jd工具反编译，有些类会有error tag，在网上查了一下，说是jd反编译不了，于是找到了这个在线反编译java字节码的网站，使用很简单，上传class文件即可，反编译完成之后还提供下载功能，甚是强大。<br>网址：<a href="http://www.showmycode.com/" target="_blank" rel="external">http://www.showmycode.com/</a><br>这个成功反编译了很多jd饭编译不了的类，可以反编译的类型：<br>Zend encoded .php | Java .class | Adobe Flash .swf | .NET programs .exe, .dll | QR bar codes</p>
+		<p>　　告别无止境的增删改查—Java代码生成器</p>
+<p>　　有感于马上要做个比较大的业务系统，想到那无止境的增删改查、粘贴复制，顿时脑后升起一阵凉风。于是想到个找或者写一个Java代码的生成器，这样在正常开发进度下，也能余下更多的时间去做些别的事情。</p>
+<p>　　闲话少说，首先总结下需求：</p>
+<p>　　我需要的这个工具能够读取数据库表结构，通过对字段类型、名称等分析得到需要的各种变量，根据模板生成相应的pojo类、hibernate的xml配置文件、dao和service的接口和类。</p>
+<p>　　需求看起来很简单，原理大概也了解一些，之前用过jeecg框架里面的代码生成器，知道是用freemarker来做的，所以还是想到了找找有没有开源的代码拿过来根据自己的需求改。</p>
+<p>　　于是找到了rapid-generator这个开源工具，同学们可以下载rapid-generator直接使用，根据自己的需求写好模板就行了。</p>
+<h3 id="使用rapid-generate生成器">使用rapid-generate生成器</h3>
+<p>项目下载: <a href="http://code.google.com/p/rapid-generator/downloads/list" target="_blank" rel="external">http://code.google.com/p/rapid-generator/downloads/list</a><br>项目HOME: <a href="http://code.google.com/p/rapid-generator" target="_blank" rel="external">http://code.google.com/p/rapid-generator</a></p>
+<p>　　没有VPN的同学可能访问不了上面的链接，在天朝你们懂的，还好有朋友在CSDN上面share出资源下载地址，<a href="http://download.csdn.net/download/ysughw/5482469" target="_blank" rel="external">http://download.csdn.net/download/ysughw/5482469</a></p>
+<p>下载之后解压，目录结构如下图：</p>
+<p><img src="http://img.blog.csdn.net/20150302215008452" alt="这里写图片描述"></p>
+<p>1.通过 start_h2_db.bat启动测试数据库<br>    命令会自动打开浏览器<br>    (1).Saved Settings:Generic H2 (Server)<br>    (2).JDBC URL: jdbc:h2:tcp://localhost/test,<br>    (3).用户名密码为sa:sa<br>2.运行rapid-gen.bat用于再输入gen user_info用于生成测试代码</p>
+<p><img src="http://img.blog.csdn.net/20150302214709974" alt="这里写图片描述"></p>
+<p>生成测试代码之后，源代码会输出到generate-output目录下。</p>
+<p><img src="http://img.blog.csdn.net/20150302215152370" alt="这里写图片描述"></p>
+<p>3.主要配置文件为generator.xml,里面可以修改数据库连接</p>
+<p>下节，我们将演示如何在java里面应用rapid-generate连接Mysql生成源代码。</p>
   
 	</div>
 		<footer class="article-footer clearfix">
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/info/">info</a>
+  <span></span> <a href="/tags/freemarker/">freemarker</a><a href="/tags/rapid-generate/">rapid-generate</a><a href="/tags/代码生成器/">代码生成器</a>
   </div>
 
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="/categories/blog/">blog</a>
+  <a class="article-category-link" href="/categories/工具/">工具</a>
 </div>
 
 
 
 <div class="article-share" id="share">
 
-  <div data-url="jrockyhome.com/2014/12/22/(141222)推荐一个在线反编译的website/" data-title="推荐一个在线反编译的website | Rocky&#39;s Blog" data-tsina="null" class="share clearfix">
+  <div data-url="jrockyhome.com/2015/02/15/(150215)Java代码生成利器之rapid-generate应用一/" data-title="Java代码生成利器之rapid-generate应用一 | Rocky&#39;s Blog" data-tsina="null" class="share clearfix">
   </div>
 
 </div>
@@ -117,18 +136,18 @@
 <nav class="article-nav clearfix">
  
  <div class="prev" >
- <a href="/2015/02/04/(150204)小米3 - ADB调试解决方案/" title="小米3 - ADB调试解决方案">
+ <a href="/2015/02/16/(150216)Java代码生成利器之rapid-generate应用二/" title="Java代码生成利器之rapid-generate应用二">
   <strong>PREVIOUS:</strong><br/>
   <span>
-  小米3 - ADB调试解决方案</span>
+  Java代码生成利器之rapid-generate应用二</span>
 </a>
 </div>
 
 
 <div class="next">
-<a href="/2014/06/09/(140609)eclipse启动tomcat出现内存溢出/"  title="eclipse启动tomcat出现内存溢出错误 java.lang.OutOfMemoryError PermGen space">
+<a href="/2015/02/13/(150213)H2数据库攻略之四-集群/"  title="H2数据库攻略之四-集群">
  <strong>NEXT:</strong><br/> 
- <span>eclipse启动tomcat出现内存溢出错误 java.lang.OutOfMemoryError PermGen space
+ <span>H2数据库攻略之四-集群
 </span>
 </a>
 </div>
@@ -145,7 +164,7 @@
 
   <div id="toc" class="toc-aside">
   <strong class="toc-title">Contents</strong>
-  
+  <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#使用rapid-generate生成器"><span class="toc-number">1.</span> <span class="toc-text">使用rapid-generate生成器</span></a></li></ol>
   </div>
 
 <div id="asidepart">

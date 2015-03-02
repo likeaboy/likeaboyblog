@@ -1,0 +1,496 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>Java代码生成利器之rapid-generate应用二 | Rocky&#39;s Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
+    
+    <meta name="author" content="Rocky">
+    
+    <meta name="description" content="上节我们简单介绍了rapid-generate能做些什么，并演示了一下工具自带的测试代码，本节我们将把这把利器结合Mysql应用到我们的项目中。
+步骤一：新建java项目工程，将rapid-generate中的generate.xml文件以及template文件夹拷贝进来，并引入所依赖的3个jar包">
+    
+    
+    
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/pacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/pacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+
+</head>
+
+  <body>
+    <header>
+      <div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.svg" alt="Rocky&#39;s Blog" title="Rocky&#39;s Blog"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="Rocky&#39;s Blog">Rocky&#39;s Blog</a></h1>
+				<h2 class="blog-motto">积沙成塔</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+					
+					<form class="search" action="/search/index.html" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="text" id="search" autocomplete="off" name="q" maxlength="20" placeholder="Search" />
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2015/02/16/(150216)Java代码生成利器之rapid-generate应用二/" title="Java代码生成利器之rapid-generate应用二" itemprop="url">Java代码生成利器之rapid-generate应用二</a>
+  </h1>
+  <p class="article-author">By
+    
+      <a href="jrockyhome.com" title="Rocky">Rocky</a>
+    </p>
+  <p class="article-time">
+    <time datetime="2015-02-16T11:38:32.000Z" itemprop="datePublished">2015-02-16</time>
+    Updated:<time datetime="2015-03-02T15:18:34.000Z" itemprop="dateModified">2015-03-02</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+		</div>
+		
+		<p>　　上节我们简单介绍了rapid-generate能做些什么，并演示了一下工具自带的测试代码，本节我们将把这把利器结合Mysql应用到我们的项目中。</p>
+<p><strong>步骤一：</strong>新建java项目工程，将rapid-generate中的generate.xml文件以及template文件夹拷贝进来，并引入所依赖的3个jar包，freemarker.jar，mysql-connector-java-5.0.5-bin.jar，rapid-generator.jar。</p>
+<p><img src="http://img.blog.csdn.net/20150302220251870" alt="这里写图片描述"></p>
+<p><strong>步骤二：</strong>新建Test.java类，代码如下：</p>
+<pre><code>package aa;
+
+<span class="keyword">import</span> cn.org.rapid_framework.generator.<span class="type">GeneratorFacade</span>;
+
+public class <span class="type">Test</span> {
+    public <span class="keyword">static</span> <span class="type">void</span> main(<span class="type">String</span>[]args)throws <span class="type">Exception</span>{
+        <span class="type">GeneratorFacade</span> g = new <span class="type">GeneratorFacade</span>();
+        g.deleteOutRootDir();
+        //删除生成器的输出目录//
+        //g.generateByTable(<span class="string">"table_name"</span>,<span class="string">"template"</span>);
+        //通过数据库表生成文件,<span class="keyword">template</span>为模板的根目录
+        g.generateByAllTable(<span class="string">"template"</span>);
+        //自动搜索数据库中的所有表并生成文件,<span class="keyword">template</span>为模板的根目录
+        //g.generateByClass(<span class="type">Blog</span>.class,<span class="string">"template_clazz"</span>);
+        //  g.deleteByTable(<span class="string">"table_name"</span>, <span class="string">"template"</span>);
+        //删除生成的文件
+    }
+}
+</code></pre><p><strong>步骤三：</strong>根据自己的需求修改 generator.xml，这里我们使用Mysql数据库。</p>
+<pre><code><span class="pi">&lt;?xml version="1.0" encoding="GBK"?&gt;</span>
+<span class="doctype">&lt;!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd"&gt;</span>
+<span class="tag">&lt;<span class="title">properties</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">comment</span>&gt;</span>
+        代码生成器配置文件: 
+        1.会为所有的property生成property_dir属性,如pkg=com.company =&gt; pkg_dir=com/company
+        2.可以引用环境变量: ${env.JAVA_HOME} or System.properties: ${user.home},property之间也可以相互引用
+    <span class="tag">&lt;/<span class="title">comment</span>&gt;</span>
+
+    <span class="tag">&lt;<span class="title">entry</span> <span class="attribute">key</span>=<span class="value">"basepackage"</span>&gt;</span>com.company.project<span class="tag">&lt;/<span class="title">entry</span>&gt;</span>
+
+    <span class="comment">&lt;!-- jsp namespace: web/${namespace}/${className}/list.jsp --&gt;</span>
+    <span class="tag">&lt;<span class="title">entry</span> <span class="attribute">key</span>=<span class="value">"namespace"</span>&gt;</span>pages<span class="tag">&lt;/<span class="title">entry</span>&gt;</span>
+
+    <span class="tag">&lt;<span class="title">entry</span> <span class="attribute">key</span>=<span class="value">"outRoot"</span>&gt;</span>F:\2013-2014\Eclipse-J2EE\workspace\Rapid-Generator-Pro\out-put<span class="tag">&lt;/<span class="title">entry</span>&gt;</span>
+
+    <span class="comment">&lt;!-- 需要移除的表名前缀,使用逗号进行分隔多个前缀,示例值: t_,v_ --&gt;</span>
+    <span class="tag">&lt;<span class="title">entry</span> <span class="attribute">key</span>=<span class="value">"tableRemovePrefixes"</span>&gt;</span><span class="tag">&lt;/<span class="title">entry</span>&gt;</span>
+
+    <span class="tag">&lt;<span class="title">entry</span> <span class="attribute">key</span>=<span class="value">"jdbc.username"</span>&gt;</span>root<span class="tag">&lt;/<span class="title">entry</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">entry</span> <span class="attribute">key</span>=<span class="value">"jdbc.password"</span>&gt;</span>root<span class="tag">&lt;/<span class="title">entry</span>&gt;</span>
+
+    <span class="comment">&lt;!-- oracle需要指定jdbc.schema,其它数据库忽略此项配置  --&gt;</span>
+    <span class="tag">&lt;<span class="title">entry</span> <span class="attribute">key</span>=<span class="value">"jdbc.schema"</span>&gt;</span><span class="tag">&lt;/<span class="title">entry</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">entry</span> <span class="attribute">key</span>=<span class="value">"jdbc.catalog"</span>&gt;</span><span class="tag">&lt;/<span class="title">entry</span>&gt;</span>
+
+    <span class="comment">&lt;!-- 数据库类型映射  --&gt;</span>
+    <span class="tag">&lt;<span class="title">entry</span> <span class="attribute">key</span>=<span class="value">"java_typemapping.java.sql.Timestamp"</span>&gt;</span>java.util.Date<span class="tag">&lt;/<span class="title">entry</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">entry</span> <span class="attribute">key</span>=<span class="value">"java_typemapping.java.sql.Date"</span>&gt;</span>java.util.Date<span class="tag">&lt;/<span class="title">entry</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">entry</span> <span class="attribute">key</span>=<span class="value">"java_typemapping.java.sql.Time"</span>&gt;</span>java.util.Date<span class="tag">&lt;/<span class="title">entry</span>&gt;</span>    
+    <span class="tag">&lt;<span class="title">entry</span> <span class="attribute">key</span>=<span class="value">"java_typemapping.java.lang.Byte"</span>&gt;</span>Integer<span class="tag">&lt;/<span class="title">entry</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">entry</span> <span class="attribute">key</span>=<span class="value">"java_typemapping.java.lang.Short"</span>&gt;</span>Integer<span class="tag">&lt;/<span class="title">entry</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">entry</span> <span class="attribute">key</span>=<span class="value">"java_typemapping.java.math.BigDecimal"</span>&gt;</span>Long<span class="tag">&lt;/<span class="title">entry</span>&gt;</span>
+
+    <span class="comment">&lt;!-- H2 --&gt;</span>
+    <span class="comment">&lt;!--&lt;entry key="jdbc.url"&gt;jdbc:h2:tcp://localhost/test&lt;/entry&gt;
+    &lt;entry key="jdbc.driver"&gt;org.h2.Driver&lt;/entry&gt;--&gt;</span>
+
+    <span class="comment">&lt;!-- Mysql --&gt;</span>
+    <span class="tag">&lt;<span class="title">entry</span> <span class="attribute">key</span>=<span class="value">"jdbc.url"</span>&gt;</span>jdbc:mysql://localhost:3306/tgdb?useUnicode=true&amp;amp;characterEncoding=UTF-8<span class="tag">&lt;/<span class="title">entry</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">entry</span> <span class="attribute">key</span>=<span class="value">"jdbc.driver"</span>&gt;</span>com.mysql.jdbc.Driver<span class="tag">&lt;/<span class="title">entry</span>&gt;</span>
+
+
+    <span class="comment">&lt;!-- Oracle     jdbc:oracle:oci:@tnsname_devdb
+    &lt;entry key="jdbc.url"&gt;jdbc:oracle:thin:@192.168.0.177:1521:[sid]&lt;/entry&gt;
+    &lt;entry key="jdbc.driver"&gt;oracle.jdbc.driver.OracleDriver&lt;/entry&gt;
+    --&gt;</span>
+
+    <span class="comment">&lt;!-- SQLServer2000 
+    &lt;entry key="jdbc.url"&gt;jdbc:microsoft:sqlserver://localhost:1433;DatabaseName=[database]&lt;/entry&gt;
+    &lt;entry key="jdbc.driver"&gt;com.microsoft.jdbc.sqlserver.SQLServerDriver&lt;/entry&gt;
+    --&gt;</span>
+
+    <span class="comment">&lt;!-- SQLServer2005 
+    &lt;entry key="jdbc.url"&gt;jdbc:sqlserver://192.168.0.98:1433;DatabaseName=[database]&lt;/entry&gt;
+    &lt;entry key="jdbc.driver"&gt;com.microsoft.sqlserver.jdbc.SQLServerDriver&lt;/entry&gt;
+    --&gt;</span>
+
+    <span class="comment">&lt;!-- JTDs for SQLServer 
+    &lt;entry key="jdbc.url"&gt;jdbc:jtds:sqlserver://192.168.0.102:1433/[database];tds=8.0;lastupdatecount=true&lt;/entry&gt;
+    &lt;entry key="jdbc.driver"&gt;net.sourceforge.jtds.jdbc.Driver&lt;/entry&gt;
+    --&gt;</span>
+
+    <span class="comment">&lt;!-- PostgreSql
+    &lt;entry key="jdbc.url"&gt;jdbc:postgresql://localhost/[database]&lt;/entry&gt;
+    &lt;entry key="jdbc.driver"&gt;org.postgresql.Driver&lt;/entry&gt;
+     --&gt;</span>
+
+    <span class="comment">&lt;!-- Sybase
+    &lt;entry key="jdbc.url"&gt;jdbc:sybase:Tds:localhost:5007/[database]&lt;/entry&gt;
+    &lt;entry key="jdbc.driver"&gt;com.sybase.jdbc.SybDriver&lt;/entry&gt;
+     --&gt;</span>
+
+    <span class="comment">&lt;!-- DB2 
+    &lt;entry key="jdbc.url"&gt;jdbc:db2://localhost:5000/[database]&lt;/entry&gt;
+    &lt;entry key="jdbc.driver"&gt;com.ibm.db2.jdbc.app.DB2Driver&lt;/entry&gt;
+    --&gt;</span>
+
+    <span class="comment">&lt;!-- HsqlDB 
+    &lt;entry key="jdbc.url"&gt;jdbc:hsqldb:mem:generatorDB&lt;/entry&gt;
+    &lt;entry key="jdbc.driver"&gt;org.hsqldb.jdbcDriver&lt;/entry&gt;
+    --&gt;</span>
+
+    <span class="comment">&lt;!-- Derby 
+    &lt;entry key="jdbc.url"&gt;jdbc:derby://localhost/databaseName&lt;/entry&gt;
+    &lt;entry key="jdbc.driver"&gt;org.apache.derby.jdbc.ClientDriver&lt;/entry&gt;    
+    --&gt;</span>
+
+<span class="tag">&lt;/<span class="title">properties</span>&gt;</span>
+</code></pre><p><strong>步骤四：</strong> 我们运行Test中的main函数，看到控制台有输出log，并且刷新项目，出现out-put目录。</p>
+<p><img src="http://img.blog.csdn.net/20150302221045971" alt="这里写图片描述"></p>
+<p>　　至此，我们成功的将rapid-generate生成器集成到了我们自己的项目中，连接mysql数据库tgdb，生成了表user的dao层，controller层，视图层，model层。</p>
+<p><img src="http://img.blog.csdn.net/20150302221546770" alt="这里写图片描述"></p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/freemarker/">freemarker</a><a href="/tags/rapid-generate/">rapid-generate</a><a href="/tags/代码生成器/">代码生成器</a>
+  </div>
+
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/工具/">工具</a>
+</div>
+
+
+
+<div class="article-share" id="share">
+
+  <div data-url="jrockyhome.com/2015/02/16/(150216)Java代码生成利器之rapid-generate应用二/" data-title="Java代码生成利器之rapid-generate应用二 | Rocky&#39;s Blog" data-tsina="null" class="share clearfix">
+  </div>
+
+</div>
+</footer>   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2015/02/17/(150217)Java代码生成利器之rapid-generate应用三/" title="Java代码生成利器之rapid-generate应用三">
+  <strong>PREVIOUS:</strong><br/>
+  <span>
+  Java代码生成利器之rapid-generate应用三</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2015/02/15/(150215)Java代码生成利器之rapid-generate应用一/"  title="Java代码生成利器之rapid-generate应用一">
+ <strong>NEXT:</strong><br/> 
+ <span>Java代码生成利器之rapid-generate应用一
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section class="comment">
+	<div class="ds-thread"></div>
+</section>
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+  
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+			<li><a href="/categories/OSGi/" title="OSGi">OSGi<sup>2</sup></a></li>
+		
+			<li><a href="/categories/RCP/" title="RCP">RCP<sup>1</sup></a></li>
+		
+			<li><a href="/categories/blog/" title="blog">blog<sup>3</sup></a></li>
+		
+			<li><a href="/categories/debug/" title="debug">debug<sup>2</sup></a></li>
+		
+			<li><a href="/categories/maven/" title="maven">maven<sup>2</sup></a></li>
+		
+			<li><a href="/categories/工作流引擎activity/" title="工作流引擎activity">工作流引擎activity<sup>1</sup></a></li>
+		
+			<li><a href="/categories/工具/" title="工具">工具<sup>4</sup></a></li>
+		
+			<li><a href="/categories/数据库/" title="数据库">数据库<sup>4</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			<li><a href="/tags/DB/" title="DB">DB<sup>4</sup></a></li>
+		
+			<li><a href="/tags/Eclipse插件开发/" title="Eclipse插件开发">Eclipse插件开发<sup>1</sup></a></li>
+		
+			<li><a href="/tags/H2/" title="H2">H2<sup>4</sup></a></li>
+		
+			<li><a href="/tags/OSGi/" title="OSGi">OSGi<sup>2</sup></a></li>
+		
+			<li><a href="/tags/RCP/" title="RCP">RCP<sup>1</sup></a></li>
+		
+			<li><a href="/tags/Virgo/" title="Virgo">Virgo<sup>2</sup></a></li>
+		
+			<li><a href="/tags/debug/" title="debug">debug<sup>2</sup></a></li>
+		
+			<li><a href="/tags/freemarker/" title="freemarker">freemarker<sup>4</sup></a></li>
+		
+			<li><a href="/tags/info/" title="info">info<sup>1</sup></a></li>
+		
+			<li><a href="/tags/maven/" title="maven">maven<sup>2</sup></a></li>
+		
+			<li><a href="/tags/rapid-generate/" title="rapid-generate">rapid-generate<sup>4</sup></a></li>
+		
+			<li><a href="/tags/代码生成器/" title="代码生成器">代码生成器<sup>4</sup></a></li>
+		
+			<li><a href="/tags/博客，文章/" title="博客，文章">博客，文章<sup>2</sup></a></li>
+		
+			<li><a href="/tags/工作流引擎activity/" title="工作流引擎activity">工作流引擎activity<sup>1</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  <div class="rsspart">
+	<a href="null" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hi,I&#39;m Rocky! <br/>
+			享受编程带来的乐趣，并将这份快乐分享给来到这里的每一个人</p>
+	</section>
+	 
+	<div class="social-font clearfix">
+		
+		
+		
+		<a href="https://github.com/https://github.com/likeaboy" target="_blank" title="github"></a>
+		
+		
+		
+	</div>
+		<p class="copyright">Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/A-limon/pacman" target="_blank" title="Pacman">Pacman</a> © 2015 
+		
+		<a href="jrockyhome.com" target="_blank" title="Rocky">Rocky</a>
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.1.0.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else
+    {
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      h  = $('article h2')
+      ah = $('article h2'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  if(ah.length==0){
+    t.css('display','none');
+  }else{
+    c.click(function(){
+      ta.css('display', 'block').addClass('fadeIn');
+    });
+    o.click(function(){
+      ta.css('display', 'none');
+    });
+    $(window).scroll(function(){
+      ta.css("top",Math.max(140,320-$(this).scrollTop()));
+    });
+  };
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina');
+  var html = [
+  '<a href="#" class="overlay" id="qrcode"></a>',
+  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#share"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
+  '<a href="#textlogo" class="article-back-to-top" title="Top"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="QRcode"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="Weibo"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+  $('.article-share-qrcode').click(function(){
+    var imgSrc = $('#qrcode-pic').attr('data-src');
+    $('#qrcode-pic').attr('src', imgSrc);
+    $('#qrcode-pic').load(function(){
+        $('.qrcode strong').text(' ');
+    });
+  });
+});     
+</script>
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"null"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+  </body>
+</html>

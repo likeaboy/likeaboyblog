@@ -4,12 +4,16 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>推荐一个在线反编译的website | Rocky&#39;s Blog</title>
+    <title>Java代码生成利器之rapid-generate应用三 | Rocky&#39;s Blog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
     
     <meta name="author" content="Rocky">
     
-    <meta name="description" content="最近在研究代码生成器，目前有几个生成java web 代码的generater，但都没有源码，用jd工具反编译，有些类会有error tag，在网上查了一下，说是jd反编译不了，于是找到了这个在线反编译java字节码的网站，使用很简单，上传class文件即可，反编译完成之后还提供下载功能，甚是强大。">
+    <meta name="description" content="rapid-generate主要特性介绍：
+一. 生成器模板路径可以引用相关变量    如 ${basepackage}/${className}.java,根据该变量生成输出文件
+二. 自动搜索某个目录所有模板文件,无需配置
+三.代码生成器模板可以引用的相关变量
+　　1. g.generateBy">
     
     
     
@@ -67,15 +71,15 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2014/12/22/(141222)推荐一个在线反编译的website/" title="推荐一个在线反编译的website" itemprop="url">推荐一个在线反编译的website</a>
+      <a href="/2015/02/17/(150217)Java代码生成利器之rapid-generate应用三/" title="Java代码生成利器之rapid-generate应用三" itemprop="url">Java代码生成利器之rapid-generate应用三</a>
   </h1>
   <p class="article-author">By
     
       <a href="jrockyhome.com" title="Rocky">Rocky</a>
     </p>
   <p class="article-time">
-    <time datetime="2014-12-22T12:41:55.000Z" itemprop="datePublished">2014-12-22</time>
-    Updated:<time datetime="2015-03-01T14:47:52.000Z" itemprop="dateModified">2015-03-01</time>
+    <time datetime="2015-02-17T12:09:32.000Z" itemprop="datePublished">2015-02-17</time>
+    Updated:<time datetime="2015-03-02T15:19:03.000Z" itemprop="dateModified">2015-03-02</time>
     
   </p>
 </header>
@@ -87,27 +91,66 @@
 		
 		</div>
 		
-		<p>最近在研究代码生成器，目前有几个生成java web 代码的generater，但都没有源码，用jd工具反编译，有些类会有error tag，在网上查了一下，说是jd反编译不了，于是找到了这个在线反编译java字节码的网站，使用很简单，上传class文件即可，反编译完成之后还提供下载功能，甚是强大。<br>网址：<a href="http://www.showmycode.com/" target="_blank" rel="external">http://www.showmycode.com/</a><br>这个成功反编译了很多jd饭编译不了的类，可以反编译的类型：<br>Zend encoded .php | Java .class | Adobe Flash .swf | .NET programs .exe, .dll | QR bar codes</p>
-  
+		<p>rapid-generate主要特性介绍：</p>
+<p>一. 生成器模板路径可以引用相关变量<br>    如 ${basepackage}/${className}.java,根据该变量生成输出文件</p>
+<p>二. 自动搜索某个目录所有模板文件,无需配置</p>
+<p>三.代码生成器模板可以引用的相关变量</p>
+<p>　　1. g.generateByTable(“table_name”) 方法可以引用的变量<br>        table : cn.org.rapid_framework.generator.provider.db.table.model.Table</p>
+<p>　　2. g.generateByClass(UserInfo.class) 方法可以引用的变量<br>        clazz : cn.org.rapid_framework.generator.provider.java.model.JavaClass</p>
+<p>　　3. g.generateBySql(“select * from user_info where pwd=:pwd”) 方法可以引用的变量<br>        sql : cn.org.rapid_framework.generator.provider.db.sql.model.Sql</p>
+<p>　　4.公共变量<br>　　env : 系统环境变量<br>　　System.getProperties() :  直接引用,没有前缀<br>　　generator.properties 文件中的所有属性,直接引用,没有前缀<br>　　gg : 模板控制变量,<br>　　cn.org.rapid_framework.generator.GeneratorControl</p>
+<p>四.每个模板有gg变量可以控制自身的自定义配置 (每一个模板都会创建新的gg实例)<br>    如是否生成,是否覆盖目标文件,甚至是生成其它文件<br>    ${gg.setIgnoreOutput(true)}: 如果为true则不生成输出文件<br>    ${gg.generateFile(outputFile,content)} 在模板中生成其它文件<br>    ${gg.getProperty(key,defaultValue)}: 得到proproty,如果没有找到，则返回默认值<br>    ${gg.getInputProperty(key)}: 会弹出一个输入框，提示用户输入值<br>    具体参考: <a href="http://code.google.com/p/rapid-framework/wiki/rapid_generator_gg" target="_blank" rel="external">http://code.google.com/p/rapid-framework/wiki/rapid_generator_gg</a></p>
+<p>五.支持生成(gen)及删除操作(del),即生成的代码也可以很方便的删除</p>
+<p>六. 自动删除模板扩展名: .ftl,.vm<br>      举例:  如你有一个模板 SqlMap.xml.ftl  将变为 SqlMap.xml<br>             所以你要生成ftl扩展名的文件,应该将文件名从 list.ftl =&gt; list.ftl.ftl </p>
+<p>七. 模板自动include所有父目录的:macro.include文件,可以存放公共的macro<br>    示例: 如你的模板为 com/project/UserDao.java, 将自动include: com/project/macro.include, com/macro.include, macro.include</p>
+<p>八. generator.xml (或者generator.properties)配置文件<br>    1.类似ant可以变量引用,引用环境变量使用${env.JAVA_HOME}, 引用System.getProperties()直接引用<br>    2.自动替换generator.properties中的句号(.)为反斜杠,设置key为key+”_dir”后缀<br>        示例: pkg=com.company =&gt; pkg_dir=com/company</p>
+<p>九.自动拷贝二进制文件至输出目录<br>    如模板目录下的 zip,rar,doc文件将会自动拷贝至输出目录,不会破坏文件格式   (通过扩展名自动识别)</p>
+<p>十. 数据库表配置,用于自定义生成器模板引用的table变量,配置文件必须存放在classpath: generator_config/table/table_name.xml<br>   (该文件生成器可以生成，自己再自定义修改)</p>
+<pre><code>&lt;!--
+&lt;数据库表名 <span class="variable">className=</span><span class="string">"类名称"</span> <span class="variable">tableAlias=</span><span class="string">"表的别名"</span>&gt;
+    &lt;数据库列名 <span class="variable">columnAlias=</span><span class="string">"列的别名"</span>
+    <span class="variable">javaType=</span><span class="string">"自定义javaType"</span>
+    <span class="variable">unique=</span><span class="string">"是否唯一性约束"</span> <span class="variable">nullable=</span><span class="string">"是否可以为空"</span> <span class="variable">pk=</span><span class="string">"是否主键,在表没有主键的情况下,可以指定一个代理主键"</span>
+    <span class="variable">updatable=</span><span class="string">"是否可以更新"</span> <span class="variable">insertable=</span><span class="string">"是否插入"</span>    
+    <span class="variable">enumString=</span><span class="string">"枚举值,以分号分隔,示例值:M(1,男);F(0,女) 或者是:M(男);F(女)"</span>
+    <span class="variable">enumClassName=</span><span class="string">"如果枚举有值,生成的类名称将是这个,没有枚举值，该配置无用.示例值:Sex"</span>
+    /&gt;
+&lt;/数据库表名&gt;
+ --&gt;
+&lt;user_info <span class="variable">className=</span><span class="string">"UserInfo"</span> <span class="variable">tableAlias=</span><span class="string">"用户信息"</span> &gt;
+    &lt;username <span class="variable">columnAlias=</span><span class="string">"用户名"</span>
+        <span class="variable">javaType=</span><span class="string">"String"</span>
+        <span class="variable">unique=</span><span class="string">"false"</span> <span class="variable">nullable=</span><span class="string">"true"</span> <span class="variable">pk=</span><span class="string">"false"</span>
+        <span class="variable">updatable=</span><span class="string">"true"</span> <span class="variable">insertable=</span><span class="string">"true"</span>
+        <span class="variable">enumString=</span><span class="string">"F(1,Female);M(0,Male)"</span> <span class="variable">enumClassName=</span><span class="string">"用户枚举"</span>
+    /&gt;
+    &lt;password <span class="variable">columnAlias=</span><span class="string">"密码"</span>
+        <span class="variable">javaType=</span><span class="string">"String"</span>
+        <span class="variable">unique=</span><span class="string">"false"</span> <span class="variable">nullable=</span><span class="string">"true"</span> <span class="variable">pk=</span><span class="string">"false"</span>
+        <span class="variable">updatable=</span><span class="string">"true"</span> <span class="variable">insertable=</span><span class="string">"true"</span>
+        <span class="variable">enumString=</span><span class="string">""</span> <span class="variable">enumClassName=</span><span class="string">"PasswordEnum"</span>
+    /&gt;
+&lt;/user_info&gt;
+</code></pre>  
 	</div>
 		<footer class="article-footer clearfix">
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/info/">info</a>
+  <span></span> <a href="/tags/freemarker/">freemarker</a><a href="/tags/rapid-generate/">rapid-generate</a><a href="/tags/代码生成器/">代码生成器</a>
   </div>
 
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="/categories/blog/">blog</a>
+  <a class="article-category-link" href="/categories/工具/">工具</a>
 </div>
 
 
 
 <div class="article-share" id="share">
 
-  <div data-url="jrockyhome.com/2014/12/22/(141222)推荐一个在线反编译的website/" data-title="推荐一个在线反编译的website | Rocky&#39;s Blog" data-tsina="null" class="share clearfix">
+  <div data-url="jrockyhome.com/2015/02/17/(150217)Java代码生成利器之rapid-generate应用三/" data-title="Java代码生成利器之rapid-generate应用三 | Rocky&#39;s Blog" data-tsina="null" class="share clearfix">
   </div>
 
 </div>
@@ -117,18 +160,18 @@
 <nav class="article-nav clearfix">
  
  <div class="prev" >
- <a href="/2015/02/04/(150204)小米3 - ADB调试解决方案/" title="小米3 - ADB调试解决方案">
+ <a href="/2015/02/18/(150218)Java代码生成利器之rapid-generate应用四/" title="Java代码生成利器之rapid-generate应用四">
   <strong>PREVIOUS:</strong><br/>
   <span>
-  小米3 - ADB调试解决方案</span>
+  Java代码生成利器之rapid-generate应用四</span>
 </a>
 </div>
 
 
 <div class="next">
-<a href="/2014/06/09/(140609)eclipse启动tomcat出现内存溢出/"  title="eclipse启动tomcat出现内存溢出错误 java.lang.OutOfMemoryError PermGen space">
+<a href="/2015/02/16/(150216)Java代码生成利器之rapid-generate应用二/"  title="Java代码生成利器之rapid-generate应用二">
  <strong>NEXT:</strong><br/> 
- <span>eclipse启动tomcat出现内存溢出错误 java.lang.OutOfMemoryError PermGen space
+ <span>Java代码生成利器之rapid-generate应用二
 </span>
 </a>
 </div>
