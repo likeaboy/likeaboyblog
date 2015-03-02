@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>Rocky&#39;s Blog</title>
+    <title>H2数据库攻略之一-简介 | Rocky&#39;s Blog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
     
     <meta name="author" content="Rocky">
@@ -68,15 +68,15 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2015/03/02/(150210)H2数据库攻略之一-简介/" title="" itemprop="url"></a>
+      <a href="/2015/02/10/(150210)H2数据库攻略之一-简介/" title="H2数据库攻略之一-简介" itemprop="url">H2数据库攻略之一-简介</a>
   </h1>
   <p class="article-author">By
     
       <a href="jrockyhome.com" title="Rocky">Rocky</a>
     </p>
   <p class="article-time">
-    <time datetime="2015-03-02T11:41:30.000Z" itemprop="datePublished">2015-03-02</time>
-    Updated:<time datetime="2015-03-02T11:41:31.000Z" itemprop="dateModified">2015-03-02</time>
+    <time datetime="2015-02-10T10:12:16.000Z" itemprop="datePublished">2015-02-10</time>
+    Updated:<time datetime="2015-03-02T11:47:40.000Z" itemprop="dateModified">2015-03-02</time>
     
   </p>
 </header>
@@ -94,17 +94,27 @@
 <p>H2和各数据库特征比较。<br><img src="http://img.blog.csdn.net/20150302171707518" alt="这里写图片描述"></p>
 <h3 id="2-H2数据库应用场景">2.H2数据库应用场景</h3>
 <p>h2和derby一样，都是轻量级数据库，h2比derby还要轻巧，核心jar包不到1M。性能效率等等方面都非常好（前提不是高并发，高数据量）<br>轻量级数据库的应用出其不意，可以完成很多以前常规开发中无法想象，或很难完成的功能。<br>例如以下应用：<br>某人以前给某公司做BSS, 遇到了下面的情况.<br>系统的菜单 (树状结构)全部菜单项有2000多条, 菜单主要用在系统的上边导航 还有左边的菜单树<br>地市/分公司列表 这个不多 (毕竟联通占有率不高) 但是也有3位数了<br>这个应用场景极其的多, 很多操作又要用到, 相当于一个字典表<br>地市分公司部门列表 全部数据2000条左右,也相当于字典表<br>以上四种数据控制的”最小粒度”都是基于”人”的, 每个操作员操作系统时看到的都是不一样的.<br>这个系统同时在线人数5000多.<br>对于当时的运行环境来说,  web服务器是有N多台， 但是数据库并没有那么多，这种类似字典表的东西通常都是取出来放到缓存里,缓存可以借助ehcache之类的组件来实现.以此来减少对数据库的操作.<br>但是对于上面的情况, 显然是做不到的, 因为 判断一个数据项,是否对于当前的操作员可见,要进行复杂的判断,而且要对数据项做全遍历.  而如果不缓存,每次都从数据库去取 ,这么做同样是不可取的.<br>所以,最好的方法就是  用运行在web服务器上的”内存数据库”来实现一个支持 sql的 高级缓存.</p>
-<p>再拿游戏举下例子,游戏的存档就是一个小型的数据库,如果有嵌入式数据库帮忙开发游戏的话,就不用为存档系统大动干戈了,<br>还有, NBA LIVE系列游戏里面包含了大量的球队和球员历史信息,这些信息就是被存在一个嵌入式数据库里的.如果没有嵌入式数据库,那么游戏中检索这些球员的数据将是多么繁琐的事情啊.<br>同时嵌入式数据库还可以用来加密. 把软件运行时需要的资源(数据 文件 图片等)放到嵌入式数据库里, 运行时”查询出”.<br>免得自己再写一套机密机制. </p>
+<p>再拿游戏举下例子,游戏的存档就是一个小型的数据库,如果有嵌入式数据库帮忙开发游戏的话,就不用为存档系统大动干戈了,<br>还有, NBA LIVE系列游戏里面包含了大量的球队和球员历史信息,这些信息就是被存在一个嵌入式数据库里的.如果没有嵌入式数据库,那么游戏中检索这些球员的数据将是多么繁琐的事情啊.<br>同时嵌入式数据库还可以用来加密. 把软件运行时需要的资源(数据 文件 图片等)放到嵌入式数据库里, 运行时”查询出”. 免得自己再写一套机密机制. </p>
   
 	</div>
 		<footer class="article-footer clearfix">
 
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/DB/">DB</a><a href="/tags/H2/">H2</a>
+  </div>
+
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/数据库/">数据库</a>
+</div>
 
 
 
 <div class="article-share" id="share">
 
-  <div data-url="jrockyhome.com/2015/03/02/(150210)H2数据库攻略之一-简介/" data-title="Rocky&#39;s Blog" data-tsina="null" class="share clearfix">
+  <div data-url="jrockyhome.com/2015/02/10/(150210)H2数据库攻略之一-简介/" data-title="H2数据库攻略之一-简介 | Rocky&#39;s Blog" data-tsina="null" class="share clearfix">
   </div>
 
 </div>
@@ -158,6 +168,8 @@
 		
 			<li><a href="/categories/工作流引擎activity/" title="工作流引擎activity">工作流引擎activity<sup>1</sup></a></li>
 		
+			<li><a href="/categories/数据库/" title="数据库">数据库<sup>1</sup></a></li>
+		
 		</ul>
 </div>
 
@@ -167,7 +179,11 @@
 	<p class="asidetitle">Tags</p>
 		<ul class="clearfix">
 		
+			<li><a href="/tags/DB/" title="DB">DB<sup>1</sup></a></li>
+		
 			<li><a href="/tags/Eclipse插件开发/" title="Eclipse插件开发">Eclipse插件开发<sup>1</sup></a></li>
+		
+			<li><a href="/tags/H2/" title="H2">H2<sup>1</sup></a></li>
 		
 			<li><a href="/tags/OSGi/" title="OSGi">OSGi<sup>2</sup></a></li>
 		
