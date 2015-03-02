@@ -4,12 +4,14 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>pacman字体颜色修改 | Rocky&#39;s Blog</title>
+    <title>H2数据库攻略之四-集群 | Rocky&#39;s Blog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
     
     <meta name="author" content="Rocky">
     
-    <meta name="description" content="找到 hexo\themes\pacman\source\css_base\下面的variable.styl文件，修改里面的color-font的值，默认是灰色（#817c7c），不够清爽，改为黑色（000000）&amp;lt;/pre&amp;gt;&amp;lt;pre name=&amp;quot;code&amp;quot; c">
+    <meta name="description" content="H2数据库在集群方面也有不错的表现，下面介绍一下如何利用H2的集群/高可用性机制。
+集群 / 高可用性
+数据库支持简单的集群/高可用性机制。架构是：两个数据库服务运行在两台不同的计算机上，两台计算机有同样数据库的副本，如果两个服务器都处于运行状态，每个数据库操作都被在两台计算机上执行，如果一台服务器">
     
     
     
@@ -67,15 +69,15 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2013/08/01/(130801)pacman字体修改/" title="pacman字体颜色修改" itemprop="url">pacman字体颜色修改</a>
+      <a href="/2015/02/13/(150213)H2数据库攻略之四-集群/" title="H2数据库攻略之四-集群" itemprop="url">H2数据库攻略之四-集群</a>
   </h1>
   <p class="article-author">By
     
       <a href="jrockyhome.com" title="Rocky">Rocky</a>
     </p>
   <p class="article-time">
-    <time datetime="2013-08-01T04:20:32.000Z" itemprop="datePublished">2013-08-01</time>
-    Updated:<time datetime="2015-03-01T06:14:42.000Z" itemprop="dateModified">2015-03-01</time>
+    <time datetime="2015-02-13T10:12:32.000Z" itemprop="datePublished">2015-02-13</time>
+    Updated:<time datetime="2015-03-02T11:53:52.000Z" itemprop="dateModified">2015-03-02</time>
     
   </p>
 </header>
@@ -87,26 +89,89 @@
 		
 		</div>
 		
-		<p><br>    找到 hexo\themes\pacman\source\css_base\下面的variable.styl文件，修改里面的color-font的值，默认是灰色（#817c7c），不够清爽，改为黑色（000000）<br></p><br><p><br></p><br><pre name="code" class="html">&lt;/pre&gt;&lt;pre name=&quot;code&quot; class=&quot;html&quot;&gt;//Color<br>//color-font = #817c7c<br>color-background = #dddddd<br>color-font = #000000<br>color-white = #ffffff<br>color-blue = #2ca6cb<br>color-theme = #ea6753<br>color-font-nav =#E9CD4C<br>color-section = #fafafa<br>color-footer = #1f1f1f<br>color-gray = #CCC<br>color-heading = #333333<br>color-code = #eee<br>color-twitter = #00aced<br>color-facebook = #3b5998<br>color-weibo = #eb182c<br>color-google = #dd4b39<br>color-qrcode= #49ae0f<br>color-top = #762c54<br><br>//Media<br>width-phone = 568px<br>width-mini = 768px<br>width-tablet = 1024px<br>width-desktop = 1560px<br>phone = &quot;only screen and (min-width: &quot; + width-phone + &quot;)&quot;<br>mini= &quot;only screen and (min-width: &quot; + width-mini + &quot;)&quot;<br>tablet = &quot;only screen and (min-width: &quot; + width-tablet + &quot;)&quot;<br>desktop = &quot;only screen and (min-width: &quot; + width-desktop + &quot;)&quot;<br><br>//Font<br>font-default = &quot;Helvetica Neue&quot;, &quot;Helvetica&quot;,&quot;Microsoft YaHei&quot;, &quot;WenQuanYi Micro Hei&quot;,Arial, sans-serif<br>font-serif = &quot;Georgia&quot;, serif<br>font-mono = Monaco, Menlo, Consolas, Courier New, monospace<br>font-custom-family = &quot;covered_by_your_graceregular&quot;<br>font-custom-filename = coveredbyyourgrace-webfont<br>font-icon-family = &quot;FontAwesome&quot;<br>font-icon-filename = fontawesome-webfont<br>font-icon-version = &quot;4.0.3&quot;<br>ShowCustomFont = hexo-config(&quot;ShowCustomFont&quot;)<br>font-size = 100%<br>line-height = 1.5<br><br>//image<br>dataURI = hexo-config(&quot;dataURI&quot;)<br>author-img-data = unquote(hexo-config(&quot;author_img_data&quot;))<br>author-img = hexo-config(&quot;author_img&quot;)<br>ShowGallery = hexo-config(&quot;ShowGallery&quot;)<br>root = hexo-config(&quot;root&quot;)<br><br>//comment<br>duoshuo = hexo-config(&quot;duoshuo.enable&quot;)<br><br>//highlight<br>highlight = hexo-config(&quot;highlight.enable&quot;)<br></pre><br><br><br><br><br><br><p><br></p>  
+		<p>H2数据库在集群方面也有不错的表现，下面介绍一下如何利用H2的集群/高可用性机制。</p>
+<p><strong>集群 / 高可用性</strong></p>
+<p>数据库支持简单的集群/高可用性机制。<br>架构是：两个数据库服务运行在两台不同的计算机上，两台计算机有同样数据库的副本，如果两个服务器都处于运行状态，每个数据库操作都被在两台计算机上执行，如果一台服务器宕机（断电、硬件故障、网络故障等），另外一台计算机仍能提供服务，从这一刻开始，数据库操作仅在一台服务器上执行，直到另外一台服务器恢复运行。</p>
+<p>集群仅能用于服务器模式（内嵌模式并不支持集群）。可以在数据库运行状态下恢复集群，但是要求在第二个数据库恢复期间没有应用在改变第一个数据库的数据，因此恢复集群是一个手工的过程。</p>
+<p>初始化集群，使用下面的步骤：</p>
+<ol>
+<li>创建数据库。</li>
+<li>使用CreateCluster工具创建一个数据库福分到另外的地方，并且初始化集群，这样就得到了同样数据的两个数据库。</li>
+<li>启动两个数据库服务（每个数据库的副本）。</li>
+<li>现在可以通过应用客户端连接到数据库。</li>
+</ol>
+<p>H2支持两台服务器运行两个数据库成为集群，两个数据库互为备份，如果一个服务器失效，另一个服务器仍然可以工作。另外只有服务模式支持集群配置。</p>
+<p>H2可以通过CreateCluster工具创建集群，示例步骤如下（在在一台服务器上模拟两个数据库组成集群）：</p>
+<p>1、创建目录<br>创建两个服务器工作的目录</p>
+<pre><code><span class="preprocessor"># mkdir server1</span>
+<span class="preprocessor"># mkdir server2</span>
+</code></pre><p>2、启动tcp服务<br>执行如下命令分别在9101、9102端口启动两个使用tcp服务模式的数据库</p>
+<pre><code>java org.h2.tools.<span class="built_in">Server</span>-tcp -tcpPort <span class="number">9101</span>-baseDir server1
+java org.h2.tools.<span class="built_in">Server</span>-tcp -tcpPort <span class="number">9102</span> -baseDir server2
+</code></pre><p>3、使用CreateCluster工具创建集群</p>
+<pre><code>java org.h2.tools.CreateCluster
+-<span class="ruby">urlSource <span class="symbol">jdbc:</span><span class="symbol">h2:</span><span class="symbol">tcp:</span>/<span class="regexp">/localhost:9101/</span>~<span class="regexp">/test
+</span></span>-<span class="ruby">urlTarget <span class="symbol">jdbc:</span><span class="symbol">h2:</span><span class="symbol">tcp:</span>/<span class="regexp">/localhost:9102/</span>~<span class="regexp">/test
+</span></span>-<span class="ruby">user sa
+</span>-<span class="ruby">serverList <span class="symbol">localhost:</span><span class="number">9101</span>,<span class="symbol">localhost:</span><span class="number">9102</span></span>
+</code></pre><p>如果两个数据库不存在，该命令将会自动创建数据库。如果一个数据库失效，可以先删除坏的数据库文件，重新启动数据库，然后重新运行CreateCluster工具。</p>
+<p>举个例子，让我们进一步了解集群是如何工作的。<br>在这个例子里，两个数据库驻留在同一台计算机上，但通常，两个数据库在不同的计算机上。</p>
+<p>·        创建两个目录：server1,server2。每个目录将模拟一台计算机</p>
+<p>·        在第一个目录启动TCP服务，你可以运行下面的命令：</p>
+<pre><code>java org.h2.tools.Server
+
+-<span class="ruby">tcp-tcpPort <span class="number">9101</span>
+</span>
+-<span class="ruby">baseDirserver1</span>
+</code></pre><p>在第二个目录启动TCP服务，模拟第二个服务器（冗余运行），你能使用下面的命令：</p>
+<pre><code>java org.h2.tools.Server
+
+ -<span class="ruby">tcp-tcpPort <span class="number">9102</span>
+</span>
+-<span class="ruby">baseDirserver2</span>
+</code></pre><p>使用 CreateCluster 工具初始化集群，如果数据库不存在，将创建一个新的空数据库，运行下面命令行：</p>
+<pre><code>java org.h2.tools.CreateCluster
+
+-<span class="ruby"><span class="symbol">urlSourcejdbc:</span><span class="symbol">h2:</span><span class="symbol">tcp:</span>/<span class="regexp">/localhost:9101/</span>~<span class="regexp">/test
+</span></span>
+-<span class="ruby"><span class="symbol">urlTargetjdbc:</span><span class="symbol">h2:</span><span class="symbol">tcp:</span>/<span class="regexp">/localhost:9102/</span>~<span class="regexp">/test
+</span></span>
+-<span class="ruby">user sa
+</span>
+-<span class="ruby">serverList <span class="symbol">localhost:</span><span class="number">9101</span>,<span class="symbol">localhost:</span><span class="number">9102</span></span>
+</code></pre><p>应用或者是H2控制台可以通过下面的JDBC的URL连接数据库：jdbc:h2:tcp://localhost:9101,localhost:9102/~/test</p>
+<p>如果你停止一个服务（通过杀进程），你注意到另一个机器继续工作，数据库仍能提供访问。</p>
+<p>恢复集群，你需要先删掉宕机的数据库，然后重启宕机的数据库的服务，再重新运行CreateCluster集群工具。</p>
+<p>4、连接数据库<br>现在可以使用如下连接字符串连接集群数据库</p>
+<pre><code>jdbc:h2:tcp:<span class="comment">//localhost:9101,localhost:9102/~/test</span>
+</code></pre><p>5、监控集群运行状态<br>可以使用如下命令查看配置的集群服务器是否都在运行</p>
+<pre><code><span class="operator"><span class="keyword">SELECT</span> <span class="keyword">VALUE</span> <span class="keyword">FROM</span> INFORMATION_SCHEMA.SETTINGS <span class="keyword">WHERE</span> NAME=<span class="string">'CLUSTER'</span></span>
+</code></pre><p>该命令也可以用于查找哪些节点当前正在运行。</p>
+<p>结果返回为 ‘’ （两个单引号），说明集群模式被屏蔽，否则，集群服务器列表将被单引号包括着返回，如’server1:9191,server2:9191’。</p>
+<p>6、限制<br>H2的集群并不支持针对事务的负载均衡，所以很多操作会使两个数据库产生不一致的结果，执行如下操作时请小心：</p>
+<pre><code><span class="function">RANDOM_UUID</span>(), <span class="function">SECURE_RAND</span>(), <span class="function">SESSION_ID</span>(), <span class="function">MEMORY_FREE</span>(), <span class="function">MEMORY_USED</span>(), <span class="function">CSVREAD</span>(), <span class="function">CSVWRITE</span>(), <span class="function">RAND</span>()
+</code></pre><p>自动增长列和标识列不支持集群，当插入数据时，序列值需要手动创建</p>
+<p>不支持SET AUTOCOMMIT FALSE语句，如果需要设置成为不自动提交，可以执行方法Connection.setAutoCommit(false)</p>
+  
 	</div>
 		<footer class="article-footer clearfix">
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/博客，文章/">博客，文章</a>
+  <span></span> <a href="/tags/DB/">DB</a><a href="/tags/H2/">H2</a>
   </div>
 
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="/categories/blog/">blog</a>
+  <a class="article-category-link" href="/categories/数据库/">数据库</a>
 </div>
 
 
 
 <div class="article-share" id="share">
 
-  <div data-url="jrockyhome.com/2013/08/01/(130801)pacman字体修改/" data-title="pacman字体颜色修改 | Rocky&#39;s Blog" data-tsina="null" class="share clearfix">
+  <div data-url="jrockyhome.com/2015/02/13/(150213)H2数据库攻略之四-集群/" data-title="H2数据库攻略之四-集群 | Rocky&#39;s Blog" data-tsina="null" class="share clearfix">
   </div>
 
 </div>
@@ -115,19 +180,11 @@
 	
 <nav class="article-nav clearfix">
  
- <div class="prev" >
- <a href="/2013/09/01/(130901)RCP开发之绑定Action快捷键/" title="RCP开发之绑定Action快捷键">
-  <strong>PREVIOUS:</strong><br/>
-  <span>
-  RCP开发之绑定Action快捷键</span>
-</a>
-</div>
-
 
 <div class="next">
-<a href="/2013/07/31/(130731)Markdown用法总结/"  title="Markdown用法总结">
+<a href="/2015/02/12/(150212)H2数据库攻略之三-结合Maven/"  title="H2数据库攻略之三-结合Maven">
  <strong>NEXT:</strong><br/> 
- <span>Markdown用法总结
+ <span>H2数据库攻略之三-结合Maven
 </span>
 </a>
 </div>

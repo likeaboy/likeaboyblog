@@ -4,12 +4,16 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>pacman字体颜色修改 | Rocky&#39;s Blog</title>
+    <title>H2数据库攻略之二-应用H2 | Rocky&#39;s Blog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
     
     <meta name="author" content="Rocky">
     
-    <meta name="description" content="找到 hexo\themes\pacman\source\css_base\下面的variable.styl文件，修改里面的color-font的值，默认是灰色（#817c7c），不够清爽，改为黑色（000000）&amp;lt;/pre&amp;gt;&amp;lt;pre name=&amp;quot;code&amp;quot; c">
+    <meta name="description" content="本文我们介绍如何使用H2数据库。
+准备工作
+1、h2-2014-04-05.zip  下载地址：http://www.h2database.com/html/download.html
+
+2、解压文件，这里以%H2_HOME%表示为解压的文件目录。运行%H2_HOME%\bin\h2.bat 将会自">
     
     
     
@@ -67,15 +71,15 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2013/08/01/(130801)pacman字体修改/" title="pacman字体颜色修改" itemprop="url">pacman字体颜色修改</a>
+      <a href="/2015/02/11/(150211)H2数据库攻略之二-应用H2/" title="H2数据库攻略之二-应用H2" itemprop="url">H2数据库攻略之二-应用H2</a>
   </h1>
   <p class="article-author">By
     
       <a href="jrockyhome.com" title="Rocky">Rocky</a>
     </p>
   <p class="article-time">
-    <time datetime="2013-08-01T04:20:32.000Z" itemprop="datePublished">2013-08-01</time>
-    Updated:<time datetime="2015-03-01T06:14:42.000Z" itemprop="dateModified">2015-03-01</time>
+    <time datetime="2015-02-11T12:42:16.000Z" itemprop="datePublished">2015-02-11</time>
+    Updated:<time datetime="2015-03-02T11:52:36.000Z" itemprop="dateModified">2015-03-02</time>
     
   </p>
 </header>
@@ -84,29 +88,106 @@
 		
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">Contents</strong>
-		
+		<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#准备工作"><span class="toc-number">1.</span> <span class="toc-text">准备工作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#项目实践"><span class="toc-number">2.</span> <span class="toc-text">项目实践</span></a></li></ol>
 		</div>
 		
-		<p><br>    找到 hexo\themes\pacman\source\css_base\下面的variable.styl文件，修改里面的color-font的值，默认是灰色（#817c7c），不够清爽，改为黑色（000000）<br></p><br><p><br></p><br><pre name="code" class="html">&lt;/pre&gt;&lt;pre name=&quot;code&quot; class=&quot;html&quot;&gt;//Color<br>//color-font = #817c7c<br>color-background = #dddddd<br>color-font = #000000<br>color-white = #ffffff<br>color-blue = #2ca6cb<br>color-theme = #ea6753<br>color-font-nav =#E9CD4C<br>color-section = #fafafa<br>color-footer = #1f1f1f<br>color-gray = #CCC<br>color-heading = #333333<br>color-code = #eee<br>color-twitter = #00aced<br>color-facebook = #3b5998<br>color-weibo = #eb182c<br>color-google = #dd4b39<br>color-qrcode= #49ae0f<br>color-top = #762c54<br><br>//Media<br>width-phone = 568px<br>width-mini = 768px<br>width-tablet = 1024px<br>width-desktop = 1560px<br>phone = &quot;only screen and (min-width: &quot; + width-phone + &quot;)&quot;<br>mini= &quot;only screen and (min-width: &quot; + width-mini + &quot;)&quot;<br>tablet = &quot;only screen and (min-width: &quot; + width-tablet + &quot;)&quot;<br>desktop = &quot;only screen and (min-width: &quot; + width-desktop + &quot;)&quot;<br><br>//Font<br>font-default = &quot;Helvetica Neue&quot;, &quot;Helvetica&quot;,&quot;Microsoft YaHei&quot;, &quot;WenQuanYi Micro Hei&quot;,Arial, sans-serif<br>font-serif = &quot;Georgia&quot;, serif<br>font-mono = Monaco, Menlo, Consolas, Courier New, monospace<br>font-custom-family = &quot;covered_by_your_graceregular&quot;<br>font-custom-filename = coveredbyyourgrace-webfont<br>font-icon-family = &quot;FontAwesome&quot;<br>font-icon-filename = fontawesome-webfont<br>font-icon-version = &quot;4.0.3&quot;<br>ShowCustomFont = hexo-config(&quot;ShowCustomFont&quot;)<br>font-size = 100%<br>line-height = 1.5<br><br>//image<br>dataURI = hexo-config(&quot;dataURI&quot;)<br>author-img-data = unquote(hexo-config(&quot;author_img_data&quot;))<br>author-img = hexo-config(&quot;author_img&quot;)<br>ShowGallery = hexo-config(&quot;ShowGallery&quot;)<br>root = hexo-config(&quot;root&quot;)<br><br>//comment<br>duoshuo = hexo-config(&quot;duoshuo.enable&quot;)<br><br>//highlight<br>highlight = hexo-config(&quot;highlight.enable&quot;)<br></pre><br><br><br><br><br><br><p><br></p>  
+		<p>本文我们介绍如何使用H2数据库。</p>
+<h3 id="准备工作">准备工作</h3>
+<p>1、h2-2014-04-05.zip  下载地址：<a href="http://www.h2database.com/html/download.html" target="_blank" rel="external">http://www.h2database.com/html/download.html</a></p>
+<p><img src="http://img.blog.csdn.net/20150302192304568" alt="这里写图片描述"></p>
+<p>2、解压文件，这里以%H2_HOME%表示为解压的文件目录。运行%H2_HOME%\bin\h2.bat 将会自动打开下面网址。(请确认是否安装了jdk，并设置了JAVA_HOME环境变量)<br><a href="http://192.168.2.105:8082/login.do?jsessionid=ebd745fe17cefcc96709e73924802d5e" target="_blank" rel="external">http://192.168.2.105:8082/login.do?jsessionid=ebd745fe17cefcc96709e73924802d5e</a></p>
+<p><img src="http://img.blog.csdn.net/20150302172155853" alt="这里写图片描述"></p>
+<p>3、点击 connect ，登录。</p>
+<p><img src="http://img.blog.csdn.net/20150302172816775" alt="这里写图片描述"></p>
+<p>4、执行上图中红色部分sql语句，成功创建test表。</p>
+<p><img src="http://img.blog.csdn.net/20150302172830206" alt="这里写图片描述"></p>
+<p>因为没有指定数据库文件位置，会自动输出到输出到C:\Users\Administrator下。</p>
+<p><img src="http://img.blog.csdn.net/20150302173123882" alt="这里写图片描述"></p>
+<h3 id="项目实践">项目实践</h3>
+<p>H2文件结构</p>
+<p>%H2_HOME%<br>-h2<br>  -bin<br>    h2-1.3.154.jar //jar包<br>    h2.bat         //Windows控制台启动脚本<br>    h2.sh          //Linux控制台启动脚本<br>    h2w.bat        //Windows控制台启动脚本（不带黑屏窗口）<br>  +docs 帮助文档<br>  +service //通过wrapper包装成服务。<br>  +src  //源代码<br>  build.bat  windows构建脚本<br>  build.sh   linux构建脚本</p>
+<p><strong>在java项目中应用H2</strong></p>
+<p>H2支持Embedded，server和in-memory模式以及内存模式。</p>
+<p><strong>一、Embedded模式</strong></p>
+<p>1.新建java project工程 H2Test。</p>
+<p><img src="http://img.blog.csdn.net/20150302180248511" alt="这里写图片描述"></p>
+<p>2、%H2_HOME%\bin\h2-1.3.154.jar 复制到 \H2Test\lib下，并加入工程引用。<br>3、新建Generic H2 (Embedded)数据库，指定：jdbc:h2:F:\2013-2014\Eclipse-J2EE\workspace\H2Test\db\test。</p>
+<p><img src="http://img.blog.csdn.net/20150302180514789" alt="这里写图片描述"></p>
+<p>4、然后执行上面的test sql语句，来创建一个test表。</p>
+<p><img src="http://img.blog.csdn.net/20150302180919428" alt="这里写图片描述"></p>
+<p>创建完成后，在项目中会出现db目录。</p>
+<p><img src="http://img.blog.csdn.net/20150302180954199" alt="这里写图片描述"></p>
+<p>5、新建 TestH2类 主要代码</p>
+<pre><code>public <span class="keyword">static</span> <span class="type">void</span> main(<span class="type">String</span>[] a)
+  throws <span class="type">Exception</span> {
+    <span class="type">Class</span>.forName(<span class="string">"org.h2.Driver"</span>);
+    <span class="type">Connection</span> conn = <span class="type">DriverManager</span>.
+    getConnection(<span class="string">"jdbc:h2:F:\\2013-2014\\Eclipse-J2EE\\workspace\\H2Test\\db\\test"</span>, <span class="string">"sa"</span>, <span class="string">""</span>);
+  // add application code here
+      <span class="type">Statement</span> <span class="type">stmt</span> = conn.createStatement();
+      <span class="type">ResultSet</span> rs = <span class="type">stmt</span>.executeQuery(<span class="string">"SELECT * FROM TEST "</span>);   
+  <span class="keyword">while</span>(rs.next()) {          <span class="type">System</span>.<span class="keyword">out</span>.println(rs.getInt(<span class="string">"ID"</span>)+<span class="string">","</span>+rs.getString(<span class="string">"NAME"</span>));
+  }
+ conn.close();
+ }
+</code></pre><p>控制台打印出：1,Hi</p>
+<p><img src="http://img.blog.csdn.net/20150302182639294" alt="这里写图片描述"></p>
+<p><strong>二、server模式</strong></p>
+<p>1、直接将jdbc url 改为：jdbc:h2:tcp://localhost/~/test  就行了。因为我们在上面第一步的时候已经在C:\Users\Administrator创建了test数据库。<br>你也可以再创建新的数据库，默认都是保存在C:\Users\Administrator下的。<br>注意：你必须启动服务：%H2_HOME%\bin\h2.bat 或者 以服务模式启动：%H2_HOME%\service\0_run_server_debug.bat ，里面有好几个脚本把H2部署为服务模式。每次机器启动后自动启动H2服务。<br>2、新建 TestServerH2类 主要代码</p>
+<pre><code><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> main(String[] a)
+    <span class="keyword">throws</span> Exception {
+   <span class="keyword">Class</span>.forName(<span class="string">"org.h2.Driver"</span>);
+   Connection conn = DriverManager.
+       getConnection(<span class="string">"jdbc:h2:tcp://localhost/~/test"</span>, <span class="string">"sa"</span>, <span class="string">"sa"</span>);
+   <span class="comment">// add application code here</span>
+   Statement stmt = conn.createStatement();
+   ResultSet rs = stmt.executeQuery(<span class="string">"SELECT * FROM TEST "</span>);   
+    <span class="keyword">while</span>(rs.<span class="keyword">next</span>()) {   
+     System.out.<span class="keyword">println</span>(rs.getInt(<span class="string">"ID"</span>)+<span class="string">","</span>+rs.getString(<span class="string">"NAME"</span>));
+    }
+   conn.close();
+ }
+</code></pre><p>运行的结果和上面一样。</p>
+<p><strong>三、内存模式（数据只保存在内存中）</strong></p>
+<p>1、新建 TestMemH2类 主要代码</p>
+<pre><code><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> main(String[] a)
+    <span class="keyword">throws</span> Exception {
+   <span class="keyword">Class</span>.forName(<span class="string">"org.h2.Driver"</span>);
+   Connection conn = DriverManager.
+       getConnection(<span class="string">"jdbc:h2:tcp://localhost/mem:test2"</span>, <span class="string">"sa"</span>, <span class="string">"sa"</span>);
+   <span class="comment">// add application code here</span>
+   Statement stmt = conn.createStatement();
+
+   stmt.executeUpdate(<span class="string">"CREATE TABLE TEST_MEM(ID INT PRIMARY KEY,NAME VARCHAR(255));"</span>);
+   stmt.executeUpdate(<span class="string">"INSERT INTO TEST_MEM VALUES(1, 'Hello_Mem');"</span>);
+   ResultSet rs = stmt.executeQuery(<span class="string">"SELECT * FROM TEST_MEM"</span>);   
+    <span class="keyword">while</span>(rs.<span class="keyword">next</span>()) {   
+     System.out.<span class="keyword">println</span>(rs.getInt(<span class="string">"ID"</span>)+<span class="string">","</span>+rs.getString(<span class="string">"NAME"</span>));
+    }
+   conn.close();
+ }
+</code></pre><p>控制台打印出：1,Hello_Mem</p>
+<p><img src="http://img.blog.csdn.net/20150302183614786" alt="这里写图片描述"></p>
+  
 	</div>
 		<footer class="article-footer clearfix">
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/博客，文章/">博客，文章</a>
+  <span></span> <a href="/tags/DB/">DB</a><a href="/tags/H2/">H2</a>
   </div>
 
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="/categories/blog/">blog</a>
+  <a class="article-category-link" href="/categories/数据库/">数据库</a>
 </div>
 
 
 
 <div class="article-share" id="share">
 
-  <div data-url="jrockyhome.com/2013/08/01/(130801)pacman字体修改/" data-title="pacman字体颜色修改 | Rocky&#39;s Blog" data-tsina="null" class="share clearfix">
+  <div data-url="jrockyhome.com/2015/02/11/(150211)H2数据库攻略之二-应用H2/" data-title="H2数据库攻略之二-应用H2 | Rocky&#39;s Blog" data-tsina="null" class="share clearfix">
   </div>
 
 </div>
@@ -116,18 +197,18 @@
 <nav class="article-nav clearfix">
  
  <div class="prev" >
- <a href="/2013/09/01/(130901)RCP开发之绑定Action快捷键/" title="RCP开发之绑定Action快捷键">
+ <a href="/2015/02/12/(150212)H2数据库攻略之三-结合Maven/" title="H2数据库攻略之三-结合Maven">
   <strong>PREVIOUS:</strong><br/>
   <span>
-  RCP开发之绑定Action快捷键</span>
+  H2数据库攻略之三-结合Maven</span>
 </a>
 </div>
 
 
 <div class="next">
-<a href="/2013/07/31/(130731)Markdown用法总结/"  title="Markdown用法总结">
+<a href="/2015/02/10/(150210)H2数据库攻略之一-简介/"  title="H2数据库攻略之一-简介">
  <strong>NEXT:</strong><br/> 
- <span>Markdown用法总结
+ <span>H2数据库攻略之一-简介
 </span>
 </a>
 </div>
@@ -144,7 +225,7 @@
 
   <div id="toc" class="toc-aside">
   <strong class="toc-title">Contents</strong>
-  
+  <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#准备工作"><span class="toc-number">1.</span> <span class="toc-text">准备工作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#项目实践"><span class="toc-number">2.</span> <span class="toc-text">项目实践</span></a></li></ol>
   </div>
 
 <div id="asidepart">
