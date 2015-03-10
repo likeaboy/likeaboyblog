@@ -1,0 +1,479 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>MySql存储过程总结 | Rocky&#39;s Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
+    
+    <meta name="author" content="Rocky">
+    
+    <meta name="description" content="存储过程如同一门程序设计语言，同样包含了数据类型、流程控制、输入和输出和它自己的函数库。
+——————————基本语法——————————
+一.创建存储过程create procedure sp_name()begin………end
+二.调用存储过程1.基本语法：call sp_name()注意：存储">
+    
+    
+    
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/pacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/pacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+
+</head>
+
+  <body>
+    <header>
+      <div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.svg" alt="Rocky&#39;s Blog" title="Rocky&#39;s Blog"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="Rocky&#39;s Blog">Rocky&#39;s Blog</a></h1>
+				<h2 class="blog-motto">积沙成塔</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+					
+					<form class="search" action="/search/index.html" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="text" id="search" autocomplete="off" name="q" maxlength="20" placeholder="Search" />
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2014/07/23/(140723)MySql存储过程总结/" title="MySql存储过程总结" itemprop="url">MySql存储过程总结</a>
+  </h1>
+  <p class="article-author">By
+    
+      <a href="jrockyhome.com" title="Rocky">Rocky</a>
+    </p>
+  <p class="article-time">
+    <time datetime="2014-07-23T13:11:22.000Z" itemprop="datePublished">2014-07-23</time>
+    Updated:<time datetime="2015-03-10T11:08:08.000Z" itemprop="dateModified">2015-03-10</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+		</div>
+		
+		<p>存储过程如同一门程序设计语言，同样包含了数据类型、流程控制、输入和输出和它自己的函数库。</p>
+<p>——————————基本语法——————————</p>
+<p><strong>一.创建存储过程</strong><br>create procedure sp_name()<br>begin<br>………<br>end</p>
+<p><strong>二.调用存储过程</strong><br>1.基本语法：call sp_name()<br>注意：存储过程名称后面必须加括号，哪怕该存储过程没有参数传递</p>
+<p><strong>三.删除存储过程</strong><br>1.基本语法：<br>drop procedure sp_name//</p>
+<p>2.注意事项<br>(1)不能在一个存储过程中删除另一个存储过程，只能调用另一个存储过程</p>
+<p><strong>四.其他常用命令</strong></p>
+<p>1.show procedure status<br>显示数据库中所有存储的存储过程基本信息，包括所属数据库，存储过程名称，创建时间等</p>
+<p>2.show create procedure sp_name<br>显示某一个mysql存储过程的详细信息</p>
+<p>——————————数据类型及运算符——————————<br><strong>一、基本数据类型：</strong><br>略</p>
+<p><strong>二、变量：</strong></p>
+<p>自定义变量：DECLARE   a INT ; SET a=100;    可用以下语句代替：DECLARE a INT DEFAULT 100;</p>
+<p>变量分为用户变量和系统变量，系统变量又分为会话和全局级变量</p>
+<p>用户变量：用户变量名一般以@开头，滥用用户变量会导致程序难以理解及管理</p>
+<p>1、 在mysql客户端使用用户变量<br>mysql&gt; SELECT ‘Hello World’ into @x;<br>mysql&gt; SELECT @x;</p>
+<p>mysql&gt; SET @y=’Goodbye Cruel World’;<br>mysql&gt; select @y;</p>
+<p>mysql&gt; SET @z=1+2+3;<br>mysql&gt; select @z;</p>
+<p>2、 在存储过程中使用用户变量</p>
+<p>mysql&gt; CREATE PROCEDURE GreetWorld( ) SELECT CONCAT(@greeting,’ World’);<br>mysql&gt; SET @greeting=’Hello’;<br>mysql&gt; CALL GreetWorld( );</p>
+<p>3、 在存储过程间传递全局范围的用户变量<br>mysql&gt; CREATE PROCEDURE p1( )   SET @last_procedure=’p1’;<br>mysql&gt; CREATE PROCEDURE p2( ) SELECT CONCAT(‘Last procedure was ‘,@last_procedure);<br>mysql&gt; CALL p1( );<br>mysql&gt; CALL p2( );</p>
+<p><strong>三、运算符：</strong><br>1.算术运算符</p>
+<ul>
+<li>加   SET var1=2+2;       4</li>
+</ul>
+<ul>
+<li>减   SET var2=3-2;       1</li>
+</ul>
+<ul>
+<li>乘   SET var3=3*2;       6<br>/     除   SET var4=10/3;      3.3333<br>DIV   整除 SET var5=10 DIV 3; 3<br>%     取模 SET var6=10%3 ;     1</li>
+</ul>
+<p>2.比较运算符</p>
+<p>>   大于 1&gt;2 False<br>&lt;            小于 2<1 false="" <="小于等于" 2<="2" true="" \="">=           大于等于 3&gt;=2 True<br>BETWEEN      在两值之间 5 BETWEEN 1 AND 10 True<br>NOT BETWEEN 不在两值之间 5 NOT BETWEEN 1 AND 10 False<br>IN           在集合中 5 IN (1,2,3,4) False<br>NOT IN       不在集合中 5 NOT IN (1,2,3,4) True<br>=             等于 2=3 False<br>&lt;&gt;, !=       不等于 2&lt;&gt;3 False<br>&lt;=&gt;          严格比较两个NULL值是否相等 NULL&lt;=&gt;NULL True<br>LIKE          简单模式匹配 “Guy Harrison” LIKE “Guy%” True<br>REGEXP       正则式匹配 “Guy Harrison” REGEXP “[Gg]reg” False<br>IS NULL      为空 0 IS NULL False<br>IS NOT NULL 不为空 0 IS NOT NULL True</1></p>
+<p>3.逻辑运算符</p>
+<p>4.位运算符<br>|   或<br>&amp;   与<br>&lt;&lt; 左移位<br>>&gt; 右移位<br>~   非(单目运算，按位取反)</p>
+<p>注释：</p>
+<p>mysql存储过程可使用两种风格的注释<br>双横杠：—</p>
+<p>该风格一般用于单行注释<br>c风格：/<em> 注释内容 </em>/ 一般用于多行注释</p>
+<p>——————————流程控制——————————<br>一、顺序结构<br>二、分支结构<br>if<br>case</p>
+<p>三、循环结构<br>for循环<br>while循环<br>loop循环<br>repeat until循环</p>
+<p>注：<br>区块定义，常用<br>begin<br>……<br>end;<br>也可以给区块起别名，如：<br>lable:begin<br>………..<br>end lable;<br>可以用leave lable;跳出区块，执行区块以后的代码</p>
+<p>begin和end如同C语言中的{ 和 }。</p>
+<p>——————————输入和输出——————————</p>
+<p>mysql存储过程的参数用在存储过程的定义，共有三种参数类型,IN,OUT,INOUT<br>Create procedure|function([[IN |OUT |INOUT ] 参数名 数据类形…])</p>
+<p>IN 输入参数<br>表示该参数的值必须在调用存储过程时指定，在存储过程中修改该参数的值不能被返回，为默认值</p>
+<p>OUT 输出参数<br>该值可在存储过程内部被改变，并可返回</p>
+<p>INOUT 输入输出参数<br>调用时指定，并且可被改变和返回</p>
+<p>IN参数例子：<br>CREATE PROCEDURE sp_demo_in_parameter(IN p_in INT)<br>BEGIN<br>SELECT p_in; —查询输入参数<br>SET p_in=2; —修改<br>select p_in;—查看修改后的值<br>END;</p>
+<p>执行结果:<br>mysql&gt; set @p_in=1<br>mysql&gt; call sp_demo_in_parameter(@p_in)<br>略<br>mysql&gt; select @p_in;<br>略<br>以上可以看出，p_in虽然在存储过程中被修改，但并不影响@p_id的值</p>
+<p>OUT参数例子<br>创建:<br>mysql&gt; CREATE PROCEDURE sp_demo_out_parameter(OUT p_out INT)<br>BEGIN<br>SELECT p_out;/<em>查看输出参数</em>/<br>SET p_out=2;/<em>修改参数值</em>/<br>SELECT p_out;/<em>看看有否变化</em>/<br>END;</p>
+<p>执行结果:<br>mysql&gt; SET @p_out=1<br>mysql&gt; CALL sp_demo_out_parameter(@p_out)<br>略</p>
+<p>mysql&gt; SELECT @p_out;<br>略</p>
+<p>INOUT参数例子：<br>mysql&gt; CREATE PROCEDURE sp_demo_inout_parameter(INOUT p_inout INT)<br>BEGIN<br>SELECT p_inout;<br>SET p_inout=2;<br>SELECT p_inout;<br>END;</p>
+<p>执行结果：<br>set @p_inout=1<br>call sp_demo_inout_parameter(@p_inout) //<br>略<br>select @p_inout;<br>略</p>
+<p>附：函数库<br>mysql存储过程基本函数包括：字符串类型，数值类型，日期类型</p>
+<p><strong>一、字符串类</strong><br>CHARSET(str) //返回字串字符集<br>CONCAT (string2 [,… ]) //连接字串<br>INSTR (string ,substring ) //返回substring首次在string中出现的位置,不存在返回0<br>LCASE (string2 ) //转换成小写<br>LEFT (string2 ,length ) //从string2中的左边起取length个字符<br>LENGTH (string ) //string长度<br>LOAD_FILE (file_name ) //从文件读取内容<br>LOCATE (substring , string [,start_position ] ) 同INSTR,但可指定开始位置<br>LPAD (string2 ,length ,pad ) //重复用pad加在string开头,直到字串长度为length<br>LTRIM (string2 ) //去除前端空格<br>REPEAT (string2 ,count ) //重复count次<br>REPLACE (str ,search_str ,replace_str ) //在str中用replace_str替换search_str<br>RPAD (string2 ,length ,pad) //在str后用pad补充,直到长度为length<br>RTRIM (string2 ) //去除后端空格<br>STRCMP (string1 ,string2 ) //逐字符比较两字串大小,<br>SUBSTRING (str , position [,length ]) //从str的position开始,取length个字符,<br>注：mysql中处理字符串时，默认第一个字符下标为1，即参数position必须大于等于1<br>mysql&gt; select substring(’abcd’,0,2);<br>+———————–+<br>| substring(’abcd’,0,2) |<br>+———————–+<br>|                       |<br>+———————–+<br>1 row in set (0.00 sec)</p>
+<p>mysql&gt; select substring(’abcd’,1,2);<br>+———————–+<br>| substring(’abcd’,1,2) |<br>+———————–+<br>| ab                    |<br>+———————–+<br>1 row in set (0.02 sec)</p>
+<p>TRIM([[BOTH|LEADING|TRAILING] [padding] FROM]string2) //去除指定位置的指定字符<br>UCASE (string2 ) //转换成大写<br>RIGHT(string2,length) //取string2最后length个字符<br>SPACE(count) //生成count个空格</p>
+<p><strong>二、数值类型</strong></p>
+<p>ABS (number2 ) //绝对值<br>BIN (decimal_number ) //十进制转二进制<br>CEILING (number2 ) //向上取整<br>CONV(number2,from_base,to_base) //进制转换<br>FLOOR (number2 ) //向下取整<br>FORMAT (number,decimal_places ) //保留小数位数<br>HEX (DecimalNumber ) //转十六进制<br>注：HEX()中可传入字符串，则返回其ASC-11码，如HEX(’DEF’)返回4142143<br>也可以传入十进制整数，返回其十六进制编码，如HEX(25)返回19<br>LEAST (number , number2 [,..]) //求最小值<br>MOD (numerator ,denominator ) //求余<br>POWER (number ,power ) //求指数<br>RAND([seed]) //随机数<br>ROUND (number [,decimals ]) //四舍五入,decimals为小数位数]</p>
+<p>注：返回类型并非均为整数，如：</p>
+<p>(1)默认变为整形值<br>mysql&gt; select round(1.23);<br>+————-+<br>| round(1.23) |<br>+————-+<br>|           1 |<br>+————-+<br>1 row in set (0.00 sec)</p>
+<p>mysql&gt; select round(1.56);<br>+————-+<br>| round(1.56) |<br>+————-+<br>|           2 |<br>+————-+<br>1 row in set (0.00 sec)</p>
+<p>(2)可以设定小数位数，返回浮点型数据</p>
+<p>mysql&gt; select round(1.567,2);<br>+—————-+<br>| round(1.567,2) |<br>+—————-+<br>|           1.57 |<br>+—————-+<br>1 row in set (0.00 sec)</p>
+<p>SIGN (number2 ) //返回符号,正负或0<br>SQRT(number2) //开平方</p>
+<p><strong>三、日期类型</strong></p>
+<p>ADDTIME (date2 ,time_interval ) //将time_interval加到date2<br>CONVERT_TZ (datetime2 ,fromTZ ,toTZ ) //转换时区<br>CURRENT_DATE ( ) //当前日期<br>CURRENT_TIME ( ) //当前时间<br>CURRENT_TIMESTAMP ( ) //当前时间戳<br>DATE (datetime ) //返回datetime的日期部分<br>DATE_ADD (date2 , INTERVAL d_value d_type ) //在date2中加上日期或时间<br>DATE_FORMAT (datetime ,FormatCodes ) //使用formatcodes格式显示datetime<br>DATE_SUB (date2 , INTERVAL d_value d_type ) //在date2上减去一个时间<br>DATEDIFF (date1 ,date2 ) //两个日期差<br>DAY (date ) //返回日期的天<br>DAYNAME (date ) //英文星期<br>DAYOFWEEK (date ) //星期(1-7) ,1为星期天<br>DAYOFYEAR (date ) //一年中的第几天<br>EXTRACT (interval_name FROM date ) //从date中提取日期的指定部分<br>MAKEDATE (year ,day ) //给出年及年中的第几天,生成日期串<br>MAKETIME (hour ,minute ,second ) //生成时间串<br>MONTHNAME (date ) //英文月份名<br>NOW ( ) //当前时间<br>SEC_TO_TIME (seconds ) //秒数转成时间<br>STR_TO_DATE (string ,format ) //字串转成时间,以format格式显示<br>TIMEDIFF (datetime1 ,datetime2 ) //两个时间差<br>TIME_TO_SEC (time ) //时间转秒数]<br>WEEK (date_time [,start_of_week ]) //第几周<br>YEAR (datetime ) //年份<br>DAYOFMONTH(datetime) //月的第几天<br>HOUR(datetime) //小时<br>LAST_DAY(date) //date的月的最后日期<br>MICROSECOND(datetime) //微秒<br>MONTH(datetime) //月<br>MINUTE(datetime) //分</p>
+<p>注：可用在INTERVAL中的类型：DAY ,DAY_HOUR ,DAY_MINUTE ,DAY_SECOND ,HOUR ,HOUR_MINUTE ,HOUR_SECOND ,MINUTE ,MINUTE_SECOND,MONTH ,SECOND ,YEAR<br>DECLARE variable_name [,variable_name…] datatype [DEFAULT value];<br>其中，datatype为mysql的数据类型，如:INT, FLOAT, DATE, VARCHAR(length)</p>
+<p>例：</p>
+<p>DECLARE l_int INT unsigned default 4000000;<br>DECLARE l_numeric NUMERIC(8,2) DEFAULT 9.95;<br>DECLARE l_date DATE DEFAULT ‘1999-12-31’;<br>DECLARE l_datetime DATETIME DEFAULT ‘1999-12-31 23:59:59’;<br>DECLARE l_varchar VARCHAR(255) DEFAULT ‘This will not be padded’;</p>
+<p>存储过程创建数据的例子：<br>这是用HeidiSql创建的，begin-end之间是代码，其他部分是heidi自动生成的。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">CREATE</span> DEFINER=`root`@`localhost` <span class="function"><span class="keyword">PROCEDURE</span> `<span class="title">createdata</span>`<span class="params">()</span></span></div><div class="line">	<span class="title">LANGUAGE</span> <span class="title">SQL</span></div><div class="line">	<span class="title">NOT</span> <span class="title">DETERMINISTIC</span></div><div class="line">	<span class="title">CONTAINS</span> <span class="title">SQL</span></div><div class="line">	<span class="title">SQL</span> <span class="title">SECURITY</span> <span class="title">DEFINER</span></div><div class="line">	<span class="title">COMMENT</span> ''</div><div class="line"><span class="title">BEGIN</span></div><div class="line"><span class="title">declare</span> <span class="title">i</span> <span class="title">int</span>;</div><div class="line">START TRANSACTION;</div><div class="line"><span class="keyword">SET</span> i=<span class="number">0</span>;</div><div class="line"><span class="keyword">WHILE</span> i&lt;<span class="number">1000</span> <span class="keyword">DO</span></div><div class="line">	INSERT <span class="keyword">INTO</span> t_team VALUES(i+<span class="number">1</span>,<span class="keyword">CONCAT</span>(<span class="string">'team'</span>,i+<span class="number">1</span>));</div><div class="line">	<span class="keyword">SET</span> i=i+<span class="number">1</span>;</div><div class="line"><span class="keyword">END</span> <span class="keyword">WHILE</span>;</div><div class="line"><span class="keyword">SET</span> i=<span class="number">0</span>;</div><div class="line"><span class="keyword">WHILE</span> i&lt;<span class="number">100000</span> <span class="keyword">DO</span></div><div class="line">	INSERT <span class="keyword">INTO</span> t_people VALUES(i+<span class="number">1</span>,<span class="keyword">CONCAT</span>(<span class="string">'people'</span>,i+<span class="number">1</span>),i%<span class="number">1000</span>+<span class="number">1</span>);</div><div class="line">	<span class="keyword">SET</span> i=i+<span class="number">1</span>;</div><div class="line"><span class="keyword">END</span> <span class="keyword">WHILE</span>;</div><div class="line">COMMIT;</div><div class="line"><span class="keyword">END</span></div></pre></td></tr></table></figure>
+
+  
+	</div>
+		<footer class="article-footer clearfix">
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/MySql/">MySql</a>
+  </div>
+
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/MySql/">MySql</a>
+</div>
+
+
+
+<div class="article-share" id="share">
+
+  <div data-url="jrockyhome.com/2014/07/23/(140723)MySql存储过程总结/" data-title="MySql存储过程总结 | Rocky&#39;s Blog" data-tsina="null" class="share clearfix">
+  </div>
+
+</div>
+</footer>   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2014/07/24/(140724)Mysql事务总结/" title="Mysql事务总结">
+  <strong>PREVIOUS:</strong><br/>
+  <span>
+  Mysql事务总结</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2014/07/22/(140722)MySql触发器应用总结/"  title="MySql触发器应用总结">
+ <strong>NEXT:</strong><br/> 
+ <span>MySql触发器应用总结
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section class="comment">
+	<div class="ds-thread"></div>
+</section>
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+  
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+			<li><a href="/categories/MySql/" title="MySql">MySql<sup>4</sup></a></li>
+		
+			<li><a href="/categories/OSGi/" title="OSGi">OSGi<sup>2</sup></a></li>
+		
+			<li><a href="/categories/RCP/" title="RCP">RCP<sup>1</sup></a></li>
+		
+			<li><a href="/categories/blog/" title="blog">blog<sup>3</sup></a></li>
+		
+			<li><a href="/categories/debug/" title="debug">debug<sup>2</sup></a></li>
+		
+			<li><a href="/categories/java/" title="java">java<sup>3</sup></a></li>
+		
+			<li><a href="/categories/linux/" title="linux">linux<sup>1</sup></a></li>
+		
+			<li><a href="/categories/maven/" title="maven">maven<sup>2</sup></a></li>
+		
+			<li><a href="/categories/大数据/" title="大数据">大数据<sup>1</sup></a></li>
+		
+			<li><a href="/categories/工作流引擎activity/" title="工作流引擎activity">工作流引擎activity<sup>1</sup></a></li>
+		
+			<li><a href="/categories/工具/" title="工具">工具<sup>4</sup></a></li>
+		
+			<li><a href="/categories/数据库/" title="数据库">数据库<sup>4</sup></a></li>
+		
+			<li><a href="/categories/算法/" title="算法">算法<sup>1</sup></a></li>
+		
+			<li><a href="/categories/设计模式/" title="设计模式">设计模式<sup>8</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			<li><a href="/tags/DB/" title="DB">DB<sup>4</sup></a></li>
+		
+			<li><a href="/tags/Eclipse插件开发/" title="Eclipse插件开发">Eclipse插件开发<sup>1</sup></a></li>
+		
+			<li><a href="/tags/H2/" title="H2">H2<sup>4</sup></a></li>
+		
+			<li><a href="/tags/MySql/" title="MySql">MySql<sup>5</sup></a></li>
+		
+			<li><a href="/tags/OSGi/" title="OSGi">OSGi<sup>2</sup></a></li>
+		
+			<li><a href="/tags/RCP/" title="RCP">RCP<sup>1</sup></a></li>
+		
+			<li><a href="/tags/Virgo/" title="Virgo">Virgo<sup>2</sup></a></li>
+		
+			<li><a href="/tags/debug/" title="debug">debug<sup>2</sup></a></li>
+		
+			<li><a href="/tags/freemarker/" title="freemarker">freemarker<sup>4</sup></a></li>
+		
+			<li><a href="/tags/info/" title="info">info<sup>1</sup></a></li>
+		
+			<li><a href="/tags/java/" title="java">java<sup>3</sup></a></li>
+		
+			<li><a href="/tags/linux/" title="linux">linux<sup>1</sup></a></li>
+		
+			<li><a href="/tags/maven/" title="maven">maven<sup>2</sup></a></li>
+		
+			<li><a href="/tags/rapid-generate/" title="rapid-generate">rapid-generate<sup>4</sup></a></li>
+		
+			<li><a href="/tags/代码生成器/" title="代码生成器">代码生成器<sup>4</sup></a></li>
+		
+			<li><a href="/tags/博客，文章/" title="博客，文章">博客，文章<sup>2</sup></a></li>
+		
+			<li><a href="/tags/大数据/" title="大数据">大数据<sup>1</sup></a></li>
+		
+			<li><a href="/tags/工作流引擎activity/" title="工作流引擎activity">工作流引擎activity<sup>1</sup></a></li>
+		
+			<li><a href="/tags/并发/" title="并发">并发<sup>1</sup></a></li>
+		
+			<li><a href="/tags/排序/" title="排序">排序<sup>1</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  <div class="rsspart">
+	<a href="null" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hi,I&#39;m Rocky! <br/>
+			享受编程带来的乐趣，并将这份快乐分享给来到这里的每一个人</p>
+	</section>
+	 
+	<div class="social-font clearfix">
+		
+		
+		
+		<a href="https://github.com/https://github.com/likeaboy" target="_blank" title="github"></a>
+		
+		
+		
+	</div>
+		<p class="copyright">Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/A-limon/pacman" target="_blank" title="Pacman">Pacman</a> © 2015 
+		
+		<a href="jrockyhome.com" target="_blank" title="Rocky">Rocky</a>
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.1.0.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else
+    {
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      h  = $('article h2')
+      ah = $('article h2'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  if(ah.length==0){
+    t.css('display','none');
+  }else{
+    c.click(function(){
+      ta.css('display', 'block').addClass('fadeIn');
+    });
+    o.click(function(){
+      ta.css('display', 'none');
+    });
+    $(window).scroll(function(){
+      ta.css("top",Math.max(140,320-$(this).scrollTop()));
+    });
+  };
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina');
+  var html = [
+  '<a href="#" class="overlay" id="qrcode"></a>',
+  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#share"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
+  '<a href="#textlogo" class="article-back-to-top" title="Top"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="QRcode"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="Weibo"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+  $('.article-share-qrcode').click(function(){
+    var imgSrc = $('#qrcode-pic').attr('data-src');
+    $('#qrcode-pic').attr('src', imgSrc);
+    $('#qrcode-pic').load(function(){
+        $('.qrcode strong').text(' ');
+    });
+  });
+});     
+</script>
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"null"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+  </body>
+</html>

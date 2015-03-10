@@ -1,0 +1,416 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>设计模式实践三-单一职责原则 | Rocky&#39;s Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
+    
+    <meta name="author" content="Rocky">
+    
+    <meta name="description" content="定义：不要存在多于一个导致类变更的原因。通俗的说，即一个类只负责一项职责。问题由来：类T负责两个不同的职责：职责P1，职责P2。当由于职责P1需求发生改变而需要修改类T时，有可能会导致原本运行正常的职责P2功能发生故障。解决方案：遵循单一职责原则。分别建立两个类T1、T2，使T1完成职责P1功能，T">
+    
+    
+    
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/pacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/pacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+
+</head>
+
+  <body>
+    <header>
+      <div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.svg" alt="Rocky&#39;s Blog" title="Rocky&#39;s Blog"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="Rocky&#39;s Blog">Rocky&#39;s Blog</a></h1>
+				<h2 class="blog-motto">积沙成塔</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+					
+					<form class="search" action="/search/index.html" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="text" id="search" autocomplete="off" name="q" maxlength="20" placeholder="Search" />
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2014/07/04/(140705)设计模式实践三-单一职责原则/" title="设计模式实践三-单一职责原则" itemprop="url">设计模式实践三-单一职责原则</a>
+  </h1>
+  <p class="article-author">By
+    
+      <a href="jrockyhome.com" title="Rocky">Rocky</a>
+    </p>
+  <p class="article-time">
+    <time datetime="2014-07-04T13:14:55.000Z" itemprop="datePublished">2014-07-04</time>
+    Updated:<time datetime="2015-03-10T11:02:02.000Z" itemprop="dateModified">2015-03-10</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+		</div>
+		
+		<p><strong>定义：</strong>不要存在多于一个导致类变更的原因。通俗的说，即一个类只负责一项职责。<br><strong>问题由来：</strong>类T负责两个不同的职责：职责P1，职责P2。当由于职责P1需求发生改变而需要修改类T时，有可能会导致原本运行正常的职责P2功能发生故障。<br><strong>解决方案：</strong>遵循单一职责原则。分别建立两个类T1、T2，使T1完成职责P1功能，T2完成职责P2功能。这样，当修改类T1时，不会使职责P2发生故障风险；同理，当修改T2时，也不会使职责P1发生故障风险。<br>         说到单一职责原则，很多人都会不屑一顾。因为它太简单了。稍有经验的程序员即使从来没有读过设计模式、从来没有听说过单一职责原则，在设计软件时也会自觉的遵守这一重要原则，因为这是常识。在软件编程中，谁也不希望因为修改了一个功能导致其他的功能发生故障。而避免出现这一问题的方法便是遵循单一职责原则。虽然单一职责原则如此简单，并且被认为是常识，但是即便是经验丰富的程序员写出的程序，也会有违背这一原则的代码存在。为什么会出现这种现象呢？因为有职责扩散。所谓职责扩散，就是因为某种原因，职责P被分化为粒度更细的职责P1和P2。<br>         比如：类T只负责一个职责P，这样设计是符合单一职责原则的。后来由于某种原因，也许是需求变更了，也许是程序的设计者境界提高了，需要将职责P细分为粒度更细的职责P1，P2，这时如果要使程序遵循单一职责原则，需要将类T也分解为两个类T1和T2，分别负责P1、P2两个职责。但是在程序已经写好的情况下，这样做简直太费时间了。所以，简单的修改类T，用它来负责两个职责是一个比较不错的选择，虽然这样做有悖于单一职责原则。（这样做的风险在于职责扩散的不确定性，因为我们不会想到这个职责P，在未来可能会扩散为P1，P2，P3，P4……Pn。所以记住，在职责扩散到我们无法控制的程度之前，立刻对代码进行重构。）<br>举例说明，用一个类描述动物呼吸这个场景：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">class Animal{</div><div class="line">		<span class="keyword">public</span> <span class="keyword">void</span> <span class="title">breathe</span>(String animal){</div><div class="line">			System.<span class="keyword">out</span>.println(animal+<span class="string">"呼吸空气"</span>);</div><div class="line">		}</div><div class="line">	}</div><div class="line">	<span class="keyword">public</span> <span class="keyword">class</span> Client{</div><div class="line">		<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span>(String[] args){</div><div class="line">			Animal animal = <span class="keyword">new</span> Animal();</div><div class="line">			animal.breathe(<span class="string">"牛"</span>);</div><div class="line">			animal.breathe(<span class="string">"羊"</span>);</div><div class="line">			animal.breathe(<span class="string">"猪"</span>);</div><div class="line">		}</div><div class="line">	}</div></pre></td></tr></table></figure>
+
+<p>运行结果：<br>牛呼吸空气<br>羊呼吸空气<br>猪呼吸空气<br>        程序上线后，发现问题了，并不是所有的动物都呼吸空气的，比如鱼就是呼吸水的。修改时如果遵循单一职责原则，需要将Animal类细分为陆生动物类Terrestrial，水生动物Aquatic，代码如下：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">class Terrestrial{</div><div class="line">		<span class="keyword">public</span> <span class="keyword">void</span> <span class="title">breathe</span>(String animal){</div><div class="line">			System.<span class="keyword">out</span>.println(animal+<span class="string">"呼吸空气"</span>);</div><div class="line">		}</div><div class="line">	}</div><div class="line">	class Aquatic{</div><div class="line">		<span class="keyword">public</span> <span class="keyword">void</span> <span class="title">breathe</span>(String animal){</div><div class="line">			System.<span class="keyword">out</span>.println(animal+<span class="string">"呼吸水"</span>);</div><div class="line">		}</div><div class="line">	}</div><div class="line">	</div><div class="line">	<span class="keyword">public</span> <span class="keyword">class</span> Client{</div><div class="line">		<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span>(String[] args){</div><div class="line">			Terrestrial terrestrial = <span class="keyword">new</span> Terrestrial();</div><div class="line">			terrestrial.breathe(<span class="string">"牛"</span>);</div><div class="line">			terrestrial.breathe(<span class="string">"羊"</span>);</div><div class="line">			terrestrial.breathe(<span class="string">"猪"</span>);</div><div class="line">			</div><div class="line">			Aquatic aquatic = <span class="keyword">new</span> Aquatic();</div><div class="line">			aquatic.breathe(<span class="string">"鱼"</span>);</div><div class="line">		}</div><div class="line">	}</div></pre></td></tr></table></figure>
+
+<p>运行结果：<br>牛呼吸空气<br>羊呼吸空气<br>猪呼吸空气<br>鱼呼吸水<br>我们会发现如果这样修改花销是很大的，除了将原来的类分解之外，还需要修改客户端。而直接修改类Animal来达成目的虽然违背了单一职责原则，但花销却小的多，代码如下：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">class Animal{</div><div class="line">		<span class="keyword">public</span> <span class="keyword">void</span> <span class="title">breathe</span>(String animal){</div><div class="line">			<span class="keyword">if</span>(<span class="string">"鱼"</span>.equals(animal)){</div><div class="line">				System.<span class="keyword">out</span>.println(animal+<span class="string">"呼吸水"</span>);</div><div class="line">			}<span class="keyword">else</span>{</div><div class="line">				System.<span class="keyword">out</span>.println(animal+<span class="string">"呼吸空气"</span>);</div><div class="line">			}</div><div class="line">		}</div><div class="line">	}</div><div class="line">	</div><div class="line">	<span class="keyword">public</span> <span class="keyword">class</span> Client{</div><div class="line">		<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span>(String[] args){</div><div class="line">			Animal animal = <span class="keyword">new</span> Animal();</div><div class="line">			animal.breathe(<span class="string">"牛"</span>);</div><div class="line">			animal.breathe(<span class="string">"羊"</span>);</div><div class="line">			animal.breathe(<span class="string">"猪"</span>);</div><div class="line">			animal.breathe(<span class="string">"鱼"</span>);</div><div class="line">		}</div><div class="line">	}</div></pre></td></tr></table></figure>
+
+<p>可以看到，这种修改方式要简单的多。但是却存在着隐患：有一天需要将鱼分为呼吸淡水的鱼和呼吸海水的鱼，则又需要修改Animal类的breathe方法，而对原有代码的修改会对调用“猪”“牛”“羊”等相关功能带来风险，也许某一天你会发现程序运行的结果变为“牛呼吸水”了。这种修改方式直接在代码级别上违背了单一职责原则，虽然修改起来最简单，但隐患却是最大的。还有一种修改方式：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">class Animal{</div><div class="line">		<span class="keyword">public</span> <span class="keyword">void</span> <span class="title">breathe</span>(String animal){</div><div class="line">			System.<span class="keyword">out</span>.println(animal+<span class="string">"呼吸空气"</span>);</div><div class="line">		}</div><div class="line">	</div><div class="line">		<span class="keyword">public</span> <span class="keyword">void</span> <span class="title">breathe2</span>(String animal){</div><div class="line">			System.<span class="keyword">out</span>.println(animal+<span class="string">"呼吸水"</span>);</div><div class="line">		}</div><div class="line">	}</div><div class="line">	</div><div class="line">	<span class="keyword">public</span> <span class="keyword">class</span> Client{</div><div class="line">		<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span>(String[] args){</div><div class="line">			Animal animal = <span class="keyword">new</span> Animal();</div><div class="line">			animal.breathe(<span class="string">"牛"</span>);</div><div class="line">			animal.breathe(<span class="string">"羊"</span>);</div><div class="line">			animal.breathe(<span class="string">"猪"</span>);</div><div class="line">			animal.breathe2(<span class="string">"鱼"</span>);</div><div class="line">		}</div><div class="line">	}</div></pre></td></tr></table></figure>
+
+<p>可以看到，这种修改方式没有改动原来的方法，而是在类中新加了一个方法，这样虽然也违背了单一职责原则，但在方法级别上却是符合单一职责原则的，因为它并没有动原来方法的代码。这三种方式各有优缺点，那么在实际编程中，采用哪一中呢？其实这真的比较难说，需要根据实际情况来确定。我的原则是：只有逻辑足够简单，才可以在代码级别上违反单一职责原则；只有类中方法数量足够少，才可以在方法级别上违反单一职责原则；<br>        例如本文所举的这个例子，它太简单了，它只有一个方法，所以，无论是在代码级别上违反单一职责原则，还是在方法级别上违反，都不会造成太大的影响。实际应用中的类都要复杂的多，一旦发生职责扩散而需要修改类时，除非这个类本身非常简单，否则还是遵循单一职责原则的好。<br>遵循单一职责原的优点有：<br>可以降低类的复杂度，一个类只负责一项职责，其逻辑肯定要比负责多项职责简单的多；<br>提高类的可读性，提高系统的可维护性；<br>变更引起的风险降低，变更是必然的，如果单一职责原则遵守的好，当修改一个功能时，可以显著降低对其他功能的影响。<br>        需要说明的一点是单一职责原则不只是面向对象编程思想所特有的，只要是模块化的程序设计，都适用单一职责原则。</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/面向对象编程/">面向对象编程</a>
+  </div>
+
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/设计模式/">设计模式</a>
+</div>
+
+
+
+<div class="article-share" id="share">
+
+  <div data-url="jrockyhome.com/2014/07/04/(140705)设计模式实践三-单一职责原则/" data-title="设计模式实践三-单一职责原则 | Rocky&#39;s Blog" data-tsina="null" class="share clearfix">
+  </div>
+
+</div>
+</footer>   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2014/07/05/(140706)设计模式实践四-里氏替换原则/" title="设计模式实践四-里氏替换原则">
+  <strong>PREVIOUS:</strong><br/>
+  <span>
+  设计模式实践四-里氏替换原则</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2014/07/03/(140703)设计模式实践二-开闭原则/"  title="设计模式实践二-开闭原则">
+ <strong>NEXT:</strong><br/> 
+ <span>设计模式实践二-开闭原则
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section class="comment">
+	<div class="ds-thread"></div>
+</section>
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+  
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+			<li><a href="/categories/MySql/" title="MySql">MySql<sup>4</sup></a></li>
+		
+			<li><a href="/categories/OSGi/" title="OSGi">OSGi<sup>2</sup></a></li>
+		
+			<li><a href="/categories/RCP/" title="RCP">RCP<sup>1</sup></a></li>
+		
+			<li><a href="/categories/blog/" title="blog">blog<sup>3</sup></a></li>
+		
+			<li><a href="/categories/debug/" title="debug">debug<sup>2</sup></a></li>
+		
+			<li><a href="/categories/java/" title="java">java<sup>3</sup></a></li>
+		
+			<li><a href="/categories/linux/" title="linux">linux<sup>1</sup></a></li>
+		
+			<li><a href="/categories/maven/" title="maven">maven<sup>2</sup></a></li>
+		
+			<li><a href="/categories/大数据/" title="大数据">大数据<sup>1</sup></a></li>
+		
+			<li><a href="/categories/工作流引擎activity/" title="工作流引擎activity">工作流引擎activity<sup>1</sup></a></li>
+		
+			<li><a href="/categories/工具/" title="工具">工具<sup>4</sup></a></li>
+		
+			<li><a href="/categories/数据库/" title="数据库">数据库<sup>4</sup></a></li>
+		
+			<li><a href="/categories/算法/" title="算法">算法<sup>1</sup></a></li>
+		
+			<li><a href="/categories/设计模式/" title="设计模式">设计模式<sup>8</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			<li><a href="/tags/DB/" title="DB">DB<sup>4</sup></a></li>
+		
+			<li><a href="/tags/Eclipse插件开发/" title="Eclipse插件开发">Eclipse插件开发<sup>1</sup></a></li>
+		
+			<li><a href="/tags/H2/" title="H2">H2<sup>4</sup></a></li>
+		
+			<li><a href="/tags/MySql/" title="MySql">MySql<sup>5</sup></a></li>
+		
+			<li><a href="/tags/OSGi/" title="OSGi">OSGi<sup>2</sup></a></li>
+		
+			<li><a href="/tags/RCP/" title="RCP">RCP<sup>1</sup></a></li>
+		
+			<li><a href="/tags/Virgo/" title="Virgo">Virgo<sup>2</sup></a></li>
+		
+			<li><a href="/tags/debug/" title="debug">debug<sup>2</sup></a></li>
+		
+			<li><a href="/tags/freemarker/" title="freemarker">freemarker<sup>4</sup></a></li>
+		
+			<li><a href="/tags/info/" title="info">info<sup>1</sup></a></li>
+		
+			<li><a href="/tags/java/" title="java">java<sup>3</sup></a></li>
+		
+			<li><a href="/tags/linux/" title="linux">linux<sup>1</sup></a></li>
+		
+			<li><a href="/tags/maven/" title="maven">maven<sup>2</sup></a></li>
+		
+			<li><a href="/tags/rapid-generate/" title="rapid-generate">rapid-generate<sup>4</sup></a></li>
+		
+			<li><a href="/tags/代码生成器/" title="代码生成器">代码生成器<sup>4</sup></a></li>
+		
+			<li><a href="/tags/博客，文章/" title="博客，文章">博客，文章<sup>2</sup></a></li>
+		
+			<li><a href="/tags/大数据/" title="大数据">大数据<sup>1</sup></a></li>
+		
+			<li><a href="/tags/工作流引擎activity/" title="工作流引擎activity">工作流引擎activity<sup>1</sup></a></li>
+		
+			<li><a href="/tags/并发/" title="并发">并发<sup>1</sup></a></li>
+		
+			<li><a href="/tags/排序/" title="排序">排序<sup>1</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  <div class="rsspart">
+	<a href="null" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hi,I&#39;m Rocky! <br/>
+			享受编程带来的乐趣，并将这份快乐分享给来到这里的每一个人</p>
+	</section>
+	 
+	<div class="social-font clearfix">
+		
+		
+		
+		<a href="https://github.com/https://github.com/likeaboy" target="_blank" title="github"></a>
+		
+		
+		
+	</div>
+		<p class="copyright">Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/A-limon/pacman" target="_blank" title="Pacman">Pacman</a> © 2015 
+		
+		<a href="jrockyhome.com" target="_blank" title="Rocky">Rocky</a>
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.1.0.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else
+    {
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      h  = $('article h2')
+      ah = $('article h2'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  if(ah.length==0){
+    t.css('display','none');
+  }else{
+    c.click(function(){
+      ta.css('display', 'block').addClass('fadeIn');
+    });
+    o.click(function(){
+      ta.css('display', 'none');
+    });
+    $(window).scroll(function(){
+      ta.css("top",Math.max(140,320-$(this).scrollTop()));
+    });
+  };
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina');
+  var html = [
+  '<a href="#" class="overlay" id="qrcode"></a>',
+  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#share"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
+  '<a href="#textlogo" class="article-back-to-top" title="Top"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="QRcode"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="Weibo"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+  $('.article-share-qrcode').click(function(){
+    var imgSrc = $('#qrcode-pic').attr('data-src');
+    $('#qrcode-pic').attr('src', imgSrc);
+    $('#qrcode-pic').load(function(){
+        $('.qrcode strong').text(' ');
+    });
+  });
+});     
+</script>
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"null"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+  </body>
+</html>

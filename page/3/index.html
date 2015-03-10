@@ -1,0 +1,399 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>Rocky&#39;s Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
+    
+    <meta name="author" content="Rocky">
+    
+    
+    
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/pacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/pacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+
+</head>
+
+  <body>
+    <header>
+      <div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.svg" alt="Rocky&#39;s Blog" title="Rocky&#39;s Blog"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="Rocky&#39;s Blog">Rocky&#39;s Blog</a></h1>
+				<h2 class="blog-motto">积沙成塔</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+					
+					<form class="search" action="/search/index.html" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="text" id="search" autocomplete="off" name="q" maxlength="20" placeholder="Search" />
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+
+    </header>
+    <div id="container">
+      <div id="main">
+
+  <section class="post" itemscope itemprop="blogPost">
+  
+    <a href="/2014/07/24/(140724)Mysql事务总结/" title="Mysql事务总结" itemprop="url">
+  
+    <h1 itemprop="name">Mysql事务总结</h1>
+    
+     
+           <p itemprop="description" >数据库 事务的特性ACID
+　 事务(Transaction)是并发控制的基本单位。
+　 所谓事务，它是一个操作序列，这些操作要么都执行，要么都不执行，它是一个不可分割的工作单位。例如，银行转帐工作：从一个帐号扣款并使另一个帐号增款，这两个操作要么都执行，要么都不执行。
+　 数据</p>
+        
+    
+    <time datetime="2014-07-24T09:43:22.000Z" itemprop="datePublished">2014-07-24</time>
+  </a>
+</section>
+
+  <section class="post" itemscope itemprop="blogPost">
+  
+    <a href="/2014/07/23/(140723)MySql存储过程总结/" title="MySql存储过程总结" itemprop="url">
+  
+    <h1 itemprop="name">MySql存储过程总结</h1>
+    
+     
+           <p itemprop="description" >存储过程如同一门程序设计语言，同样包含了数据类型、流程控制、输入和输出和它自己的函数库。
+——————————基本语法——————————
+一.创建存储过程create procedure sp_name()begin………end
+二.调用存储过程1.基本语法：call sp_n</p>
+        
+    
+    <time datetime="2014-07-23T13:11:22.000Z" itemprop="datePublished">2014-07-23</time>
+  </a>
+</section>
+
+  <section class="post" itemscope itemprop="blogPost">
+  
+    <a href="/2014/07/22/(140722)MySql触发器应用总结/" title="MySql触发器应用总结" itemprop="url">
+  
+    <h1 itemprop="name">MySql触发器应用总结</h1>
+    
+     
+           <p itemprop="description" >什么触发器
+1，个人理解触发器，从字面来理解，一触即发的一个器，简称触发器（哈哈，个人理解），简单理解就是，满足一定条件就可触发某个操作。2，官方定义触发器（trigger）是个特殊的存储过程，它的执行不是由程序调用，也不是手工启动，而是由事件来触发，比如当对一个表进行操作（ i</p>
+        
+    
+    <time datetime="2014-07-22T15:04:17.000Z" itemprop="datePublished">2014-07-22</time>
+  </a>
+</section>
+
+  <section class="post" itemscope itemprop="blogPost">
+  
+    <a href="/2014/07/08/(140708)设计模式实践七-迪米特法则/" title="设计模式实践七-迪米特法则" itemprop="url">
+  
+    <h1 itemprop="name">设计模式实践七-迪米特法则</h1>
+    
+     
+           <p itemprop="description" >定义：一个对象应该对其他对象保持最少的了解。问题由来：类与类之间的关系越密切，耦合度越大，当一个类发生改变时，对另一个类的影响也越大。解决方案：尽量降低类与类之间的耦合。         自从我们接触编程开始，就知道了软件编程的总的原则：低耦合，高内聚。无论是面向过程编程还是面向</p>
+        
+    
+    <time datetime="2014-07-08T15:04:17.000Z" itemprop="datePublished">2014-07-08</time>
+  </a>
+</section>
+
+  <section class="post" itemscope itemprop="blogPost">
+  
+    <a href="/2014/07/07/(140704)设计模式实践六-接口隔离原则/" title="设计模式实践六-接口隔离原则" itemprop="url">
+  
+    <h1 itemprop="name">设计模式实践六-接口隔离原则</h1>
+    
+     
+           <p itemprop="description" >定义：客户端不应该依赖它不需要的接口；一个类对另一个类的依赖应该建立在最小的接口上。问题由来：类A通过接口I依赖类B，类C通过接口I依赖类D，如果接口I对于类A和类B来说不是最小接口，则类B和类D必须去实现他们不需要的方法。解决方案：将臃肿的接口I拆分为独立的几个接口，类A和类C</p>
+        
+    
+    <time datetime="2014-07-07T11:55:17.000Z" itemprop="datePublished">2014-07-07</time>
+  </a>
+</section>
+
+  <section class="post" itemscope itemprop="blogPost">
+  
+    <a href="/2014/07/06/(140707)设计模式实践五-依赖倒置原则/" title="设计模式实践五-依赖倒置原则" itemprop="url">
+  
+    <h1 itemprop="name">设计模式实践五-依赖倒置原则</h1>
+    
+     
+           <p itemprop="description" >定义：高层模块不应该依赖低层模块，二者都应该依赖其抽象；抽象不应该依赖细节；细节应该依赖抽象。问题由来：类A直接依赖类B，假如要将类A改为依赖类C，则必须通过修改类A的代码来达成。这种场景下，类A一般是高层模块，负责复杂的业务逻辑；类B和类C是低层模块，负责基本的原子操作；假如修</p>
+        
+    
+    <time datetime="2014-07-06T13:33:46.000Z" itemprop="datePublished">2014-07-06</time>
+  </a>
+</section>
+
+  <section class="post" itemscope itemprop="blogPost">
+  
+    <a href="/2014/07/05/(140706)设计模式实践四-里氏替换原则/" title="设计模式实践四-里氏替换原则" itemprop="url">
+  
+    <h1 itemprop="name">设计模式实践四-里氏替换原则</h1>
+    
+     
+           <p itemprop="description" >肯定有不少人跟我刚看到这项原则的时候一样，对这个原则的名字充满疑惑。其实原因就是这项原则最早是在1988年，由麻省理工学院的一位姓里的女士（Barbara Liskov）提出来的。定义1：如果对每一个类型为 T1的对象 o1，都有类型为 T2 的对象o2，使得以 T1定义的所有程</p>
+        
+    
+    <time datetime="2014-07-05T12:14:55.000Z" itemprop="datePublished">2014-07-05</time>
+  </a>
+</section>
+
+  <section class="post" itemscope itemprop="blogPost">
+  
+    <a href="/2014/07/04/(140705)设计模式实践三-单一职责原则/" title="设计模式实践三-单一职责原则" itemprop="url">
+  
+    <h1 itemprop="name">设计模式实践三-单一职责原则</h1>
+    
+     
+           <p itemprop="description" >定义：不要存在多于一个导致类变更的原因。通俗的说，即一个类只负责一项职责。问题由来：类T负责两个不同的职责：职责P1，职责P2。当由于职责P1需求发生改变而需要修改类T时，有可能会导致原本运行正常的职责P2功能发生故障。解决方案：遵循单一职责原则。分别建立两个类T1、T2，使T1</p>
+        
+    
+    <time datetime="2014-07-04T13:14:55.000Z" itemprop="datePublished">2014-07-04</time>
+  </a>
+</section>
+
+  <section class="post" itemscope itemprop="blogPost">
+  
+    <a href="/2014/07/03/(140703)设计模式实践二-开闭原则/" title="设计模式实践二-开闭原则" itemprop="url">
+  
+    <h1 itemprop="name">设计模式实践二-开闭原则</h1>
+    
+     
+           <p itemprop="description" >定义：一个软件实体如类、模块和函数应该对扩展开放，对修改关闭。问题由来：在软件的生命周期内，因为变化、升级和维护等原因需要对软件原有代码进行修改时，可能会给旧代码中引入错误，也可能会使我们不得不对整个功能进行重构，并且需要原有代码经过重新测试。解决方案：当软件需要变化时，尽量通过</p>
+        
+    
+    <time datetime="2014-07-03T14:14:55.000Z" itemprop="datePublished">2014-07-03</time>
+  </a>
+</section>
+
+  <section class="post" itemscope itemprop="blogPost">
+  
+    <a href="/2014/07/02/(140702)设计模式实践一-概述/" title="设计模式实践一-概述" itemprop="url">
+  
+    <h1 itemprop="name">设计模式实践一-概述</h1>
+    
+     
+           <p itemprop="description" >设计模式（Design Patterns）                                  ——可复用面向对象软件的基础设计模式（Design pattern）是一套被反复使用、多数人知晓的、经过分类编目的、代码设计经验的总结。使用设计模式是为了可重用代码、让代</p>
+        
+    
+    <time datetime="2014-07-02T09:41:55.000Z" itemprop="datePublished">2014-07-02</time>
+  </a>
+</section>
+
+
+  <nav id="page-nav" class="clearfix">
+    <a class="extend prev" rel="prev" href="/page/2/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/4/">Next &raquo;</a>
+  </nav>
+
+</div>
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+			<li><a href="/categories/MySql/" title="MySql">MySql<sup>4</sup></a></li>
+		
+			<li><a href="/categories/OSGi/" title="OSGi">OSGi<sup>2</sup></a></li>
+		
+			<li><a href="/categories/RCP/" title="RCP">RCP<sup>1</sup></a></li>
+		
+			<li><a href="/categories/blog/" title="blog">blog<sup>3</sup></a></li>
+		
+			<li><a href="/categories/debug/" title="debug">debug<sup>2</sup></a></li>
+		
+			<li><a href="/categories/java/" title="java">java<sup>3</sup></a></li>
+		
+			<li><a href="/categories/linux/" title="linux">linux<sup>1</sup></a></li>
+		
+			<li><a href="/categories/maven/" title="maven">maven<sup>2</sup></a></li>
+		
+			<li><a href="/categories/大数据/" title="大数据">大数据<sup>1</sup></a></li>
+		
+			<li><a href="/categories/工作流引擎activity/" title="工作流引擎activity">工作流引擎activity<sup>1</sup></a></li>
+		
+			<li><a href="/categories/工具/" title="工具">工具<sup>4</sup></a></li>
+		
+			<li><a href="/categories/数据库/" title="数据库">数据库<sup>4</sup></a></li>
+		
+			<li><a href="/categories/算法/" title="算法">算法<sup>1</sup></a></li>
+		
+			<li><a href="/categories/设计模式/" title="设计模式">设计模式<sup>8</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			<li><a href="/tags/DB/" title="DB">DB<sup>4</sup></a></li>
+		
+			<li><a href="/tags/Eclipse插件开发/" title="Eclipse插件开发">Eclipse插件开发<sup>1</sup></a></li>
+		
+			<li><a href="/tags/H2/" title="H2">H2<sup>4</sup></a></li>
+		
+			<li><a href="/tags/MySql/" title="MySql">MySql<sup>5</sup></a></li>
+		
+			<li><a href="/tags/OSGi/" title="OSGi">OSGi<sup>2</sup></a></li>
+		
+			<li><a href="/tags/RCP/" title="RCP">RCP<sup>1</sup></a></li>
+		
+			<li><a href="/tags/Virgo/" title="Virgo">Virgo<sup>2</sup></a></li>
+		
+			<li><a href="/tags/debug/" title="debug">debug<sup>2</sup></a></li>
+		
+			<li><a href="/tags/freemarker/" title="freemarker">freemarker<sup>4</sup></a></li>
+		
+			<li><a href="/tags/info/" title="info">info<sup>1</sup></a></li>
+		
+			<li><a href="/tags/java/" title="java">java<sup>3</sup></a></li>
+		
+			<li><a href="/tags/linux/" title="linux">linux<sup>1</sup></a></li>
+		
+			<li><a href="/tags/maven/" title="maven">maven<sup>2</sup></a></li>
+		
+			<li><a href="/tags/rapid-generate/" title="rapid-generate">rapid-generate<sup>4</sup></a></li>
+		
+			<li><a href="/tags/代码生成器/" title="代码生成器">代码生成器<sup>4</sup></a></li>
+		
+			<li><a href="/tags/博客，文章/" title="博客，文章">博客，文章<sup>2</sup></a></li>
+		
+			<li><a href="/tags/大数据/" title="大数据">大数据<sup>1</sup></a></li>
+		
+			<li><a href="/tags/工作流引擎activity/" title="工作流引擎activity">工作流引擎activity<sup>1</sup></a></li>
+		
+			<li><a href="/tags/并发/" title="并发">并发<sup>1</sup></a></li>
+		
+			<li><a href="/tags/排序/" title="排序">排序<sup>1</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  <div class="rsspart">
+	<a href="null" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hi,I&#39;m Rocky! <br/>
+			享受编程带来的乐趣，并将这份快乐分享给来到这里的每一个人</p>
+	</section>
+	 
+	<div class="social-font clearfix">
+		
+		
+		
+		<a href="https://github.com/https://github.com/likeaboy" target="_blank" title="github"></a>
+		
+		
+		
+	</div>
+		<p class="copyright">Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/A-limon/pacman" target="_blank" title="Pacman">Pacman</a> © 2015 
+		
+		<a href="jrockyhome.com" target="_blank" title="Rocky">Rocky</a>
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.1.0.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else
+    {
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+        
+    }
+  });
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+
+
+
+
+
+  </body>
+ </html>

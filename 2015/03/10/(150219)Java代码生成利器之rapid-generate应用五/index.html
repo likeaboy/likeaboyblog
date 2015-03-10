@@ -1,0 +1,426 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>Rocky&#39;s Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
+    
+    <meta name="author" content="Rocky">
+    
+    <meta name="description" content="本文我们将分析一下rapid-generate源码，看看其设计思路以及运行原理究竟是怎样的。
+我们从Test类的main函数入口说起
+123456789public static void main(String[]args)throws Exception{	        GeneratorFa">
+    
+    
+    
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/pacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/pacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+
+</head>
+
+  <body>
+    <header>
+      <div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.svg" alt="Rocky&#39;s Blog" title="Rocky&#39;s Blog"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="Rocky&#39;s Blog">Rocky&#39;s Blog</a></h1>
+				<h2 class="blog-motto">积沙成塔</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+					
+					<form class="search" action="/search/index.html" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="text" id="search" autocomplete="off" name="q" maxlength="20" placeholder="Search" />
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2015/03/10/(150219)Java代码生成利器之rapid-generate应用五/" title="" itemprop="url"></a>
+  </h1>
+  <p class="article-author">By
+    
+      <a href="jrockyhome.com" title="Rocky">Rocky</a>
+    </p>
+  <p class="article-time">
+    <time datetime="2015-03-10T10:47:02.000Z" itemprop="datePublished">2015-03-10</time>
+    Updated:<time datetime="2015-03-10T10:47:03.000Z" itemprop="dateModified">2015-03-10</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+		</div>
+		
+		<p>本文我们将分析一下rapid-generate源码，看看其设计思路以及运行原理究竟是怎样的。</p>
+<p>我们从Test类的main函数入口说起</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">public <span class="keyword">static</span> <span class="type">void</span> main(<span class="type">String</span>[]args)throws <span class="type">Exception</span>{</div><div class="line">	        <span class="type">GeneratorFacade</span> g = new <span class="type">GeneratorFacade</span>();</div><div class="line">	         //删除生成器的输出目录//</div><div class="line">	        g.deleteOutRootDir();</div><div class="line">	    </div><div class="line">	        //自动搜索数据库中的所有表并生成文件,<span class="keyword">template</span>为模板的根目录</div><div class="line">	        g.generateByAllTable(<span class="string">"template"</span>);</div><div class="line"></div><div class="line">	    }</div></pre></td></tr></table></figure>
+
+<p>GeneratorFacade 类从命名上就能看出，运用了门面设计模式，该类作为生成器功能的入口，统一组织管理各个模块以及功能。</p>
+<p>g.generateByAllTable(“template”);这一句实际上是调用GeneratorFacade 内部类ProcessUtils的processByAllTable方法。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">generateByAllTable</span>(String templateRootDir) <span class="keyword">throws</span> Exception {</div><div class="line">			<span class="keyword">new</span> ProcessUtils().processByAllTable(templateRootDir,<span class="keyword">false</span>);</div><div class="line">		}</div></pre></td></tr></table></figure>
+
+<p>进一步分析processByAllTable()方法</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">processByAllTable</span>(String templateRootDir,<span class="keyword">boolean</span> isDelete) <span class="keyword">throws</span> Exception {</div><div class="line">	<span class="comment">//该方法通过读取数据库的metaData，获所有数据库表信息，并在内存中生成对应的Table对象。主要应用底层接口java.sql.DatabaseMetaData</span></div><div class="line">				List&lt;Table&gt; tables = TableFactory.getInstance().getAllTables();</div><div class="line">				List exceptions = <span class="keyword">new</span> ArrayList();</div><div class="line">				<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; tables.size(); i++ ) {</div><div class="line">					<span class="keyword">try</span> {</div><div class="line">						processByTable(getGenerator(templateRootDir),tables.get(i),isDelete);</div><div class="line">					}<span class="keyword">catch</span>(GeneratorException ge) {</div><div class="line">						exceptions.addAll(ge.getExceptions());</div><div class="line">					}</div><div class="line">				}</div><div class="line">				PrintUtils.printExceptionsSumary(<span class="string">""</span>,getGenerator(templateRootDir).getOutRootDir(),exceptions);</div><div class="line">			}</div></pre></td></tr></table></figure>
+
+<p>得到list之后，接下来遍历该集合，调用processByTable()方法</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">processByTable</span>(Generator g, Table table,<span class="keyword">boolean</span> isDelete) <span class="keyword">throws</span> Exception {</div><div class="line">	<span class="comment">//生成GeneratorModel 对象，包含filePathModel和templateModel的两个Map集合，为下一步开始生成文件做准备</span></div><div class="line">		        GeneratorModel m = GeneratorModelUtils.newFromTable(table);</div><div class="line">		        PrintUtils.printBeginProcess(table.getSqlName()+<span class="string">" =&gt; "</span>+table.getClassName(),isDelete);</div><div class="line">		        <span class="keyword">if</span>(isDelete)</div><div class="line">		        	g.deleteBy(m.templateModel,m.filePathModel);</div><div class="line">		        <span class="keyword">else</span> </div><div class="line">		        	g.generateBy(m.templateModel,m.filePathModel);</div><div class="line">		    }</div></pre></td></tr></table></figure>
+
+<p>读取templateModel和filePathModel两个Map集合作为generateBy函数的参数</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="javadoc">/**</span></div><div class="line">	     * 生成文件</div><div class="line">	     *<span class="javadoctag"> @param</span> templateModel 生成器模板可以引用的变量</div><div class="line">	     *<span class="javadoctag"> @param</span> filePathModel 文件路径可以引用的变量</div><div class="line">	     *<span class="javadoctag"> @throws</span> Exception</div><div class="line">	     */</div><div class="line">		<span class="keyword">public</span> Generator <span class="title">generateBy</span>(Map templateModel,Map filePathModel) <span class="keyword">throws</span> Exception {</div><div class="line">			processTemplateRootDirs(templateModel, filePathModel,<span class="keyword">false</span>);</div><div class="line">			<span class="keyword">return</span> <span class="keyword">this</span>;</div><div class="line">		}</div></pre></td></tr></table></figure>
+
+<p>templateRootDirs是List集合，其中只有一个元素，[F:\2013-2014\Eclipse-J2EE\workspace\Rapid-Generator-Pro\template]，该路径正是java项目中template目录所在路径</p>
+<p><img src="http://img.blog.csdn.net/20150303103704071" alt="这里写图片描述"></p>
+<p>接着分析processTemplateRootDirs函数，由于list集合size位1，此处之循环1次，重点在scanTemplatesAndProcess函数。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">private</span> <span class="keyword">void</span> processTemplateRootDirs(Map templateModel,Map filePathModel,<span class="keyword">boolean</span> isDelete) <span class="keyword">throws</span> Exception {</div><div class="line">		    <span class="keyword">if</span>(StringHelper.isBlank(getOutRootDir())) <span class="keyword">throw</span> <span class="keyword">new</span> IllegalStateException(<span class="string">"'outRootDir' property must be not null."</span>);</div><div class="line">			<span class="keyword">if</span>(templateRootDirs.<span class="keyword">size</span>() == <span class="number">0</span>) <span class="keyword">throw</span> <span class="keyword">new</span> IllegalStateException(<span class="string">"'templateRootDirs' cannot empty"</span>);</div><div class="line">			GeneratorException ge = <span class="keyword">new</span> GeneratorException(<span class="string">"generator occer error, Generator BeanInfo:"</span>+BeanHelper.describe(<span class="keyword">this</span>));</div><div class="line">			<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="keyword">this</span>.templateRootDirs.<span class="keyword">size</span>(); i++) {</div><div class="line">				<span class="keyword">File</span> templateRootDir = (<span class="keyword">File</span>)templateRootDirs.get(i);</div><div class="line">				List&lt;Exception&gt; exceptions = scanTemplatesAndProcess(templateRootDir,templateModel,filePathModel,isDelete);</div><div class="line">				ge.addAll(exceptions); </div><div class="line">			}</div><div class="line">			<span class="keyword">if</span>(!ge.exceptions.isEmpty()) <span class="keyword">throw</span> ge;</div><div class="line">		}</div></pre></td></tr></table></figure>
+
+<p>scanTemplatesAndProcess函数接收template所在目录的路径以及templateModel和filePathModel两个Map参数</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">private</span> List&lt;Exception&gt; scanTemplatesAndProcess(<span class="keyword">File</span> templateRootDir, Map templateModel,Map filePathModel,<span class="keyword">boolean</span> isDelete) <span class="keyword">throws</span> Exception {</div><div class="line">	<span class="keyword">if</span>(templateRootDir == <span class="keyword">null</span>) <span class="keyword">throw</span> <span class="keyword">new</span> IllegalStateException(<span class="string">"'templateRootDir' must be not null"</span>);</div><div class="line">	GLogger.<span class="keyword">println</span>(<span class="string">"-------------------load template from templateRootDir = '"</span>+templateRootDir.getAbsolutePath()+<span class="string">"' outRootDir:"</span>+<span class="keyword">new</span> <span class="keyword">File</span>(outRootDir).getAbsolutePath());</div><div class="line">	<span class="comment">//获取模板根目录下所有要生成的文件模板路径</span></div><div class="line">	 List srcFiles = FileHelper.searchAllNotIgnoreFile(templateRootDir);</div><div class="line">	</div><div class="line">	List&lt;Exception&gt; exceptions = <span class="keyword">new</span> ArrayList();</div><div class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; srcFiles.<span class="keyword">size</span>(); i++) {</div><div class="line">		<span class="keyword">File</span> srcFile = (<span class="keyword">File</span>)srcFiles.get(i);</div><div class="line">		<span class="keyword">try</span> {</div><div class="line">		    <span class="keyword">if</span>(isDelete){</div><div class="line">		        <span class="keyword">new</span> TemplateProcessor().executeDelete(templateRootDir, templateModel,filePathModel, srcFile);</div><div class="line">		    }<span class="keyword">else</span> {</div><div class="line">		        <span class="keyword">new</span> TemplateProcessor().executeGenerate(templateRootDir, templateModel,filePathModel, srcFile);</div><div class="line">		    }</div><div class="line">		}<span class="keyword">catch</span>(Exception e) {</div><div class="line">			<span class="keyword">if</span> (ignoreTemplateGenerateException) {</div><div class="line">		        GLogger.warn(<span class="string">"iggnore generate error,template is:"</span> + srcFile+<span class="string">" cause:"</span>+e);</div><div class="line">		        exceptions.add(e);</div><div class="line">		    } <span class="keyword">else</span> {</div><div class="line">				<span class="keyword">throw</span> e;</div><div class="line">		    }</div><div class="line">		}</div><div class="line">	}</div><div class="line">	<span class="keyword">return</span> exceptions;</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>分析最终生成的核心代码，调用底层的freemarker，将模板转换为对应源码文件输出到指定目录下面。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">private</span> <span class="keyword">void</span> executeGenerate(<span class="keyword">File</span> templateRootDir,Map templateModel, Map filePathModel ,<span class="keyword">File</span> srcFile) <span class="keyword">throws</span> SQLException, IOException,TemplateException {</div><div class="line">			String templateFile = FileHelper.getRelativePath(templateRootDir, srcFile);</div><div class="line">		<span class="comment">//忽略目录，以及非模板的文件	if(GeneratorHelper.isIgnoreTemplateProcess(srcFile, templateFile,includes,excludes)) {</span></div><div class="line">				<span class="keyword">return</span>;</div><div class="line">			}</div><div class="line">			</div><div class="line">			<span class="keyword">if</span>(isCopyBinaryFile && FileHelper.isBinaryFile(srcFile)) {</div><div class="line">				String outputFilepath = proceeForOutputFilepath(filePathModel, templateFile);</div><div class="line">				GLogger.<span class="keyword">println</span>(<span class="string">"[copy binary file by extention] from:"</span>+srcFile+<span class="string">" =&gt; "</span>+<span class="keyword">new</span> <span class="keyword">File</span>(getOutRootDir(),outputFilepath));</div><div class="line">				IOHelper.copyAndClose(<span class="keyword">new</span> FileInputStream(srcFile), <span class="keyword">new</span> FileOutputStream(<span class="keyword">new</span> <span class="keyword">File</span>(getOutRootDir(),outputFilepath)));</div><div class="line">				<span class="keyword">return</span>;</div><div class="line">			}</div><div class="line">			</div><div class="line">            String outputFilepath = <span class="keyword">null</span>;</div><div class="line">            <span class="keyword">try</span> {</div><div class="line">                outputFilepath = proceeForOutputFilepath(filePathModel,templateFile);</div><div class="line">                </div><div class="line">                initGeneratorControlProperties(srcFile);</div><div class="line">                processTemplateForGeneratorControl(templateModel, templateFile);</div><div class="line">                </div><div class="line">                <span class="keyword">if</span>(gg.isIgnoreOutput()) {</div><div class="line">                    GLogger.<span class="keyword">println</span>(<span class="string">"[not generate] by gg.isIgnoreOutput()=true on template:"</span>+templateFile);</div><div class="line">                    <span class="keyword">return</span>;</div><div class="line">                }</div><div class="line">                </div><div class="line">                <span class="keyword">if</span>(outputFilepath != <span class="keyword">null</span> ) {</div><div class="line">                    generateNewFileOrInsertIntoFile(templateFile,outputFilepath, templateModel);</div><div class="line">                }</div><div class="line">			}<span class="keyword">catch</span>(Exception e) {</div><div class="line">			    <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"generate oucur error,templateFile is:"</span> + templateFile+<span class="string">" =&gt; "</span>+ outputFilepath+<span class="string">" cause:"</span>+e, e);</div><div class="line">			}</div><div class="line">		}</div></pre></td></tr></table></figure>
+
+<p>最后附上在分析时所打的断点</p>
+<p><img src="http://img.blog.csdn.net/20150303110623489" alt="这里写图片描述"></p>
+<p>总结，原理其实很简单，就是用freemarker语法编写template模板文件，生成时读取数据库信息，动态的将freemarker语法标记替换掉，最终就得到了源码文件。</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+
+
+
+
+<div class="article-share" id="share">
+
+  <div data-url="jrockyhome.com/2015/03/10/(150219)Java代码生成利器之rapid-generate应用五/" data-title="Rocky&#39;s Blog" data-tsina="null" class="share clearfix">
+  </div>
+
+</div>
+</footer>   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2015/03/10/(150117)Docker应用实践总结/" title="">
+  <strong>PREVIOUS:</strong><br/>
+  <span>
+  (no title)</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2015/02/18/(150218)Java代码生成利器之rapid-generate应用四/"  title="Java代码生成利器之rapid-generate应用四">
+ <strong>NEXT:</strong><br/> 
+ <span>Java代码生成利器之rapid-generate应用四
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section class="comment">
+	<div class="ds-thread"></div>
+</section>
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+  
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+			<li><a href="/categories/MySql/" title="MySql">MySql<sup>4</sup></a></li>
+		
+			<li><a href="/categories/OSGi/" title="OSGi">OSGi<sup>2</sup></a></li>
+		
+			<li><a href="/categories/RCP/" title="RCP">RCP<sup>1</sup></a></li>
+		
+			<li><a href="/categories/blog/" title="blog">blog<sup>3</sup></a></li>
+		
+			<li><a href="/categories/debug/" title="debug">debug<sup>2</sup></a></li>
+		
+			<li><a href="/categories/java/" title="java">java<sup>3</sup></a></li>
+		
+			<li><a href="/categories/linux/" title="linux">linux<sup>1</sup></a></li>
+		
+			<li><a href="/categories/maven/" title="maven">maven<sup>2</sup></a></li>
+		
+			<li><a href="/categories/大数据/" title="大数据">大数据<sup>1</sup></a></li>
+		
+			<li><a href="/categories/工作流引擎activity/" title="工作流引擎activity">工作流引擎activity<sup>1</sup></a></li>
+		
+			<li><a href="/categories/工具/" title="工具">工具<sup>4</sup></a></li>
+		
+			<li><a href="/categories/数据库/" title="数据库">数据库<sup>4</sup></a></li>
+		
+			<li><a href="/categories/算法/" title="算法">算法<sup>1</sup></a></li>
+		
+			<li><a href="/categories/设计模式/" title="设计模式">设计模式<sup>8</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			<li><a href="/tags/DB/" title="DB">DB<sup>4</sup></a></li>
+		
+			<li><a href="/tags/Eclipse插件开发/" title="Eclipse插件开发">Eclipse插件开发<sup>1</sup></a></li>
+		
+			<li><a href="/tags/H2/" title="H2">H2<sup>4</sup></a></li>
+		
+			<li><a href="/tags/MySql/" title="MySql">MySql<sup>5</sup></a></li>
+		
+			<li><a href="/tags/OSGi/" title="OSGi">OSGi<sup>2</sup></a></li>
+		
+			<li><a href="/tags/RCP/" title="RCP">RCP<sup>1</sup></a></li>
+		
+			<li><a href="/tags/Virgo/" title="Virgo">Virgo<sup>2</sup></a></li>
+		
+			<li><a href="/tags/debug/" title="debug">debug<sup>2</sup></a></li>
+		
+			<li><a href="/tags/freemarker/" title="freemarker">freemarker<sup>4</sup></a></li>
+		
+			<li><a href="/tags/info/" title="info">info<sup>1</sup></a></li>
+		
+			<li><a href="/tags/java/" title="java">java<sup>3</sup></a></li>
+		
+			<li><a href="/tags/linux/" title="linux">linux<sup>1</sup></a></li>
+		
+			<li><a href="/tags/maven/" title="maven">maven<sup>2</sup></a></li>
+		
+			<li><a href="/tags/rapid-generate/" title="rapid-generate">rapid-generate<sup>4</sup></a></li>
+		
+			<li><a href="/tags/代码生成器/" title="代码生成器">代码生成器<sup>4</sup></a></li>
+		
+			<li><a href="/tags/博客，文章/" title="博客，文章">博客，文章<sup>2</sup></a></li>
+		
+			<li><a href="/tags/大数据/" title="大数据">大数据<sup>1</sup></a></li>
+		
+			<li><a href="/tags/工作流引擎activity/" title="工作流引擎activity">工作流引擎activity<sup>1</sup></a></li>
+		
+			<li><a href="/tags/并发/" title="并发">并发<sup>1</sup></a></li>
+		
+			<li><a href="/tags/排序/" title="排序">排序<sup>1</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  <div class="rsspart">
+	<a href="null" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hi,I&#39;m Rocky! <br/>
+			享受编程带来的乐趣，并将这份快乐分享给来到这里的每一个人</p>
+	</section>
+	 
+	<div class="social-font clearfix">
+		
+		
+		
+		<a href="https://github.com/https://github.com/likeaboy" target="_blank" title="github"></a>
+		
+		
+		
+	</div>
+		<p class="copyright">Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/A-limon/pacman" target="_blank" title="Pacman">Pacman</a> © 2015 
+		
+		<a href="jrockyhome.com" target="_blank" title="Rocky">Rocky</a>
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.1.0.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else
+    {
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      h  = $('article h2')
+      ah = $('article h2'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  if(ah.length==0){
+    t.css('display','none');
+  }else{
+    c.click(function(){
+      ta.css('display', 'block').addClass('fadeIn');
+    });
+    o.click(function(){
+      ta.css('display', 'none');
+    });
+    $(window).scroll(function(){
+      ta.css("top",Math.max(140,320-$(this).scrollTop()));
+    });
+  };
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina');
+  var html = [
+  '<a href="#" class="overlay" id="qrcode"></a>',
+  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#share"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
+  '<a href="#textlogo" class="article-back-to-top" title="Top"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="QRcode"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="Weibo"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+  $('.article-share-qrcode').click(function(){
+    var imgSrc = $('#qrcode-pic').attr('data-src');
+    $('#qrcode-pic').attr('src', imgSrc);
+    $('#qrcode-pic').load(function(){
+        $('.qrcode strong').text(' ');
+    });
+  });
+});     
+</script>
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"null"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+  </body>
+</html>

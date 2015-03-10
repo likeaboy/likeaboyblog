@@ -1,0 +1,501 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>Linux常用命令总结 | Rocky&#39;s Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
+    
+    <meta name="author" content="Rocky">
+    
+    <meta name="description" content="玩过Linux的人都会知道，Linux中的命令的确是非常多，但是玩过Linux的人也从来不会因为Linux的命令如此之多而烦恼，因为我们只需要掌握我们最常用的命令就可以了。当然你也可以在使用时去找一下man，他会帮你解决不少的问题。然而每个人玩Linux的目的都不同，所以他们常用的命令也就差异非常大">
+    
+    
+    
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/pacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/pacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+
+</head>
+
+  <body>
+    <header>
+      <div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.svg" alt="Rocky&#39;s Blog" title="Rocky&#39;s Blog"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="Rocky&#39;s Blog">Rocky&#39;s Blog</a></h1>
+				<h2 class="blog-motto">积沙成塔</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+					
+					<form class="search" action="/search/index.html" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="text" id="search" autocomplete="off" name="q" maxlength="20" placeholder="Search" />
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2014/09/02/(140902)Linux常用命令总结/" title="Linux常用命令总结" itemprop="url">Linux常用命令总结</a>
+  </h1>
+  <p class="article-author">By
+    
+      <a href="jrockyhome.com" title="Rocky">Rocky</a>
+    </p>
+  <p class="article-time">
+    <time datetime="2014-09-02T11:19:32.000Z" itemprop="datePublished">2014-09-02</time>
+    Updated:<time datetime="2015-03-10T11:12:47.000Z" itemprop="dateModified">2015-03-10</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+		</div>
+		
+		<p>玩过Linux的人都会知道，Linux中的命令的确是非常多，但是玩过Linux的人也从来不会因为Linux的命令如此之多而烦恼，因为我们只需要掌握我们最常用的命令就可以了。当然你也可以在使用时去找一下man，他会帮你解决不少的问题。然而每个人玩Linux的目的都不同，所以他们常用的命令也就差异非常大，而我主要是用Linux进行C/C++和shell程序编写的，所以常用到的命令可以就会跟一个管理Linux系统的人有所不同。因为不想在使用是总是东查西找，所以在此总结一下，方便一下以后的查看。不多说，下面就说说我最常用的Linux命令。</p>
+<p><strong>1、cd命令</strong><br>这是一个非常基本，也是大家经常需要使用的命令，它用于切换当前目录，它的参数是要切换到的目录的路径，可以是绝对路径，也可以是相对路径。如：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">cd</span> /root/Docements <span class="comment"># 切换到目录/root/Docements  </span></div><div class="line"><span class="built_in">cd</span> ./path          <span class="comment"># 切换到当前目录下的path目录中，“.”表示当前目录    </span></div><div class="line"><span class="built_in">cd</span> ../path         <span class="comment"># 切换到上层目录中的path目录中，“..”表示上一层目录</span></div></pre></td></tr></table></figure>
+
+<p><strong>2、ls命令</strong><br>这是一个非常有用的查看文件与目录的命令，list之意，它的参数非常多，下面就列出一些我常用的参数吧，如下：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">-<span class="ruby">l ：列出长数据串，包含文件的属性与权限数据等  </span></div><div class="line">-<span class="ruby">a ：列出全部的文件，连同隐藏文件（开头为.的文件）一起列出来（常用）  </span></div><div class="line">-<span class="ruby">d ：仅列出目录本身，而不是列出目录的文件数据  </span></div><div class="line">-<span class="ruby">h ：将文件容量以较易读的方式（<span class="constant">GB</span>，kB等）列出来  </span></div><div class="line">-<span class="ruby"><span class="constant">R</span> ：连同子目录的内容一起列出（递归列出），等于该目录下的所有文件都会显示出来</span></div></pre></td></tr></table></figure>
+
+<p>注：这些参数也可以组合使用，下面举两个例子：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">ls <span class="operator">-l</span> <span class="comment">#以长数据串的形式列出当前目录下的数据文件和目录  </span></div><div class="line">ls <span class="operator">-l</span>R <span class="comment">#以长数据串的形式列出当前目录下的所有文件</span></div></pre></td></tr></table></figure>
+
+<p><strong>3、grep命令</strong><br>该命令常用于分析一行的信息，若当中有我们所需要的信息，就将该行显示出来，该命令通常与管道命令一起使用，用于对一些命令的输出进行筛选加工等等，它的简单语法为</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">grep</span> [-acinv] [--color=auto] <span class="string">'查找字符串'</span> filename</div></pre></td></tr></table></figure>
+
+<p>它的常用参数如下：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">-<span class="ruby">a ：将binary文件以text文件的方式查找数据  </span></div><div class="line">-<span class="ruby">c ：计算找到‘查找字符串’的次数  </span></div><div class="line">-<span class="ruby">i ：忽略大小写的区别，即把大小写视为相同  </span></div><div class="line">-<span class="ruby">v ：反向选择，即显示出没有‘查找字符串’内容的那一行  </span></div><div class="line"># 例如：  </div><div class="line"># 取出文件/etc/man.config中包含MANPATH的行，并把找到的关键字加上颜色  </div><div class="line">grep --color=auto 'MANPATH' /etc/man.config  </div><div class="line"># 把ls -l的输出中包含字母file（不区分大小写）的内容输出  </div><div class="line">ls -l | grep -i file</div></pre></td></tr></table></figure>
+
+<p>4、find命令<br>find是一个基于查找的功能非常强大的命令，相对而言，它的使用也相对较为复杂，参数也比较多，所以在这里将给把它们分类列出，它的基本语法如下：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line">find [PATH] [option] [action]  </div><div class="line">  </div><div class="line"># 与时间有关的参数：  </div><div class="line">-<span class="ruby">mtime n <span class="symbol">:</span> n为数字，意思为在n天之前的“一天内”被更改过的文件；  </span></div><div class="line">-<span class="ruby">mtime +n <span class="symbol">:</span> 列出在n天之前（不含n天本身）被更改过的文件名；  </span></div><div class="line">-<span class="ruby">mtime -n <span class="symbol">:</span> 列出在n天之内（含n天本身）被更改过的文件名；  </span></div><div class="line">-<span class="ruby">newer file <span class="symbol">:</span> 列出比file还要新的文件名  </span></div><div class="line"># 例如：  </div><div class="line">find /root -mtime 0 # 在当前目录下查找今天之内有改动的文件  </div><div class="line">  </div><div class="line"># 与用户或用户组名有关的参数：  </div><div class="line">-<span class="ruby">user name <span class="symbol">:</span> 列出文件所有者为name的文件  </span></div><div class="line">-<span class="ruby">group name <span class="symbol">:</span> 列出文件所属用户组为name的文件  </span></div><div class="line">-<span class="ruby">uid n <span class="symbol">:</span> 列出文件所有者为用户<span class="constant">ID</span>为n的文件  </span></div><div class="line">-<span class="ruby">gid n <span class="symbol">:</span> 列出文件所属用户组为用户组<span class="constant">ID</span>为n的文件  </span></div><div class="line"># 例如：  </div><div class="line">find /home/ljianhui -user ljianhui # 在目录/home/ljianhui中找出所有者为ljianhui的文件  </div><div class="line">  </div><div class="line"># 与文件权限及名称有关的参数：  </div><div class="line">-<span class="ruby">name filename ：找出文件名为filename的文件  </span></div><div class="line">-<span class="ruby">size [+-]<span class="constant">SIZE</span> ：找出比<span class="constant">SIZE</span>还要大（+）或小（-）的文件  </span></div><div class="line">-<span class="ruby">tpye <span class="constant">TYPE</span> ：查找文件的类型为<span class="constant">TYPE</span>的文件，<span class="constant">TYPE</span>的值主要有：一般文件（f)、设备文件（b、c）、  </span></div><div class="line">             目录（d）、连接文件（l）、socket（s）、FIFO管道文件（p）；  </div><div class="line">-<span class="ruby">perm mode ：查找文件权限刚好等于mode的文件，mode用数字表示，如<span class="number">0755</span>；  </span></div><div class="line">-<span class="ruby">perm -mode ：查找文件权限必须要全部包括mode权限的文件，mode用数字表示  </span></div><div class="line">-<span class="ruby">perm +mode ：查找文件权限包含任一mode的权限的文件，mode用数字表示  </span></div><div class="line"># 例如：  </div><div class="line">find / -name passwd # 查找文件名为passwd的文件  </div><div class="line">find . -perm 0755 # 查找当前目录中文件权限的0755的文件  </div><div class="line">find . -size +12k # 查找当前目录中大于12KB的文件，注意c表示byte</div></pre></td></tr></table></figure>
+
+<p><strong>5、cp命令</strong><br>该命令用于复制文件，copy之意，它还可以把多个文件一次性地复制到一个目录下，它的常用参数如下：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">-<span class="ruby">a ：将文件的特性一起复制  </span></div><div class="line">-<span class="ruby">p ：连同文件的属性一起复制，而非使用默认方式，与-a相似，常用于备份  </span></div><div class="line">-<span class="ruby">i ：若目标文件已经存在时，在覆盖时会先询问操作的进行  </span></div><div class="line">-<span class="ruby">r ：递归持续复制，用于目录的复制行为  </span></div><div class="line">-<span class="ruby">u ：目标文件与源文件有差异时才会复制</span></div></pre></td></tr></table></figure>
+
+<p>例如 ：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">cp</span> -a file1 file2 <span class="preprocessor">#连同文件的所有特性把文件file1复制成文件file2  </span></div><div class="line"><span class="keyword">cp</span> file1 file2 file3 dir <span class="preprocessor">#把文件file1、file2、file3复制到目录dir中</span></div></pre></td></tr></table></figure>
+
+<p><strong>6、mv命令</strong><br>该命令用于移动文件、目录或更名，move之意，它的常用参数如下：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">-<span class="ruby">f ：force强制的意思，如果目标文件已经存在，不会询问而直接覆盖  </span></div><div class="line">-<span class="ruby">i ：若目标文件已经存在，就会询问是否覆盖  </span></div><div class="line">-<span class="ruby">u ：若目标文件已经存在，且比目标文件新，才会更新</span></div></pre></td></tr></table></figure>
+
+<p>注：该命令可以把一个文件或多个文件一次移动一个文件夹中，但是最后一个目标文件一定要是“目录”。</p>
+<p>例如：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="title">mv</span> file1 file2 file3 dir <span class="comment"># 把文件file1、file2、file3移动到目录dir中  </span></div><div class="line">mv file1 file2 <span class="comment"># 把文件file1重命名为file2</span></div></pre></td></tr></table></figure>
+
+<p>7、rm命令<br>该命令用于删除文件或目录，remove之间，它的常用参数如下：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">-<span class="ruby">f ：就是force的意思，忽略不存在的文件，不会出现警告消息  </span></div><div class="line">-<span class="ruby">i ：互动模式，在删除前会询问用户是否操作  </span></div><div class="line">-<span class="ruby">r ：递归删除，最常用于目录删除，它是一个非常危险的参数</span></div></pre></td></tr></table></figure>
+
+<p>例如：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">rm -i <span class="built_in">file</span> <span class="comment"># 删除文件file，在删除之前会询问是否进行该操作  </span></div><div class="line">rm -fr dir <span class="comment"># 强制删除目录dir中的所有文件</span></div></pre></td></tr></table></figure>
+
+<p><strong>8、ps命令</strong><br>该命令用于将某个时间点的进程运行情况选取下来并输出，process之意，它的常用参数如下：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">-<span class="ruby"><span class="constant">A</span> ：所有的进程均显示出来  </span></div><div class="line">-<span class="ruby">a ：不与terminal有关的所有进程  </span></div><div class="line">-<span class="ruby">u ：有效用户的相关进程  </span></div><div class="line">-<span class="ruby">x ：一般与a参数一起使用，可列出较完整的信息  </span></div><div class="line">-<span class="ruby">l ：较长，较详细地将<span class="constant">PID</span>的信息列出</span></div></pre></td></tr></table></figure>
+
+<p>其实我们只要记住ps一般使用的命令参数搭配即可，它们并不多，如下：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">ps aux <span class="comment"># 查看系统所有的进程数据  </span></div><div class="line">ps ax <span class="comment"># 查看不与terminal有关的所有进程  </span></div><div class="line">ps <span class="operator">-l</span>A <span class="comment"># 查看系统所有的进程数据  </span></div><div class="line">ps axjf <span class="comment"># 查看连同一部分进程树状态</span></div></pre></td></tr></table></figure>
+
+<p><strong>9、kill命令</strong></p>
+<p>该命令用于将某个时间点的进程运行情况选取下来并输出，process之意，它的常用参数如下：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">-<span class="ruby"><span class="constant">A</span> ：所有的进程均显示出来  </span></div><div class="line">-<span class="ruby">a ：不与terminal有关的所有进程  </span></div><div class="line">-<span class="ruby">u ：有效用户的相关进程  </span></div><div class="line">-<span class="ruby">x ：一般与a参数一起使用，可列出较完整的信息  </span></div><div class="line">-<span class="ruby">l ：较长，较详细地将<span class="constant">PID</span>的信息列出</span></div></pre></td></tr></table></figure>
+
+<p>其实我们只要记住ps一般使用的命令参数搭配即可，它们并不多，如下：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">ps aux <span class="comment"># 查看系统所有的进程数据  </span></div><div class="line">ps ax <span class="comment"># 查看不与terminal有关的所有进程  </span></div><div class="line">ps <span class="operator">-l</span>A <span class="comment"># 查看系统所有的进程数据  </span></div><div class="line">ps axjf <span class="comment"># 查看连同一部分进程树状态</span></div></pre></td></tr></table></figure>
+
+<p><strong>9、kill命令</strong><br>该命令用于向某个工作（%jobnumber）或者是某个PID（数字）传送一个信号，它通常与ps和jobs命令一起使用，它的基本语法如下：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="operator"><span class="keyword">kill</span> -signal PID</span></div></pre></td></tr></table></figure>
+
+<p>signal的常用参数如下：<br>注：最前面的数字为信号的代号，使用时可以用代号代替相应的信号。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="number">1</span>：<span class="type">SIGHUP</span>，启动被终止的进程  </div><div class="line"><span class="number">2</span>：<span class="type">SIGINT</span>，相当于输入ctrl+<span class="built_in">c</span>，中断一个程序的进行  </div><div class="line"><span class="number">9</span>：<span class="type">SIGKILL</span>，强制中断一个进程的进行  </div><div class="line"><span class="number">15</span>：<span class="type">SIGTERM</span>，以正常的结束进程方式来终止进程  </div><div class="line"><span class="number">17</span>：<span class="type">SIGSTOP</span>，相当于输入ctrl+z，暂停一个进程的进行</div></pre></td></tr></table></figure>
+
+<p>例如：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 以正常的结束进程方式来终于第一个后台工作，可用jobs命令查看后台中的第一个工作进程  </span></div><div class="line"><span class="keyword">kill</span> -SIGTERM <span class="variable">%1</span>   </div><div class="line"><span class="comment"># 重新改动进程ID为PID的进程，PID可用ps命令通过管道命令加上grep命令进行筛选获得  </span></div><div class="line"><span class="keyword">kill</span> -SIGHUP PID</div></pre></td></tr></table></figure>
+
+<p>10、killall命令<br>该命令用于向一个命令启动的进程发送一个信号，它的一般语法如下：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="tag">killall</span> <span class="attr_selector">[-iIe]</span> <span class="attr_selector">[command name]</span></div></pre></td></tr></table></figure>
+
+<p>它的参数如下：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">-<span class="ruby">i ：交互式的意思，若需要删除时，会询问用户  </span></div><div class="line">-<span class="ruby">e ：表示后面接的command name要一致，但command name不能超过<span class="number">15</span>个字符  </span></div><div class="line">-<span class="ruby"><span class="constant">I</span> ：命令名称忽略大小写  </span></div><div class="line"># 例如：  </div><div class="line">killall -SIGHUP syslogd # 重新启动syslogd</div></pre></td></tr></table></figure>
+
+<p><strong>11、file命令</strong><br>该命令用于判断接在file命令后的文件的基本数据，因为在Linux下文件的类型并不是以后缀为分的，所以这个命令对我们来说就很有用了，它的用法非常简单，基本语法如下：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">file</span> filename  </div><div class="line"><span class="comment">#例如：  </span></div><div class="line"><span class="built_in">file</span> ./test</div></pre></td></tr></table></figure>
+
+<p><strong>12、tar命令</strong><br>该命令用于对文件进行打包，默认情况并不会压缩，如果指定了相应的参数，它还会调用相应的压缩程序（如gzip和bzip等）进行压缩和解压。它的常用参数如下：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">-<span class="ruby">c ：新建打包文件  </span></div><div class="line">-<span class="ruby">t ：查看打包文件的内容含有哪些文件名  </span></div><div class="line">-<span class="ruby">x ：解打包或解压缩的功能，可以搭配-<span class="constant">C</span>（大写）指定解压的目录，注意-c,-t,-x不能同时出现在同一条命令中  </span></div><div class="line">-<span class="ruby">j ：通过bzip2的支持进行压缩/解压缩  </span></div><div class="line">-<span class="ruby">z ：通过gzip的支持进行压缩/解压缩  </span></div><div class="line">-<span class="ruby">v ：在压缩/解压缩过程中，将正在处理的文件名显示出来  </span></div><div class="line">-<span class="ruby">f filename ：filename为要处理的文件  </span></div><div class="line">-<span class="ruby"><span class="constant">C</span> dir ：指定压缩/解压缩的目录dir</span></div></pre></td></tr></table></figure>
+
+<p>上面的解说可以已经让你晕过去了，但是通常我们只需要记住下面三条命令即可：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">压缩：tar -jcv <span class="operator">-f</span> filename.tar.bz2 要被处理的文件或目录名称  </div><div class="line">查询：tar -jtv <span class="operator">-f</span> filename.tar.bz2  </div><div class="line">解压：tar -jxv <span class="operator">-f</span> filename.tar.bz2 -C 欲解压缩的目录</div></pre></td></tr></table></figure>
+
+<p>注：文件名并不定要以后缀tar.bz2结尾，这里主要是为了说明使用的压缩程序为bzip2</p>
+<p><strong>13、cat命令</strong><br>该命令用于查看文本文件的内容，后接要查看的文件名，通常可用管道与more和less一起使用，从而可以一页页地查看数据。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">cat <span class="keyword">text</span> | less <span class="comment"># 查看text文件中的内容  </span></div><div class="line"><span class="comment"># 注：这条命令也可以使用less text来代替</span></div></pre></td></tr></table></figure>
+
+<p><strong>14、chgrp命令</strong><br>该命令用于改变文件所属用户组，它的使用非常简单，它的基本用法如下：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="title">chgrp</span> [-R] dirname/filename  </div><div class="line">-R ：进行递归的持续对所有文件和子目录更改  </div><div class="line"><span class="comment"># 例如：  </span></div><div class="line">chgrp users -R ./dir <span class="comment"># 递归地把dir目录下中的所有文件和子目录下所有文件的用户组修改为users</span></div></pre></td></tr></table></figure>
+
+<p><strong>15、chown命令</strong><br>该命令用于改变文件的所有者，与chgrp命令的使用方法相同，只是修改的文件属性不同，不再详述。</p>
+<p><strong>16、chmod命令</strong><br>该命令用于改变文件的权限，一般的用法如下：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">chmod [-R] xyz 文件或目录  </div><div class="line"><span class="deletion">-R：进行递归的持续更改，即连同子目录下的所有文件都会更改</span></div></pre></td></tr></table></figure>
+
+<p>同时，chmod还可以使用u（user）、g（group）、o（other）、a（all）和+（加入）、-（删除）、=（设置）跟rwx搭配来对文件的权限进行更改。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 例如：  </span></div><div class="line">chmod <span class="number">0755</span> <span class="built_in">file</span> <span class="comment"># 把file的文件权限改变为-rxwr-xr-x  </span></div><div class="line">chmod g+w <span class="built_in">file</span> <span class="comment"># 向file的文件权限中加入用户组可写权限</span></div></pre></td></tr></table></figure>
+
+<p><strong>18、vim命令</strong><br>该命令主要用于文本编辑，它接一个或多个文件名作为参数，如果文件存在就打开，如果文件不存在就以该文件名创建一个文件。vim是一个非常好用的文本编辑器，它里面有很多非常好用的命令，在这里不再多说。你可以从这里下载vim常用操作的详细说明。</p>
+<p><strong>19、gcc命令</strong><br>对于一个用Linux开发C程序的人来说，这个命令就非常重要了，它用于把C语言的源程序文件，编译成可执行程序，由于g++的很多参数跟它非常相似，所以这里只介绍gcc的参数，它的常用参数如下：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">-<span class="ruby">o ：output之意，用于指定生成一个可执行文件的文件名  </span></div><div class="line">-<span class="ruby">c ：用于把源文件生成目标文件（.o)，并阻止编译器创建一个完整的程序  </span></div><div class="line">-<span class="ruby"><span class="constant">I</span> ：增加编译时搜索头文件的路径  </span></div><div class="line">-<span class="ruby"><span class="constant">L</span> ：增加编译时搜索静态连接库的路径  </span></div><div class="line">-<span class="ruby"><span class="constant">S</span> ：把源文件生成汇编代码文件  </span></div><div class="line">-<span class="ruby">lm：表示标准库的目录中名为libm.a的函数库  </span></div><div class="line">-<span class="ruby">lpthread ：连接<span class="constant">NPTL</span>实现的线程库  </span></div><div class="line">-<span class="ruby">std= ：用于指定把使用的<span class="constant">C</span>语言的版本  </span></div><div class="line">  </div><div class="line"># 例如：  </div><div class="line"># 把源文件test.c按照c99标准编译成可执行程序test  </div><div class="line">gcc -o test test.c -lm -std=c99  </div><div class="line">#把源文件test.c转换为相应的汇编程序源文件test.s  </div><div class="line">gcc -S test.c</div></pre></td></tr></table></figure>
+
+<p><strong>20、time命令</strong><br>该命令用于测算一个命令（即程序）的执行时间。它的使用非常简单，就像平时输入命令一样，不过在命令的前面加入一个time即可，例如：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">time</span> ./<span class="built_in">process</span>  </div><div class="line"><span class="built_in">time</span> ps aux</div></pre></td></tr></table></figure>
+
+<p>在程序或命令运行结束后，在最后输出了三个时间，它们分别是：<br>user：用户CPU时间，命令执行完成花费的用户CPU时间，即命令在用户态中执行时间总和；<br>system：系统CPU时间，命令执行完成花费的系统CPU时间，即命令在核心态中执行时间总和；<br>real：实际时间，从command命令行开始执行到运行终止的消逝时间；</p>
+<p>注：用户CPU时间和系统CPU时间之和为CPU时间，即命令占用CPU执行的时间总和。实际时间要大于CPU时间，因为Linux是多任务操作系统，往往在执行一条命令时，系统还要处理其它任务。另一个需要注意的问题是即使每次执行相同命令，但所花费的时间也是不一样，其花费时间是与系统运行相关的。</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/linux/">linux</a>
+  </div>
+
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/linux/">linux</a>
+</div>
+
+
+
+<div class="article-share" id="share">
+
+  <div data-url="jrockyhome.com/2014/09/02/(140902)Linux常用命令总结/" data-title="Linux常用命令总结 | Rocky&#39;s Blog" data-tsina="null" class="share clearfix">
+  </div>
+
+</div>
+</footer>   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2014/09/05/(140905)排序算法实践-堆排序/" title="排序算法实践-堆排序">
+  <strong>PREVIOUS:</strong><br/>
+  <span>
+  排序算法实践-堆排序</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2014/08/03/(140803)并发专题-java中的阻塞队列/"  title="并发专题-java中的阻塞队列">
+ <strong>NEXT:</strong><br/> 
+ <span>并发专题-java中的阻塞队列
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section class="comment">
+	<div class="ds-thread"></div>
+</section>
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+  
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+			<li><a href="/categories/MySql/" title="MySql">MySql<sup>4</sup></a></li>
+		
+			<li><a href="/categories/OSGi/" title="OSGi">OSGi<sup>2</sup></a></li>
+		
+			<li><a href="/categories/RCP/" title="RCP">RCP<sup>1</sup></a></li>
+		
+			<li><a href="/categories/blog/" title="blog">blog<sup>3</sup></a></li>
+		
+			<li><a href="/categories/debug/" title="debug">debug<sup>2</sup></a></li>
+		
+			<li><a href="/categories/java/" title="java">java<sup>3</sup></a></li>
+		
+			<li><a href="/categories/linux/" title="linux">linux<sup>1</sup></a></li>
+		
+			<li><a href="/categories/maven/" title="maven">maven<sup>2</sup></a></li>
+		
+			<li><a href="/categories/大数据/" title="大数据">大数据<sup>1</sup></a></li>
+		
+			<li><a href="/categories/工作流引擎activity/" title="工作流引擎activity">工作流引擎activity<sup>1</sup></a></li>
+		
+			<li><a href="/categories/工具/" title="工具">工具<sup>4</sup></a></li>
+		
+			<li><a href="/categories/数据库/" title="数据库">数据库<sup>4</sup></a></li>
+		
+			<li><a href="/categories/算法/" title="算法">算法<sup>1</sup></a></li>
+		
+			<li><a href="/categories/设计模式/" title="设计模式">设计模式<sup>8</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			<li><a href="/tags/DB/" title="DB">DB<sup>4</sup></a></li>
+		
+			<li><a href="/tags/Eclipse插件开发/" title="Eclipse插件开发">Eclipse插件开发<sup>1</sup></a></li>
+		
+			<li><a href="/tags/H2/" title="H2">H2<sup>4</sup></a></li>
+		
+			<li><a href="/tags/MySql/" title="MySql">MySql<sup>5</sup></a></li>
+		
+			<li><a href="/tags/OSGi/" title="OSGi">OSGi<sup>2</sup></a></li>
+		
+			<li><a href="/tags/RCP/" title="RCP">RCP<sup>1</sup></a></li>
+		
+			<li><a href="/tags/Virgo/" title="Virgo">Virgo<sup>2</sup></a></li>
+		
+			<li><a href="/tags/debug/" title="debug">debug<sup>2</sup></a></li>
+		
+			<li><a href="/tags/freemarker/" title="freemarker">freemarker<sup>4</sup></a></li>
+		
+			<li><a href="/tags/info/" title="info">info<sup>1</sup></a></li>
+		
+			<li><a href="/tags/java/" title="java">java<sup>3</sup></a></li>
+		
+			<li><a href="/tags/linux/" title="linux">linux<sup>1</sup></a></li>
+		
+			<li><a href="/tags/maven/" title="maven">maven<sup>2</sup></a></li>
+		
+			<li><a href="/tags/rapid-generate/" title="rapid-generate">rapid-generate<sup>4</sup></a></li>
+		
+			<li><a href="/tags/代码生成器/" title="代码生成器">代码生成器<sup>4</sup></a></li>
+		
+			<li><a href="/tags/博客，文章/" title="博客，文章">博客，文章<sup>2</sup></a></li>
+		
+			<li><a href="/tags/大数据/" title="大数据">大数据<sup>1</sup></a></li>
+		
+			<li><a href="/tags/工作流引擎activity/" title="工作流引擎activity">工作流引擎activity<sup>1</sup></a></li>
+		
+			<li><a href="/tags/并发/" title="并发">并发<sup>1</sup></a></li>
+		
+			<li><a href="/tags/排序/" title="排序">排序<sup>1</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  <div class="rsspart">
+	<a href="null" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hi,I&#39;m Rocky! <br/>
+			享受编程带来的乐趣，并将这份快乐分享给来到这里的每一个人</p>
+	</section>
+	 
+	<div class="social-font clearfix">
+		
+		
+		
+		<a href="https://github.com/https://github.com/likeaboy" target="_blank" title="github"></a>
+		
+		
+		
+	</div>
+		<p class="copyright">Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/A-limon/pacman" target="_blank" title="Pacman">Pacman</a> © 2015 
+		
+		<a href="jrockyhome.com" target="_blank" title="Rocky">Rocky</a>
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.1.0.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else
+    {
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      h  = $('article h2')
+      ah = $('article h2'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  if(ah.length==0){
+    t.css('display','none');
+  }else{
+    c.click(function(){
+      ta.css('display', 'block').addClass('fadeIn');
+    });
+    o.click(function(){
+      ta.css('display', 'none');
+    });
+    $(window).scroll(function(){
+      ta.css("top",Math.max(140,320-$(this).scrollTop()));
+    });
+  };
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina');
+  var html = [
+  '<a href="#" class="overlay" id="qrcode"></a>',
+  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#share"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
+  '<a href="#textlogo" class="article-back-to-top" title="Top"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="QRcode"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="Weibo"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+  $('.article-share-qrcode').click(function(){
+    var imgSrc = $('#qrcode-pic').attr('data-src');
+    $('#qrcode-pic').attr('src', imgSrc);
+    $('#qrcode-pic').load(function(){
+        $('.qrcode strong').text(' ');
+    });
+  });
+});     
+</script>
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"null"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+  </body>
+</html>

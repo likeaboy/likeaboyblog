@@ -1,0 +1,464 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>Rocky&#39;s Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
+    
+    <meta name="author" content="Rocky">
+    
+    <meta name="description" content="Docker简介
+
+Docker是DotCloud开源的、可以将任何应用包装在Linux container中运行的工具。2013年3月发布首个版本，当前最新版本为1.3。Docker基于Go语言开发，代码托管在Github上，目前超过10000次commit。基于Docker的沙箱环境可以实现轻型">
+    
+    
+    
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/pacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/pacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+
+</head>
+
+  <body>
+    <header>
+      <div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.svg" alt="Rocky&#39;s Blog" title="Rocky&#39;s Blog"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="Rocky&#39;s Blog">Rocky&#39;s Blog</a></h1>
+				<h2 class="blog-motto">积沙成塔</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+					
+					<form class="search" action="/search/index.html" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="text" id="search" autocomplete="off" name="q" maxlength="20" placeholder="Search" />
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2015/03/10/(150117)Docker应用实践总结/" title="" itemprop="url"></a>
+  </h1>
+  <p class="article-author">By
+    
+      <a href="jrockyhome.com" title="Rocky">Rocky</a>
+    </p>
+  <p class="article-time">
+    <time datetime="2015-03-10T10:50:29.000Z" itemprop="datePublished">2015-03-10</time>
+    Updated:<time datetime="2015-03-10T10:50:29.000Z" itemprop="dateModified">2015-03-10</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Docker简介"><span class="toc-number">1.</span> <span class="toc-text">Docker简介</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Docker_vs_VM"><span class="toc-number">2.</span> <span class="toc-text">Docker vs VM</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Docker_Component"><span class="toc-number">3.</span> <span class="toc-text">Docker Component</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Docker网络"><span class="toc-number">4.</span> <span class="toc-text">Docker网络</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Docker_使用"><span class="toc-number">5.</span> <span class="toc-text">Docker 使用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Docker生态"><span class="toc-number">6.</span> <span class="toc-text">Docker生态</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#总结"><span class="toc-number">7.</span> <span class="toc-text">总结</span></a></li></ol>
+		</div>
+		
+		<h3 id="Docker简介">Docker简介</h3>
+<hr>
+<p>Docker是DotCloud开源的、可以将任何应用包装在Linux container中运行的工具。2013年3月发布首个版本，当前最新版本为1.3。Docker基于Go语言开发，代码托管在Github上，目前超过10000次commit。基于Docker的沙箱环境可以实现轻型隔离，多个容器间不会相互影响；Docker可以自动化打包和部署任何应用，方便地创建一个轻量级私有PaaS云，也可以用于搭建开发测试环境以及部署可扩展的web应用等。</p>
+<h3 id="Docker_vs_VM">Docker vs VM</h3>
+<hr>
+<p>从下图可以看出，VM是一个运行在宿主机之上的完整的操作系统，VM运行自身操作系统会占用较多的CPU、内存、硬盘资源。Docker不同于VM，只包含应用程序以及依赖库，基于libcontainer运行在宿主机上，并处于一个隔离的环境中，这使得Docker更加轻量高效，启动容器只需几秒钟之内完成。由于Docker轻量、资源占用少，使得Docker可以轻易的应用到构建标准化的应用中。但Docker目前还不够完善，比如隔离效果不如VM，共享宿主机操作系统的一些基础库等；网络配置功能相对简单，主要以桥接方式为主；查看日志也不够方便灵活。</p>
+<p><img src="http://img.blog.csdn.net/20150305161028943" alt="这里写图片描述"></p>
+<p>另外，IBM发表了一篇关于虚拟机和Linux container性能对比的论文，论文中实际测试了虚拟机和Linux container在CPU、内存、存储IO以及网络的负载情况，结果显示Docker容器本身几乎没有什么开销，但是使用AUFS会一定的性能损耗，不如使用Docker Volume，Docker的NAT在较高网络数据传输中会引入较大的工作负载，带来额外的开销。不过container的性能与native相差不多，各方面的性能都一般等于或者优于虚拟机。Container和虚拟机在IO密集的应用中都需要调整优化以更好的支持IO操作，两者在IO密集型的应用中都应该谨慎使用。</p>
+<h3 id="Docker_Component">Docker Component</h3>
+<hr>
+<p><img src="http://img.blog.csdn.net/20150305161109255" alt="这里写图片描述"></p>
+<p>Docker是CS架构，主要由下面三部分组成：</p>
+<p>Docker daemon: 运行在宿主机上，Docker守护进程，用户通过Docker client(Docker命令)与Docker daemon交互<br>Docker client: Docker 命令行工具，是用户使用Docker的主要方式，Docker client与Docker daemon通信并将结果返回给用户，Docker client也可以通过socket或者RESTful api访问远程的Docker daemon<br>Docker hub/registry: 共享和管理Docker镜像，用户可以上传或者下载上面的镜像，官方地址为<a href="https://registry.hub.docker.com/，也可以搭建自己私有的Docker" target="_blank" rel="external">https://registry.hub.docker.com/，也可以搭建自己私有的Docker</a> registry。<br>了解了Docker的组成，再来了解一下Docker的两个主要概念：</p>
+<p>Docker image：镜像是只读的，镜像中包含有需要运行的文件。镜像用来创建container，一个镜像可以运行多个container；镜像可以通过Dockerfile创建，也可以从Docker hub/registry上下载。<br>Docker container：容器是Docker的运行组件，启动一个镜像就是一个容器，容器是一个隔离环境，多个容器之间不会相互影响，保证容器中的程序运行在一个相对安全的环境中。</p>
+<h3 id="Docker网络">Docker网络</h3>
+<hr>
+<p>Docker的网络功能相对简单，没有过多复杂的配置，Docker默认使用birdge桥接方式与容器通信，启动Docker后，宿主机上会产生docker0这样一个虚拟网络接口， docker0不是一个普通的网络接口， 它是一个虚拟的以太网桥，可以为绑定到docker0上面的网络接口自动转发数据包，这样可以使容器与宿主机之间相互通信。每次Docker创建一个容器，会产生一对虚拟接口，在宿主机上执行ifconfig，会发现多了一个类似veth<em>**</em>这样的网络接口，它会绑定到docker0上，由于所有容器都绑定到docker0上，容器之间也就可以通信。</p>
+<p>在宿主机上执行ifconfig，会看到docker0这个网络接口， 启动一个container，再次执行ifconfig, 会有一个类似veth<em>**</em>的interface，每个container的缺省路由是宿主机上docker0的ip，在container中执行netstat -r可以看到如下图所示内容：</p>
+<p><img src="http://img.blog.csdn.net/20150305161136700" alt="这里写图片描述"></p>
+<p>容器中的默认网关跟docker0的地址是一样的：</p>
+<p><img src="http://img.blog.csdn.net/20150305161207311" alt="这里写图片描述"></p>
+<p>当容器退出之后，veth*虚拟接口也会被销毁。</p>
+<p>除bridge方式，Docker还支持host、container、none三种网络通信方式，使用其它通信方式，只要在Docker启动时，指定—net参数即可，比如：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">docker <span class="command">run</span> -i -t  <span class="comment">--net=host ubuntu /bin/bash</span></div></pre></td></tr></table></figure>
+
+<p>host方式可以让容器无需创建自己的网络协议栈，而直接访问宿主机的网络接口，在容器中执行ip addr会发现与宿主机的网络配置是一样的，host方式让容器直接使用宿主机的网络接口，传输数据的效率会更加高效，避免bridge方式带来的额外开销，但是这种方式也可以让容器访问宿主机的D-bus等网络服务，可能会带来意想不到的安全问题，应谨慎使用host方式；container方式可以让容器共享一个已经存在容易的网络配置； none方式不会对容器的网络做任务配置，需要用户自己去定制。</p>
+<h3 id="Docker_使用">Docker 使用</h3>
+<hr>
+<p>首先要在宿主机上安装Docker，Docker安装参考官方安装文档。<br>Docker命令也比较类似Git，支持push以及pull操作上传以及下载Docker镜像。<br>查看当前Docker的版本</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">docker <span class="keyword">version</span></div></pre></td></tr></table></figure>
+
+<p>查看当前系统Docker信息</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="title">docker</span> <span class="built_in">info</span></div></pre></td></tr></table></figure>
+
+<p>查看宿主机上的镜像，Docker镜像保存在/var/lib/docker目录下:</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="title">docker</span> images</div></pre></td></tr></table></figure>
+
+<p>从Docker hub上下载某个镜像:</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="tag">docker</span> <span class="tag">pull</span> <span class="tag">ubuntu</span><span class="pseudo">:latest</span></div><div class="line"><span class="tag">docker</span> <span class="tag">pull</span> <span class="tag">ubuntu</span><span class="pseudo">:latest</span></div></pre></td></tr></table></figure>
+
+<p>执行docker pull ubuntu会将Ubuntu这个仓库下面的所有镜像下载到本地repository。</p>
+<p>启动一个容器使用docker run:</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">docker <span class="command">run</span> -i -t ubuntu /bin/bash                       启动一个容器</div><div class="line">docker <span class="command">run</span> -i -t <span class="comment">--rm ubuntu /bin/bash                  --rm表示容器退出后立即删除该容器</span></div><div class="line">docker <span class="command">run</span> -t -i <span class="comment">--name test_container ubuntu /bin/bash --name指定容器的名称，否则会随机分配一个名称</span></div><div class="line">docker <span class="command">run</span> -t -i <span class="comment">--net=host ubuntu /bin/bash            --net=host容器以Host方式进行网络通信</span></div><div class="line">docker <span class="command">run</span> -t -i -v /host:/container ubuntu /bin/bash   -v绑定挂在一个Volume，在宿主机和Docker容器中共享文件或目录</div></pre></td></tr></table></figure>
+
+<p>查看当前有哪些容器正在运行，使用docker ps:</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">xzs<span class="variable">@host</span><span class="symbol">:~</span>(<span class="number">0</span>)<span class="variable">$ </span>docker ps</div><div class="line"><span class="constant">CONTAINER</span> <span class="constant">ID</span>     <span class="constant">IMAGE</span>                <span class="constant">COMMAND</span>        <span class="constant">CREATED</span>         <span class="constant">STATUS</span>          <span class="constant">PORTS</span>    <span class="constant">NAMES</span></div><div class="line"><span class="number">50</span>a1261f7a8b     <span class="symbol">docker_test:</span>latest   <span class="string">"/bin/bash"</span>    <span class="number">7</span> seconds ago   <span class="constant">Up</span> <span class="number">6</span> seconds             sleepy_ptolemy</div><div class="line"><span class="comment">#目前只有一个container id为50a1261f7a8b的容器正在运行</span></div></pre></td></tr></table></figure>
+
+<p>启动或停止某个container使用docker start/stop container_id:</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">xzs@hos<span class="variable">t:</span>~(<span class="number">0</span>)$ docker <span class="keyword">stop</span> <span class="number">50</span>a1261f7a8b</div><div class="line"><span class="number">50</span>a1261f7a8b</div><div class="line"></div><div class="line">xzs@hos<span class="variable">t:</span>~(<span class="number">0</span>)$ docker <span class="keyword">ps</span> -<span class="keyword">a</span> | <span class="keyword">grep</span> <span class="number">50</span>a1261f7a8b</div><div class="line"><span class="number">50</span>a1261f7a8b   docker_tes<span class="variable">t:latest</span>   <span class="string">"/bin/bash"</span>   <span class="number">2</span> minutes ago   Exited (<span class="number">0</span>) <span class="number">14</span> seconds ago   sleepy_ptolemy</div><div class="line">#执行docker <span class="keyword">stop</span>后，该容器的状态变更为Exited</div></pre></td></tr></table></figure>
+
+<p>使用docker commit可以将container的变化作为一个新的镜像，比如:</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">xzs<span class="variable">@host</span><span class="symbol">:~</span>(<span class="number">0</span>)<span class="variable">$ </span>docker commit -m=<span class="string">"test docker commit"</span> <span class="number">50</span>a1261f7a8b docker_test</div><div class="line"><span class="number">55831</span>c956ebf46a1f9036504abb1b29d7e12166f18f779cccce66f5dc85de38e</div><div class="line"></div><div class="line">xzs<span class="variable">@host</span><span class="symbol">:~</span>(<span class="number">0</span>)<span class="variable">$ </span>docker images | grep docker_test</div><div class="line">docker_test                            latest              <span class="number">55831</span>c956ebf        <span class="number">10</span> seconds ago      <span class="number">290.7</span> <span class="constant">MB</span></div></pre></td></tr></table></figure>
+
+<p>除了从Docker hub上下载镜像，也可以写Dockerfile创建一个镜像，以创建一个Django程序为例，Dockerfile如下所示：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">xzs<span class="variable">@host</span><span class="symbol">:/tmp/docker</span>(<span class="number">0</span>)<span class="variable">$ </span>cat <span class="constant">Dockerfile</span></div><div class="line"><span class="constant">FROM</span> <span class="symbol">ubuntu:</span><span class="number">12.04</span></div><div class="line"><span class="constant">MAINTAINER</span> <span class="constant">Your</span> <span class="constant">Name</span></div><div class="line"></div><div class="line"><span class="constant">RUN</span> apt-get update</div><div class="line"><span class="constant">RUN</span> apt-get install -y python-software-properties python-pip</div><div class="line"></div><div class="line"><span class="constant">ADD</span> myproject /opt/code</div><div class="line"></div><div class="line"><span class="constant">RUN</span> pip install -r /opt/code/requirement.txt</div></pre></td></tr></table></figure>
+
+<p>写完Dockerfile，在Dockerfile所在目录执行docker build创建镜像:</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">docker build -t docker_test .</div><div class="line">docker run -i -t docker_test /bin/bash -c <span class="string">"cd /opt/code;python manage.py runserver 0.0.0.0:8080"</span></div></pre></td></tr></table></figure>
+
+<p>将制作的镜像上传到private registry:</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">docker tag <span class="keyword">test</span> docker.example.com/<span class="keyword">test</span></div><div class="line">docker <span class="keyword">push</span> docker.example.com/<span class="keyword">test</span></div></pre></td></tr></table></figure>
+
+<p>经过长时间使用，主机上存储了很多已无用的镜像，想将它们删除则用docker rm或者docker rmi，比如:</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="title">docker</span> rm container_id</div><div class="line">docker rmi image_id</div></pre></td></tr></table></figure>
+
+<h3 id="Docker生态">Docker生态</h3>
+<hr>
+<p>随着Docker迅速火遍全球， 以Docker为基础的生态系统也迅速的发展起来，从以部署和运行container为基础的CoreOS到各种各样的管理工具和PaaS软件，Docker以及生态产品都在迅猛发展，以下介绍几个代表性的软件。</p>
+<p>首先介绍CoreOS，它的出现极大地推动了Docker技术的推广和发展，CoreOS是专门为大规模服务部署而设计的一种新的Linux发行版，通过运行轻量级的容器方便扩展和维护大规模的服务。它具有以下特点：</p>
+<p>CoreOS使用container管理服务(容器即服务)，即以容器的角度去管理服务，服务的代码和依赖都打包到容器里，打包后的容器直接在CoreOS上运行管理。通过容器用户不再需要关注虚拟机环境等，极大地降低了服务和系统环境的耦合性。另外部署在CoreOS的多个容器都运行在各自独立的环境中，不会相互影响。<br>CoreOS专门为cluster等大规模部署而设计，提供了Etcd进行服务发现，以及Fleet管理容器保证服务可用。<br>CoreOS更加精简，比如RAM使用比普通Linux低40%。<br>CoreOS采用双分区模式(Dual-Partition)，主分区为主动模式，负责系统运行，被动模式分区负责系统更新，更新时将整个CoreOS系统下载下来。<br>CoreOS是为集群服务而设计的，提供了Etcd、Fleet等管理工具管理容器和服务。Etcd是一种类似Zookeeper的分布式key/value存储服务，用于服务发现和配置管理。Fleet是容器管理工具，保证服务的可用性，当某个机器的服务不可用时，Fleet会将服务迁移到其它机器上运行。</p>
+<p>Docker生态中还有一个非常重要的容器管理工具—Kubernetes，它是Google开源的用于在集群环境中管理、维护、自动扩展容器，通过Kubernetes可以很方便地在多个机器上管理和部署容器服务。现在已经得到IBM、Microsoft、RedHat等多个大公司的支持。</p>
+<p>在Kubernetes中pod是一个基本单元，一个pod可以是提供相同功能的多个container，这些容器会被部署在同一个minion上。Replication controller定义了多个pod或者容器需要运行，如果当前集群中运行的pod或容器达不到配置的数量，replication controller会调度容器在多个minion上运行，保证集群中的pod数量。service则定义真实对外提供的服务，一个service会对应后端运行的多个container。Kubernetes的架构由一个master和多个minion组成，master通过api提供服务，接受kubectl的请求来调度管理整个集群。minion是运行Kubelet的机器，它接受master的指令创建pod或者容器。</p>
+<p>最后介绍一下基于Docker实现的PaaS软件，Docker PaaS软件中以Deis和Flynn最为知名。Deis是基于Docker和CoreOS实现的轻量级的PaaS，受到Heroku的启发，遵循“十二要素”构建应用方法。Deis是以应用程序为中心设计的，分为build、release、run三个阶段，用户执行”git push”后，Deis使用Docker 容器编译并将编译结果保存在Docker镜像；发布阶段，一次build和配置文件产生一个数字标识的发布镜像，将发布镜像保存到Docker registry中以供后续发布到线上运行；运行阶段应用镜像会被调度到主机上运行，并更新相应的路由。Flynn与Deis类似，也是以应用为中心，Flynn组件分为两层，layer0是底层资源的抽象，主要负责资源调度以及服务发现等，为上层应用容器的运行提供底层资源调度支持；layer1处理具体应用，通过Docker容器编译、部署和维护上层应用程序。</p>
+<h3 id="总结">总结</h3>
+<hr>
+<p>Docker从2013年发布第一个版本以来，已经火遍全球，技术迭代也比较频繁，其周边产品和技术也越来越丰富，由于Docker更新频繁，会出现新版本有时不兼容旧版本的情况，Docker周边产品基本都处于开发阶段还不具备生产环境下使用。</p>
+<p>Docker的轻量级容器不仅实现了资源隔离，而且几乎可以运行在任何地方，使得部署和扩展变得非常容易，随着Docker的日趋完善，希望Docker被越来越多的公司应用到生产环境中。下一篇将详细介绍美团如何使用Docker。</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+
+
+
+
+<div class="article-share" id="share">
+
+  <div data-url="jrockyhome.com/2015/03/10/(150117)Docker应用实践总结/" data-title="Rocky&#39;s Blog" data-tsina="null" class="share clearfix">
+  </div>
+
+</div>
+</footer>   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+
+<div class="next">
+<a href="/2015/03/10/(150219)Java代码生成利器之rapid-generate应用五/"  title="">
+ <strong>NEXT:</strong><br/> 
+ <span>(no title)
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section class="comment">
+	<div class="ds-thread"></div>
+</section>
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+  <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Docker简介"><span class="toc-number">1.</span> <span class="toc-text">Docker简介</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Docker_vs_VM"><span class="toc-number">2.</span> <span class="toc-text">Docker vs VM</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Docker_Component"><span class="toc-number">3.</span> <span class="toc-text">Docker Component</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Docker网络"><span class="toc-number">4.</span> <span class="toc-text">Docker网络</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Docker_使用"><span class="toc-number">5.</span> <span class="toc-text">Docker 使用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Docker生态"><span class="toc-number">6.</span> <span class="toc-text">Docker生态</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#总结"><span class="toc-number">7.</span> <span class="toc-text">总结</span></a></li></ol>
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+			<li><a href="/categories/MySql/" title="MySql">MySql<sup>4</sup></a></li>
+		
+			<li><a href="/categories/OSGi/" title="OSGi">OSGi<sup>2</sup></a></li>
+		
+			<li><a href="/categories/RCP/" title="RCP">RCP<sup>1</sup></a></li>
+		
+			<li><a href="/categories/blog/" title="blog">blog<sup>3</sup></a></li>
+		
+			<li><a href="/categories/debug/" title="debug">debug<sup>2</sup></a></li>
+		
+			<li><a href="/categories/java/" title="java">java<sup>3</sup></a></li>
+		
+			<li><a href="/categories/linux/" title="linux">linux<sup>1</sup></a></li>
+		
+			<li><a href="/categories/maven/" title="maven">maven<sup>2</sup></a></li>
+		
+			<li><a href="/categories/大数据/" title="大数据">大数据<sup>1</sup></a></li>
+		
+			<li><a href="/categories/工作流引擎activity/" title="工作流引擎activity">工作流引擎activity<sup>1</sup></a></li>
+		
+			<li><a href="/categories/工具/" title="工具">工具<sup>4</sup></a></li>
+		
+			<li><a href="/categories/数据库/" title="数据库">数据库<sup>4</sup></a></li>
+		
+			<li><a href="/categories/算法/" title="算法">算法<sup>1</sup></a></li>
+		
+			<li><a href="/categories/设计模式/" title="设计模式">设计模式<sup>8</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			<li><a href="/tags/DB/" title="DB">DB<sup>4</sup></a></li>
+		
+			<li><a href="/tags/Eclipse插件开发/" title="Eclipse插件开发">Eclipse插件开发<sup>1</sup></a></li>
+		
+			<li><a href="/tags/H2/" title="H2">H2<sup>4</sup></a></li>
+		
+			<li><a href="/tags/MySql/" title="MySql">MySql<sup>5</sup></a></li>
+		
+			<li><a href="/tags/OSGi/" title="OSGi">OSGi<sup>2</sup></a></li>
+		
+			<li><a href="/tags/RCP/" title="RCP">RCP<sup>1</sup></a></li>
+		
+			<li><a href="/tags/Virgo/" title="Virgo">Virgo<sup>2</sup></a></li>
+		
+			<li><a href="/tags/debug/" title="debug">debug<sup>2</sup></a></li>
+		
+			<li><a href="/tags/freemarker/" title="freemarker">freemarker<sup>4</sup></a></li>
+		
+			<li><a href="/tags/info/" title="info">info<sup>1</sup></a></li>
+		
+			<li><a href="/tags/java/" title="java">java<sup>3</sup></a></li>
+		
+			<li><a href="/tags/linux/" title="linux">linux<sup>1</sup></a></li>
+		
+			<li><a href="/tags/maven/" title="maven">maven<sup>2</sup></a></li>
+		
+			<li><a href="/tags/rapid-generate/" title="rapid-generate">rapid-generate<sup>4</sup></a></li>
+		
+			<li><a href="/tags/代码生成器/" title="代码生成器">代码生成器<sup>4</sup></a></li>
+		
+			<li><a href="/tags/博客，文章/" title="博客，文章">博客，文章<sup>2</sup></a></li>
+		
+			<li><a href="/tags/大数据/" title="大数据">大数据<sup>1</sup></a></li>
+		
+			<li><a href="/tags/工作流引擎activity/" title="工作流引擎activity">工作流引擎activity<sup>1</sup></a></li>
+		
+			<li><a href="/tags/并发/" title="并发">并发<sup>1</sup></a></li>
+		
+			<li><a href="/tags/排序/" title="排序">排序<sup>1</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  <div class="rsspart">
+	<a href="null" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hi,I&#39;m Rocky! <br/>
+			享受编程带来的乐趣，并将这份快乐分享给来到这里的每一个人</p>
+	</section>
+	 
+	<div class="social-font clearfix">
+		
+		
+		
+		<a href="https://github.com/https://github.com/likeaboy" target="_blank" title="github"></a>
+		
+		
+		
+	</div>
+		<p class="copyright">Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/A-limon/pacman" target="_blank" title="Pacman">Pacman</a> © 2015 
+		
+		<a href="jrockyhome.com" target="_blank" title="Rocky">Rocky</a>
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.1.0.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else
+    {
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      h  = $('article h2')
+      ah = $('article h2'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  if(ah.length==0){
+    t.css('display','none');
+  }else{
+    c.click(function(){
+      ta.css('display', 'block').addClass('fadeIn');
+    });
+    o.click(function(){
+      ta.css('display', 'none');
+    });
+    $(window).scroll(function(){
+      ta.css("top",Math.max(140,320-$(this).scrollTop()));
+    });
+  };
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina');
+  var html = [
+  '<a href="#" class="overlay" id="qrcode"></a>',
+  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#share"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
+  '<a href="#textlogo" class="article-back-to-top" title="Top"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="QRcode"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="Weibo"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+  $('.article-share-qrcode').click(function(){
+    var imgSrc = $('#qrcode-pic').attr('data-src');
+    $('#qrcode-pic').attr('src', imgSrc);
+    $('#qrcode-pic').load(function(){
+        $('.qrcode strong').text(' ');
+    });
+  });
+});     
+</script>
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"null"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+  </body>
+</html>
